@@ -16,6 +16,6 @@ namespace Attendance.Models.Entities
         public string DriverName { get; set; }
         public string DriverHelperName { get; set; }
         public string CarNumber { get; set; }
-        public decimal TotalLoad { get; set; }
+        public decimal? TotalLoad { get; set; }
     }
 }

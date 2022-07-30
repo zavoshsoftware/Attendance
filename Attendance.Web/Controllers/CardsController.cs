@@ -137,5 +137,11 @@ namespace Attendance.Web.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Authenticate()
+        {
+            return View();
+        }
+
     }
 }
