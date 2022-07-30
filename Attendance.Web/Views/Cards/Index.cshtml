@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Attendance.Models.Entities.Card>
+
+@{
+ViewBag.Title = "فهرست ";
+    
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+        @(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                        columns.Bound(model => model.Driver.FullName);
+        columns.Bound(model => model.Code);
+        columns.Bound(model => model.IsActive);
+        columns.Bound(model => model.CreationDate);
+					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("تعیین روزهای مجاز", "Index","CardDays", new {id = @item.Id}, new {@class = "k-button"})
+							           </text>).Width(200);  
+		})
+		.ToolBar(toolbar =>
+					{				
+						toolbar.Custom().Action("Create","Cards").Text("افزودن");                          
+					}
+		)         
+		.DataSource(dataSource => dataSource
+									.Server()
+							
+									.Model(model => model.Id(item => item.Id))
+					)              
+	)
