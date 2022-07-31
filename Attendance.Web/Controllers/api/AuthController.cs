@@ -35,7 +35,8 @@ namespace Attendance.Web.Controllers.api
                         CarNumber = id,
                         CreationDate = DateTime.Now,
                         LoginDate = DateTime.Now,
-                        DriverName = card.Driver.FullName
+                        DriverName = card.Driver.FullName,
+                        IsSuccess = true
                     }); db.SaveChanges();
                     hubContext.Clients.All.addNewMessageToPage(card.Driver.FullName,$"با کد {card.Code} اجازه ورود دارد");
                     return Ok(new CustomResponseViewModel()
@@ -54,7 +55,8 @@ namespace Attendance.Web.Controllers.api
                     CreationDate = DateTime.Now,
                     LoginDate = DateTime.Now,
                     DriverName=card.Driver.FullName ,
-                    Description = $"کارت اجازه ورود ندارد"
+                    Description = $"کارت اجازه ورود ندارد",
+                    IsSuccess = false
                 });
                 db.SaveChanges();
             hubContext.Clients.All.addNewMessageToPage(null, $"کارت اجازه ورود ندارد");
@@ -71,7 +73,9 @@ namespace Attendance.Web.Controllers.api
                 CardId = null,
                 CarNumber = id,
                 CreationDate = DateTime.Now,
-                LoginDate = DateTime.Now
+                LoginDate = DateTime.Now,
+                IsSuccess = false
+
             }); db.SaveChanges();
             hubContext.Clients.All.addNewMessageToPage(null, $"کارت معتبر نیست");
             return Ok(new CustomResponseViewModel()
