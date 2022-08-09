@@ -48,6 +48,13 @@
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
+         <div class="form-group">
+            @Html.LabelFor(model => model.Day, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Day)
+                @Html.ValidationMessageFor(model => model.Day)
+            </div>
+        </div>
 
         <div class="form-group" id="buttons">
             <div class="col-md-offset-2 col-md-10">

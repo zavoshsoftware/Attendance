@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -14,7 +15,7 @@ namespace Attendance.Web
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(WebApiConfig.Register); 
             //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters); 
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
         }

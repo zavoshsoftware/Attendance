@@ -8,7 +8,7 @@ namespace Attendance.Web
 {
     public class AtnHub : Hub
     {
-        public void Authenticate(string name, string message)
+        public void Authenticate(Guid id,string name, string message)
         {
             // Call the addNewMessageToPage method to update clients.
             Clients.All.addNewMessageToPage(name, message);

@@ -52,9 +52,10 @@
     <Compile Include="DatabaseContextInitializer.cs" />
     <Compile Include="DatabaseContextInitializerBeforeTheFirstRelease.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Car.cs" />
     <Compile Include="Entities\Card.cs" />
-    <Compile Include="Entities\CardDay.cs" />
     <Compile Include="Entities\CardLoginHistory.cs" />
+    <Compile Include="Entities\CarType.cs" />
     <Compile Include="Entities\Driver.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserLogin.cs" />
@@ -69,6 +70,34 @@
     <Compile Include="Migrations\202207301203451_v3.cs" />
     <Compile Include="Migrations\202207301203451_v3.Designer.cs">
       <DependentUpon>202207301203451_v3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208090455041_v4.cs" />
+    <Compile Include="Migrations\202208090455041_v4.Designer.cs">
+      <DependentUpon>202208090455041_v4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208090547135_v5.cs" />
+    <Compile Include="Migrations\202208090547135_v5.Designer.cs">
+      <DependentUpon>202208090547135_v5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208090548251_v6.cs" />
+    <Compile Include="Migrations\202208090548251_v6.Designer.cs">
+      <DependentUpon>202208090548251_v6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208090957275_v7.cs" />
+    <Compile Include="Migrations\202208090957275_v7.Designer.cs">
+      <DependentUpon>202208090957275_v7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208091026262_v8.cs" />
+    <Compile Include="Migrations\202208091026262_v8.Designer.cs">
+      <DependentUpon>202208091026262_v8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208091058406_v9.cs" />
+    <Compile Include="Migrations\202208091058406_v9.Designer.cs">
+      <DependentUpon>202208091058406_v9.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208091344356_v10.cs" />
+    <Compile Include="Migrations\202208091344356_v10.Designer.cs">
+      <DependentUpon>202208091344356_v10.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +121,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202207301203451_v3.resx">
       <DependentUpon>202207301203451_v3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208090455041_v4.resx">
+      <DependentUpon>202208090455041_v4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208090547135_v5.resx">
+      <DependentUpon>202208090547135_v5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208090548251_v6.resx">
+      <DependentUpon>202208090548251_v6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208090957275_v7.resx">
+      <DependentUpon>202208090957275_v7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208091026262_v8.resx">
+      <DependentUpon>202208091026262_v8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208091058406_v9.resx">
+      <DependentUpon>202208091058406_v9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208091344356_v10.resx">
+      <DependentUpon>202208091344356_v10.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

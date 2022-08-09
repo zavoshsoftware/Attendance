@@ -2,42 +2,47 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="app">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-	<title>@ViewBag.Title</title>
-
-
-	<link href="~/Content/admin/app.v2.css" rel="stylesheet" />
-	<script src="/Scripts/AdminJS/app.v2.js"></script>
+    <title>@ViewBag.Title</title>
 
 
-	<!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
-
-	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.common.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.default.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.dataviz.default.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
-	<link href="~/Content/Admin/admin-font-awesome.css" rel="stylesheet" />
-	<link href="~/Content/Admin/PersianDatePicker.min.css" rel="stylesheet" />
-	<script src="~/Scripts/AdminJS/PersianDatePicker.min.js"></script>
-
-	<script src="@Url.Content("~/Scripts/kendo/2017.3.913/jquery.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/kendo/2017.3.913/jszip.min.js")"></script>
-	@*<script src="@Url.Content("~/Scripts/kendo/2016.2.504/kendo.all.min.js")"></script>*@
-	<script src="~/Scripts/kendo/2017.3.913/kendo.all.min.js"></script>
+    <link href="~/Content/admin/app.v2.css" rel="stylesheet" />
+    <script src="/Scripts/AdminJS/app.v2.js"></script>
 
 
-	@RenderSection("styles", required: false)
+    <!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
 
-	<script src="@Url.Content("~/Scripts/kendo/2017.3.913/kendo.aspnetmvc.min.js")"></script>
-	@*<script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>*@
-	<link href="~/Content/admin/admin-font-awesome.css" rel="stylesheet" />
-	<link href="~/Content/admin/AdminStyle.css" rel="stylesheet" />
-	<link href="~/Content/Admin/style.css" rel="stylesheet" />
-	@RenderSection("head", required: false)
+    <link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.dataviz.default.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Admin/admin-font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/Admin/PersianDatePicker.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script src="~/Scripts/AdminJS/PersianDatePicker.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+    <script src="@Url.Content("~/Scripts/kendo/2017.3.913/jquery.min.js")"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    
+    <script src="@Url.Content("~/Scripts/kendo/2017.3.913/jszip.min.js")"></script>
+    @*<script src="@Url.Content("~/Scripts/kendo/2016.2.504/kendo.all.min.js")"></script>*@
+    <script src="~/Scripts/kendo/2017.3.913/kendo.all.min.js"></script>
+
+
+    @RenderSection("styles", required: false)
+
+    <script src="@Url.Content("~/Scripts/kendo/2017.3.913/kendo.aspnetmvc.min.js")"></script>
+    @*<script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>*@
+    <link href="~/Content/admin/admin-font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/admin/AdminStyle.css" rel="stylesheet" />
+    <link href="~/Content/Admin/style.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
 
 </head>
 

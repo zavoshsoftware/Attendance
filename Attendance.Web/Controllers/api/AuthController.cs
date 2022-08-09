@@ -22,11 +22,11 @@ namespace Attendance.Web.Controllers.api
         public IHttpActionResult Authenticate(string id)
         {
             var today= System.DateTime.Now.ToString("dddd");
-            var card = db.Cards.Include("CardDays").Include("Driver").FirstOrDefault(s => s.Code == id && s.IsActive);
+            var card = db.Cards.Include("Driver").FirstOrDefault(s => s.Code == id && s.IsActive);
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
             if (card!=null)
             {
-                if (db.Cards.Any(s=> s.CardDays.Any(x => x.WeekDays.ToString() == today)))
+                if (/*db.Cards.Any(s=> s.CardDays.Any(x => x.WeekDays.ToString() == today))*/true)
                 {
                     db.CardLoginHistories.Add(new Models.Entities.CardLoginHistory()
                     {
@@ -38,7 +38,7 @@ namespace Attendance.Web.Controllers.api
                         DriverName = card.Driver.FullName,
                         IsSuccess = true
                     }); db.SaveChanges();
-                    hubContext.Clients.All.addNewMessageToPage(card.Driver.FullName,$"با کد {card.Code} اجازه ورود دارد");
+                    hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FullName,$"با کد {card.Code} اجازه ورود دارد");
                     return Ok(new CustomResponseViewModel()
                     {
                         Extra = "",

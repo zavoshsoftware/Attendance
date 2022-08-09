@@ -14,6 +14,9 @@ namespace Attendance.Models.Entities
         [Display(Name="شماره موبایل")]
         public string CellNumber { get; set; }
 
-        public virtual ICollection<Driver> Drivers { get; set; }
+        [Display(Name="کدملی")]
+        public string NationalCode { get; set; }
+
+        public virtual ICollection<Card> Cards { get; set; }
     }
 }

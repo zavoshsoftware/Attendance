@@ -1,0 +1,234 @@
+﻿@model AuthenticateFormViewModel
+@*@{
+
+    }*@
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+}
+<form action="/cards/submitform" method="post">
+    @Html.HiddenFor(x=>x.cardId)
+    @Html.HiddenFor(x=>x.Car)
+    @Html.HiddenFor(x=>x.Driver)
+    <div class="row">
+        <div class=" text-center">
+            <img class="card-img" src="data:image/png;base64,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" />
+        </div>
+        <br />
+        <div class="col-md-6">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات راننده</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Driver.FullName, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DriverFullName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Driver.NationalCode)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات کمک راننده</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssistanceName, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.AssistanceName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssistanceLastName, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.AssistanceLastName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.AssistanceNationalCode)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات خودرو</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Pleck, new { @class = "control-label" })
+                            <div class="autocomplete" style="width:300px;">
+                                <input id="pleck" class="form-control" type="text" name="pleck" placeholder="پلاک">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Type, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Type)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Weight, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Weight)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-lg btn-success">ثبت نهایی</button>
+    </div>
+</form>
+
+ 
+<script>
+        function autocomplete(inp, arr) {
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(a);
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        b.style = "cursor:pointer";
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function (e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            alert(inp.value);
+                            var myHeaders = new Headers();
+                            myHeaders.append("Content-Type", "application/json");
+
+                            var raw = JSON.stringify({
+                                "q": inp.value
+                            });
+
+                            var requestOptions = {
+                                method: 'POST',
+                                headers: myHeaders,
+                                body: raw,
+                                redirect: 'follow'
+                            };
+                            var carType = "";
+                            var carWeght = 0;
+                            fetch("/Cards/GetCarType", requestOptions)
+                                .then(response => response.text())
+                                .then(function (data) {
+                                    document.getElementById("Type").value = JSON.parse(data).Type;
+                                    document.getElementById("Weight").value = parseFloat(JSON.parse(data).Weight);
+                                    console.log(carType, carWeght) })
+                                .catch(error => console.log('error', error)); 
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        /*An array containing all the country names in the world:*/
+        var countries = [ @Html.Raw(string.Join(",", ((List<string>)ViewBag.plecks).Select(x=> $"\"{x}\"")))];
+        /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+    autocomplete(document.getElementById("pleck"), countries);
+</script>
+
+ 

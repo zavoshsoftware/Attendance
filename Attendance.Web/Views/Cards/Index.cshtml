@@ -9,15 +9,16 @@
 <h2>@ViewBag.Title</h2>
 
 @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                        columns.Bound(model => model.Driver.FullName);
-        columns.Bound(model => model.Code);
+        .Name("Grid")
+        .Columns(columns =>
+        {
+        columns.Bound(model => model.Driver.FullName);
+        columns.Bound(model => model.Code); 
+        columns.Bound(model => model.Day); 
         columns.Bound(model => model.IsActive);
         columns.Bound(model => model.CreationDate);
-					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
-							.Template(@<text>
+        columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+                      .Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("تعیین روزهای مجاز", "Index","CardDays", new {id = @item.Id}, new {@class = "k-button"})

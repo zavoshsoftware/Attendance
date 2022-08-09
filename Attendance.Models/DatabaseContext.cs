@@ -13,9 +13,10 @@ namespace Attendance.Models
         public DbSet<User> Users { get; set; }
      
         public DbSet<UserLogin> UserLogins { get; set; }
-        public DbSet<Card> Cards { get; set; }
-        public DbSet<CardDay> CardDays { get; set; }
+        public DbSet<Card> Cards { get; set; } 
         public DbSet<CardLoginHistory> CardLoginHistories { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<CarType>  CarTypes { get; set; }
     }
 }
