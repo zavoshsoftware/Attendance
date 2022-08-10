@@ -106,8 +106,8 @@ namespace Attendance.Web.Controllers.api
             {
                 var login = card.CardLoginHistories.LastOrDefault(x=>!x.ExitDate.HasValue);
                 login.ExitDate = DateTime.Now;
-                //db.SaveChanges();
-            hubContext.Clients.All.Exit(login.Id, $"خروج با موفقیت ثبت شد");
+                db.SaveChanges();
+                hubContext.Clients.All.Exit(login.Id, $"خروج با موفقیت ثبت شد");
                 return Ok(new CustomResponseViewModel()
                 {
                     Extra = "",
