@@ -1,0 +1,111 @@
+﻿@model Attendance.Models.Entities.CardLoginHistory
+
+@{
+    ViewBag.Title = "LoginHistoryDetials";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+
+ 
+<div class="panel panel-primary ">
+    <div class="panel-heading">
+        جزییات ورود
+    </div>
+    <div class="container">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Driver.FullName):
+                    @Html.DisplayFor(model => model.Driver.FullName, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Card.Code):
+                    @Html.DisplayFor(model => model.Card.Code, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-row">
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.LoginDate):
+                    @Html.DisplayFor(model => model.LoginDate, new { @class = "form-control" })
+                </div> 
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.ExitDate):
+                    @Html.DisplayFor(model => model.ExitDate, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6"> 
+                    @Html.EditorFor(model => model.IsSuccess,new { @class = "form-control", @disabled = "disabled" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Car.Number):
+                    @Html.DisplayFor(model => model.Car.Number, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.AssistanceName):
+                    @Html.DisplayFor(model => model.AssistanceName, new { @class = "form-control" })&nbsp;
+                    @Html.DisplayFor(model => model.AssistanceLastName, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.AssistanceNationalCode):
+                    @Html.DisplayFor(model => model.AssistanceNationalCode, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.Description):
+                    @Html.DisplayFor(model => model.Description, new { @class = "form-control" }) 
+                </div> 
+            </div>
+            <div class="form-row">
+                <a href="/cards/authenticate" class="btn btn-primary">بازگشت</a>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,3 +16,6 @@ textarea {
     max-width: 280px;
 }
 
+li:last-child {
+    list-style-type: none;
+}

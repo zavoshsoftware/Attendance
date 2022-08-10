@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -31,7 +32,7 @@ namespace Attendance.Core.Enums
             var attr = GetDisplayAttribute(enu);
             return attr != null ? attr.Description : enu.ToString();
         }
-
+         
         private static DisplayAttribute GetDisplayAttribute(object value)
         {
             Type type = value.GetType();

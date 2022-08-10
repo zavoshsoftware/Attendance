@@ -146,12 +146,14 @@ namespace Attendance.Web.Controllers
 
 
         public ActionResult AuthenticateForm(Guid id)
-        {
+        { 
             ViewBag.plecks = db.Cars.Where(c => c.IsDeleted == false && c.IsActive).Select(x=>x.Number).ToList();
-            var card = db.Cards.Include(x=>x.Driver).FirstOrDefault(x=>x.Id==id); 
+            var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
+            var card = db.Cards.Include(x=>x.Driver).FirstOrDefault(x=>x.Id==login.CardId); 
             return PartialView(
                 new AuthenticateFormViewModel()
                 {
+                    LoginId = id,
                     Driver = card?.Driver??default, 
                     //Car = card?.Driver?.
                     Car = card?.CardLoginHistories?.FirstOrDefault()?.Car,
@@ -160,14 +162,14 @@ namespace Attendance.Web.Controllers
                     DriverFullName=card.Driver.FullName,
                     DriverNatCode = card.Driver.NationalCode
                 }
-                );
-
+                ); 
         }  
 
         [HttpPost]
         public JsonResult GetCarType(string q)
         {
-            var type = db.Cars.Include(x=>x.CarType).FirstOrDefault(x => x.Number.Trim() == q.Trim())?.CarType ?? default;
+            Guid carId = Guid.Parse(q);
+            var type = db.Cars.Include(x=>x.CarType).FirstOrDefault(x => x.Id == carId)?.CarType ?? default;
             return Json(new AuthenticateFormViewModel() { 
             Type=type.Title,
             Weight=type.Weight
@@ -175,23 +177,63 @@ namespace Attendance.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitForm(AuthenticateFormViewModel authenticateFormViewModel)
+        public ActionResult SubmitForm(AuthenticateFormViewModel model)
         {
-            var card =  db.Cards.Include(s=>s.CardLoginHistories).Include(s=>s.Driver).FirstOrDefault(x => x.Id == authenticateFormViewModel.cardId);
-            var cardLoginHist = card.CardLoginHistories.LastOrDefault(x => x.CardId == card.Id);
-            card.Driver.FullName = authenticateFormViewModel.DriverFullName;
-            card.Driver.NationalCode = authenticateFormViewModel.DriverNatCode;
+            var cardLoginHistory = db.CardLoginHistories.FirstOrDefault(c=>c.Id == model.LoginId);
 
-            cardLoginHist.AssistanceLastName = authenticateFormViewModel.AssistanceLastName;
-            cardLoginHist.AssistanceName = authenticateFormViewModel.AssistanceName;
-            cardLoginHist.AssistanceNationalCode = authenticateFormViewModel.AssistanceNationalCode;
+            //Driver
+            //Deiver exist?
+            var driver = db.Drivers.FirstOrDefault(d => d.NationalCode.Trim() == model.DriverNatCode.Trim());
+            if (driver == null)
+            {
+                //create exist
+                driver = new Driver()
+                {
+                    Id = Guid.NewGuid(),
+                    FullName = model.DriverFullName,
+                    NationalCode = model.DriverNatCode
+                };
+                db.Drivers.Add(driver);
+                db.SaveChanges();
+            }
+            cardLoginHistory.Driver = driver;
+            cardLoginHistory.DriverId = driver.Id;
 
-            //db.Cars.Where(x=>x.Id==cardLoginHist.CarId).FirstOrDefault().Number = authenticateFormViewModel.Pleck; 
-            //var carType = db.Cars.Include(s => s.CarType).FirstOrDefault(x => x.Id == cardLoginHist.CarId).CarType;
-            //carType.Title = authenticateFormViewModel.Type;
-            //carType.Weight = authenticateFormViewModel.Weight;
+            //Card is exist
+            var card = db.Cards.FirstOrDefault(c => c.Id == model.cardId);
+            cardLoginHistory.Card = card;
+            cardLoginHistory.CardId = card.Id;
+
+            //Car is exist? should be exist
+            var carId = Guid.Parse(model.Pleck);
+            var car = db.Cars.FirstOrDefault(c => c.Id == carId);
+            
+              
+            cardLoginHistory.AssistanceLastName = model.AssistanceLastName;
+            cardLoginHistory.AssistanceName = model.AssistanceName;
+            cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode;
+            cardLoginHistory.LoginDate = DateTime.Now;
+            db.CardLoginHistories.Add(cardLoginHistory);
+            db.Entry(cardLoginHistory).State = EntityState.Modified;
             db.SaveChanges();
             return Redirect("/cards");
         }
+
+        public JsonResult GetPleckList(string q) 
+        {
+
+
+            var result = db.Cars.Where(c=>c.Number.Contains(q)).Select(c => new { Id = c.Id , Text = c.Number }).ToList();
+            return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult LoginHistoryDetials(Guid id)
+        {
+            var login = db.CardLoginHistories.Include(x=>x.Car).Include(x=>x.Driver).Include(x=>x.Card)
+                .FirstOrDefault(x=>x.Id==id);
+            return View(login);
+        }
+
     }
 }

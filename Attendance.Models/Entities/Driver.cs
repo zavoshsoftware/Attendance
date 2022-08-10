@@ -18,5 +18,6 @@ namespace Attendance.Models.Entities
         public string NationalCode { get; set; }
 
         public virtual ICollection<Card> Cards { get; set; }
+        public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
     }
 }

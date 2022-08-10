@@ -16,6 +16,7 @@ public class AuthenticateViewModel
     } 
     public class AuthenticateFormViewModel
     {
+    public Guid LoginId { get; set; }
     public Guid cardId { get; set; }
     public Card Card { get; set; }
     public Driver Driver { get; set; }

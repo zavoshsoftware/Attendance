@@ -494,6 +494,7 @@
     <Content Include="Scripts\AdminJS\PersianDatePicker.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\function.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -683,6 +684,7 @@
     <Compile Include="Controllers\api\CardsController.cs" />
     <Compile Include="Controllers\CardDaysController.cs" />
     <Compile Include="Controllers\CardsController.cs" />
+    <Compile Include="Controllers\Cars.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CarTypesController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
@@ -951,6 +953,7 @@
     <Content Include="Views\CarTypes\Edit.cshtml" />
     <Content Include="Views\CarTypes\Index.cshtml" />
     <Content Include="Views\Cards\AuthenticateForm.cshtml" />
+    <Content Include="Views\Cards\LoginHistoryDetials.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
