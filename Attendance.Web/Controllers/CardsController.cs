@@ -161,8 +161,8 @@ namespace Attendance.Web.Controllers
 
 
         public ActionResult AuthenticateForm(Guid id)
-        {
-            ViewBag.plecks = db.Cars.Where(c => c.IsDeleted == false && c.IsActive).Select(x => x.Number).ToList();
+        { 
+            ViewBag.plecks = db.Cars.Select(c => new Select2Model{ id = c.Id.ToString(), text = c.Number }).ToList();
             var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
             var card = db.Cards.Include(x => x.Driver).FirstOrDefault(x => x.Id == login.CardId);
             return PartialView(
@@ -237,8 +237,10 @@ namespace Attendance.Web.Controllers
 
         public JsonResult GetPleckList(string q)
         {
-
-
+            if (q==null)
+            {
+                q = string.Empty;
+            }
             var result = db.Cars.Where(c => c.Number.Contains(q)).Select(c => new { Id = c.Id, Text = c.Number }).ToList();
             return Json(new { items = result }, JsonRequestBehavior.AllowGet);
 

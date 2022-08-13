@@ -184,3 +184,6 @@ th{
 #factor-order {
     display: none;
 }
+ul {
+    list-style-type: none;
+}

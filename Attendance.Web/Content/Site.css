@@ -16,6 +16,6 @@ textarea {
     max-width: 280px;
 }
 
-li:last-child {
+ul {
     list-style-type: none;
 }
