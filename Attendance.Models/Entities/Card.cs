@@ -22,7 +22,7 @@ namespace Attendance.Models.Entities
         public Attendance.Core.Enums.WeekDays Day { get; set; }
 
 
-        [Display(Name = "عنوان")]
+        [Display(Name = "کد نمایشی")]
         [MaxLength(20, ErrorMessage = "مقدار {0} نباید بیشتر از {1} باشد")]
         public string DisplayCode { get; set; }
 

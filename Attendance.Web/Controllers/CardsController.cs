@@ -18,7 +18,7 @@ namespace Attendance.Web.Controllers
         // GET: Cards
         public ActionResult Index()
         {
-            var cards = db.Cards.Include(c => c.Driver).Where(c=>c.IsDeleted==false).OrderByDescending(c=>c.CreationDate);
+            var cards = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == false).OrderByDescending(c => c.CreationDate);
             return View(cards.ToList());
         }
 
@@ -49,13 +49,20 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Code,DriverId,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description,Day")] Card card)
-        { 
+        public ActionResult Create(Card card)
+        {
             if (ModelState.IsValid)
-            { 
-				card.IsDeleted=false;
-				card.CreationDate= DateTime.Now;
-                card.DisplayCode = $"{card.Day}-{card.Driver.NationalCode}";
+            {
+                card.IsDeleted = false;
+                card.CreationDate = DateTime.Now;
+
+                var driver = db.Drivers.Find(card.DriverId);
+                if (driver != null)
+                {
+                    var day = (int)card.Day;
+                    card.DisplayCode = $"{day}-{driver.NationalCode.Substring(3)}";
+                }
+
                 card.Id = Guid.NewGuid();
                 db.Cards.Add(card);
                 db.SaveChanges();
@@ -87,13 +94,21 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Code,DriverId,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description,Day")] Card card)
+        public ActionResult Edit(Card card)
         {
-            Type day = typeof(Core.Enums.Enums.DayOfWeek);
+           // Type day = typeof(Core.Enums.Enums.DayOfWeek);
             if (ModelState.IsValid)
             {
-				card.IsDeleted=false;
-					card.LastModifiedDate=DateTime.Now;
+                card.IsDeleted = false;
+                card.LastModifiedDate = DateTime.Now;
+
+                var driver = db.Drivers.Find(card.DriverId);
+                if (driver != null)
+                {
+                    var day= (int)card.Day;
+                    card.DisplayCode = $"{day}-{driver.NationalCode.Substring(3)}";
+                }
+
                 db.Entry(card).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -123,9 +138,9 @@ namespace Attendance.Web.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Card card = db.Cards.Find(id);
-			card.IsDeleted=true;
-			card.DeletionDate=DateTime.Now;
- 
+            card.IsDeleted = true;
+            card.DeletionDate = DateTime.Now;
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -146,40 +161,41 @@ namespace Attendance.Web.Controllers
 
 
         public ActionResult AuthenticateForm(Guid id)
-        { 
-            ViewBag.plecks = db.Cars.Where(c => c.IsDeleted == false && c.IsActive).Select(x=>x.Number).ToList();
+        {
+            ViewBag.plecks = db.Cars.Where(c => c.IsDeleted == false && c.IsActive).Select(x => x.Number).ToList();
             var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
-            var card = db.Cards.Include(x=>x.Driver).FirstOrDefault(x=>x.Id==login.CardId); 
+            var card = db.Cards.Include(x => x.Driver).FirstOrDefault(x => x.Id == login.CardId);
             return PartialView(
                 new AuthenticateFormViewModel()
                 {
                     LoginId = id,
-                    Driver = card?.Driver??default, 
+                    Driver = card?.Driver ?? default,
                     //Car = card?.Driver?.
                     Car = card?.CardLoginHistories?.FirstOrDefault()?.Car,
                     Card = card,
                     cardId = card.Id,
-                    DriverFullName=card.Driver.FullName,
+                    DriverFullName = card.Driver.FullName,
                     DriverNatCode = card.Driver.NationalCode
                 }
-                ); 
-        }  
+                );
+        }
 
         [HttpPost]
         public JsonResult GetCarType(string q)
         {
             Guid carId = Guid.Parse(q);
-            var type = db.Cars.Include(x=>x.CarType).FirstOrDefault(x => x.Id == carId)?.CarType ?? default;
-            return Json(new AuthenticateFormViewModel() { 
-            Type=type.Title,
-            Weight=type.Weight
+            var type = db.Cars.Include(x => x.CarType).FirstOrDefault(x => x.Id == carId)?.CarType ?? default;
+            return Json(new AuthenticateFormViewModel()
+            {
+                Type = type.Title,
+                Weight = type.Weight
             });
         }
 
         [HttpPost]
         public ActionResult SubmitForm(AuthenticateFormViewModel model)
         {
-            var cardLoginHistory = db.CardLoginHistories.FirstOrDefault(c=>c.Id == model.LoginId);
+            var cardLoginHistory = db.CardLoginHistories.FirstOrDefault(c => c.Id == model.LoginId);
 
             //Driver
             //Deiver exist?
@@ -207,8 +223,8 @@ namespace Attendance.Web.Controllers
             //Car is exist? should be exist
             var carId = Guid.Parse(model.Pleck);
             var car = db.Cars.FirstOrDefault(c => c.Id == carId);
-            
-              
+
+
             cardLoginHistory.AssistanceLastName = model.AssistanceLastName;
             cardLoginHistory.AssistanceName = model.AssistanceName;
             cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode;
@@ -219,19 +235,19 @@ namespace Attendance.Web.Controllers
             return Redirect("/cards");
         }
 
-        public JsonResult GetPleckList(string q) 
+        public JsonResult GetPleckList(string q)
         {
 
 
-            var result = db.Cars.Where(c=>c.Number.Contains(q)).Select(c => new { Id = c.Id , Text = c.Number }).ToList();
+            var result = db.Cars.Where(c => c.Number.Contains(q)).Select(c => new { Id = c.Id, Text = c.Number }).ToList();
             return Json(new { items = result }, JsonRequestBehavior.AllowGet);
 
         }
 
         public ActionResult LoginHistoryDetials(Guid id)
         {
-            var login = db.CardLoginHistories.Include(x=>x.Car).Include(x=>x.Driver).Include(x=>x.Card)
-                .FirstOrDefault(x=>x.Id==id);
+            var login = db.CardLoginHistories.Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
+                .FirstOrDefault(x => x.Id == id);
             return View(login);
         }
 
