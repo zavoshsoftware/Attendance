@@ -700,6 +700,7 @@
     <Compile Include="Controllers\api\AuthController.cs" />
     <Compile Include="Controllers\api\CardsController.cs" />
     <Compile Include="Controllers\CardDaysController.cs" />
+    <Compile Include="Controllers\CardLoginHistoriesController.cs" />
     <Compile Include="Controllers\CardsController.cs" />
     <Compile Include="Controllers\Cars.cs" />
     <Compile Include="Controllers\CarsController.cs" />
@@ -977,6 +978,11 @@
     <Content Include="Views\Accounts\ChangePassword.cshtml" />
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\Accounts\OtpLogin.cshtml" />
+    <Content Include="Views\CardLoginHistories\Create.cshtml" />
+    <Content Include="Views\CardLoginHistories\Delete.cshtml" />
+    <Content Include="Views\CardLoginHistories\Details.cshtml" />
+    <Content Include="Views\CardLoginHistories\Edit.cshtml" />
+    <Content Include="Views\CardLoginHistories\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
