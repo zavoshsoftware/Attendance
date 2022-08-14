@@ -14,16 +14,24 @@ using System.Threading.Tasks;
         switch (type)
         {
             case 'a':
-                result = string.Format("{0}/{1}/{2}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d));
+                result = string.Format("{0}/{1}/{2}", pc.GetYear(d), pc.GetMonth(d).ToString("00"), pc.GetDayOfMonth(d).ToString("00"));
                 break;
             case 'h':
-                result = string.Format("{0}:{1}", pc.GetHour(d.AddHours(4)), pc.GetMinute(d.AddMinutes(30)));
+                result = string.Format("{0}:{1}", pc.GetHour(d.AddHours(4)).ToString("00"), pc.GetMinute(d).ToString("00"));
                 break;
            case 's':
-                result = string.Format("{0}/{1}/{2}-{3}:{4}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d), pc.GetHour(d), pc.GetMinute(d));
+                result = string.Format("{0}/{1}/{2}-{3}:{4}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d), pc.GetHour(d).ToString("00"), pc.GetMinute(d).ToString("00"));
                 break;
 
         }
         return result;
+    }
+    public static string ToShamsi(this DateTime? date, char type = 'a')
+    {
+        if (!date.HasValue)
+        {
+            return "";
+        }
+        return ToShamsi(date.Value,type);
     }
 } 

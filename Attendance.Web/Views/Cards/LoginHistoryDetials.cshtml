@@ -1,7 +1,7 @@
 ﻿@model Attendance.Models.Entities.CardLoginHistory
 
 @{
-    ViewBag.Title = "LoginHistoryDetials";
+    ViewBag.Title = ViewBag.PageTitle;
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
@@ -15,8 +15,13 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Driver.FullName):
-                    @Html.DisplayFor(model => model.Driver.FullName, new { @class = "form-control" })
+                    @Html.LabelFor(model => model.Driver.FirstName):
+                    @Html.DisplayFor(model => model.Driver.FirstName, new { @class = "form-control" })
+                </div>
+                
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Driver.LastName):
+                    @Html.DisplayFor(model => model.Driver.LastName, new { @class = "form-control" })
                 </div>
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Card.Code):
@@ -27,11 +32,11 @@
 
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.LoginDate):
-                    @Html.DisplayFor(model => model.LoginDate, new { @class = "form-control" })
+                   @(Model.LoginDate.ToShamsi('s'))
                 </div> 
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.ExitDate):
-                    @Html.DisplayFor(model => model.ExitDate, new { @class = "form-control" })
+                    @Html.LabelFor(model => model.ExitDate): 
+                   @(Model.ExitDate?.ToShamsi('s'))
                 </div>
             </div>
             <div class="form-row">
@@ -64,7 +69,7 @@
             <div class="form-row">
                 <a href="/cards/authenticate" class="btn btn-primary">بازگشت</a>
             </div>
-
+            <br />
         </form>
     </div>
 

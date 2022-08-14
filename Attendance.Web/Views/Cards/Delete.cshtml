@@ -63,7 +63,7 @@
          <div class="form-group">
             @Html.LabelFor(model => model.Day, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.Day)
+            @Html.EnumDropDownListFor(model => model.Day,new { @disabled = "disabled"})
       </div></div>
 
   </div>  

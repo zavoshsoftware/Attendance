@@ -46,7 +46,7 @@
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (id, name, loginId, message) {
                 var imgProfile = '';
-                if (name == null) {
+                if (id == null) {
                     imgProfile = imgCross;
                     name = '';
                     $('#discussion').prepend(
@@ -116,9 +116,9 @@
                     + '</p>'
                     + '</div>'
                     + '</div>');
-                setInterval(function () {
+                setTimeout(function () {
                     $('#' + id).remove()
-                },5000)
+                },10000)
             };
 
             chat.client.Exit = function (id, message) {

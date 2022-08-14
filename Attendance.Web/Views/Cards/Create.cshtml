@@ -23,14 +23,7 @@
                     @Html.ValidationMessageFor(model => model.Code)
                 </div>
             </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Father, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Father)
 
-                    @Html.ValidationMessageFor(model => model.Father)
-                </div>
-            </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.DriverId, new { @class = "control-label col-md-2" })
@@ -39,14 +32,19 @@
                     @Html.ValidationMessageFor(model => model.DriverId)
                 </div>
             </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Father, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Father)
 
+                    @Html.ValidationMessageFor(model => model.Father)
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.IsActive)
-
-                    @Html.LabelFor(model => model.IsActive)
+                    @Html.EditorFor(model => model.IsActive) 
                     @Html.ValidationMessageFor(model => model.IsActive)
                 </div>
             </div>

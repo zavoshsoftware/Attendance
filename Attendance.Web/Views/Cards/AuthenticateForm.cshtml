@@ -5,7 +5,9 @@
 @section styles{
     @*<link href="~/Content/select2.min.css" rel="stylesheet" />*@
 }
-<form action="/cards/submitform" method="post">
+<div class="animate__animated animate__backInLeft">
+
+<form  action="/cards/submitform" method="post">
     @Html.HiddenFor(x => x.cardId)
     @Html.HiddenFor(x => x.Car)
     @Html.HiddenFor(x => x.Driver)
@@ -31,8 +33,9 @@
                             @Html.EditorFor(model => model.DriverLastName,new { @id = "DriverFullName" })
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Driver.NationalCode, new { @id = "DriverNatCode" ,@required = "required"})
+                            @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" }) 
+                            <input class="k-textbox" id="DriverNatCode" name="DriverNatCode" value="@Model.Driver.NationalCode" required />
+                        
                         </div>
                     </div>
                 </div>
@@ -72,7 +75,7 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Pleck, new { @class = "control-label" })
-                            <select id="pleck" name="pleck" class="accountSelect form-control" style="width:300px"></select>
+                            <select id="pleck" name="pleck" class="accountSelect form-control input-group"  ></select>
                         </div>
                     </div>
                 </div>
@@ -85,13 +88,15 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-horizontal">
-                        <div class="form-group">
+                        <div class="form-group col-md-6"> 
                             @Html.LabelFor(model => model.Type, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Type)
+                            @Html.EditorFor(model => model.Type,new {@class = "form-control"})
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6">
                             @Html.LabelFor(model => model.Weight, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Weight)
+                           
+                            <input data-val="true"  id="Weight" name="Weight" 
+                                   type="text" value="0.00" class="k-textbox input-group">
                         </div>
                     </div>
                 </div>
@@ -104,6 +109,7 @@
     </div>
 </form>
 
+</div>
 <script src="~/Scripts/select2.min.js"></script> 
 <script>
     $(document).ready(function () {

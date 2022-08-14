@@ -47,7 +47,7 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FullName,CellNumber,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description,NationalCode")] Driver driver)
+        public ActionResult Create(Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FullName,CellNumber,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description,NationalCode")] Driver driver)
+        public ActionResult Edit(Driver driver)
         {
             if (ModelState.IsValid)
             {

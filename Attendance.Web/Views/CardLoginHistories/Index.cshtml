@@ -21,15 +21,18 @@
 							.Template(@<text>
 									@item.Driver.FirstName &nbsp; @item.Driver.LastName
 									</text>).Width(200);
+        columns.Bound(item => @item.Id).Title("تاریخ خروج").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@(item.ExitDate.ToShamsi().Equals("")?"خارج نشده":item.ExitDate.ToShamsi('s'))
+									</text>).Width(200);
 	    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
-									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
-									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"}) 
 									</text>).Width(200);
 		})
 		.ToolBar(toolbar =>
 					{
-						toolbar.Custom().Action("Create","CardLoginHistorys").Text("افزودن");
+						 
 					}
 		)        .Filterable().Sortable()
 		.DataSource(dataSource => dataSource

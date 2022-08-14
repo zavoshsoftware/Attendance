@@ -40,7 +40,7 @@ namespace Attendance.Web.Controllers
         // GET: Cards/Create
         public ActionResult Create()
         {
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName");
+            ViewBag.DriverId = new SelectList(db.Drivers.Select(x=>new { Id = x.Id,FullName = x.FirstName + " " + x.LastName}).ToList(), "Id", "FullName");
             return View();
         }
 
@@ -85,7 +85,7 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName", card.DriverId);
+            ViewBag.DriverId = new SelectList(db.Drivers.Select(x => new { Id = x.Id, FullName = x.FirstName + " " + x.LastName }).ToList(), "Id", "FullName",card.DriverId);
             return View(card);
         }
 
@@ -204,7 +204,8 @@ namespace Attendance.Web.Controllers
             
             //Driver
             //Deiver exist?
-            var driver = db.Drivers.FirstOrDefault(d => d.NationalCode.Trim() == model.DriverNatCode.Trim());
+            var driver = db.Drivers.FirstOrDefault(d => 
+            d.NationalCode.Trim() == model.DriverNatCode.Trim());
             if (driver == null)
             {
                 //create exist
@@ -213,7 +214,8 @@ namespace Attendance.Web.Controllers
                     Id = Guid.NewGuid(),
                     FirstName = model.DriverFirstName,
                     LastName = model.DriverLastName,
-                    NationalCode = model.DriverNatCode
+                    NationalCode = model.DriverNatCode,
+                    CreationDate = DateTime.Now
                 };
                 db.Drivers.Add(driver);
                 db.SaveChanges();
@@ -229,19 +231,21 @@ namespace Attendance.Web.Controllers
             //Car is exist? should be exist
             var carId = Guid.Parse(model.Pleck);
             var car = db.Cars.FirstOrDefault(c => c.Id == carId);
-
+            cardLoginHistory.Car = car;
+            cardLoginHistory.CarId = carId;
 
             cardLoginHistory.AssistanceLastName = model.AssistanceLastName;
             cardLoginHistory.AssistanceName = model.AssistanceName;
-            cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode;
-            cardLoginHistory.LoginDate = DateTime.Now;
+            cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode; 
             cardLoginHistory.IsActive = true;
             cardLoginHistory.CreationDate = DateTime.Now;
             cardLoginHistory.LoginDate = DateTime.Now;
             cardLoginHistory.IsActive = true;
+            cardLoginHistory.IsSuccess = true;
+            
             db.CardLoginHistories.Add(cardLoginHistory); 
             db.SaveChanges();
-            return Redirect("/cards");
+            return Redirect("/cards/authenticate");
         }
 
         public JsonResult GetPleckList(string q)
@@ -259,6 +263,7 @@ namespace Attendance.Web.Controllers
         {
             var login = db.CardLoginHistories.Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
+            ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
             return View(login);
         }
 
