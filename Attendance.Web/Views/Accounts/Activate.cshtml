@@ -1,0 +1,76 @@
+﻿@model ViewModels.ActivateAccountViewModel
+@{
+	ViewBag.Title = "ورود";
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+
+
+
+<div class="full-row bg-light py-5">
+	<div class="container breadcrump-wrapper">
+		<div class="row text-secondary ">
+			<div class="col-sm-6">
+                <h3 class="mb-2 text-secondary">@ShafaArad.Resources.Label.Login</h3>
+			</div>
+			<div class="col-sm-6">
+				<nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100">
+					<ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0">
+						<li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>@ShafaArad.Resources.Label.Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">@ShafaArad.Resources.Label.Login</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="full-row">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="woocommerce login">
+					<div class="row">
+						<div class="col-lg-6 col-md-8 col-12 mx-auto">
+							<div class="sign-in-form">
+
+								<h3>@ShafaArad.Resources.Label.WebsiteLogin</h3>
+								<form class="woocommerce-form-login" method="post">
+									<p class="text-center">@String.Format(ShafaArad.Resources.Label.Mobile_Athenticate,Model.CellNumber)</p> 
+
+									@if (TempData["WrongActivationCode"] != null)
+									{
+										<p class="alert alert-danger" id="wrongEmail">@TempData["WrongActivationCode"]</p>
+									}
+									@using (Html.BeginForm("Activate", "Accounts", new { returnUrl = ViewBag.ReturnUrl, code = ViewBag.code }, FormMethod.Post, new { @class = "", role = "form" }))
+									{
+										@Html.AntiForgeryToken()
+										@Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+										@Html.HiddenFor(c => c.CellNumber)
+
+										if (TempData["WrongMobile"] != null)
+										{
+											<p class="alert alert-danger" id="wrongEmail">@TempData["WrongMobile"]</p>
+										}
+										<p>
+
+											<label for="username">@ShafaArad.Resources.Label.CelllNumber<span class="required">*</span></label>
+											@Html.TextBoxFor(m => m.ActivationCode, new { @class = "form-control", @placeholder = $"{ShafaArad.Resources.Label.ActivationCode}" })
+										</p>
+
+										<p class="form-row" style="display:flex;justify-content:space-between;">
+                                            <a href="/login" class="woocommerce-form-login__submit btn btn-primary rounded-0">@ShafaArad.Resources.Label.ChangePhoneNumber</a>
+											<button type="submit" class="woocommerce-form-login__submit btn btn-primary rounded-0" name="login" value="Log in">@ShafaArad.Resources.Label.Login</button>
+										</p>
+									}
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+ 
