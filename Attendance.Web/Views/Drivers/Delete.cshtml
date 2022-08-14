@@ -13,9 +13,15 @@
     <div class="form-horizontal">        
     
          <div class="form-group">
-            @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.FullName)
+            @Html.DisplayFor(model => model.FirstName)
+      </div></div>
+        
+         <div class="form-group">
+            @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.LastName)
       </div></div>
 
          <div class="form-group">

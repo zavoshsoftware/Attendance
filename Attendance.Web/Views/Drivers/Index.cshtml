@@ -12,7 +12,8 @@
               .Name("Grid")
               .Columns(columns =>
                   {
-        columns.Bound(model => model.FullName);
+        columns.Bound(model => model.FirstName);
+        columns.Bound(model => model.LastName);
         columns.Bound(model => model.NationalCode);
         columns.Bound(model => model.CellNumber);
         columns.Bound(model => model.IsActive);

@@ -20,8 +20,11 @@ public class AuthenticateViewModel
     public Guid cardId { get; set; }
     public Card Card { get; set; }
     public Driver Driver { get; set; }
-    [Display(Name = "نام و نام خانوادگی")]
-      public string DriverFullName { get; set; }
+    [Display(Name = "نام")]
+      public string DriverFirstName { get; set; }
+
+    [Display(Name = "نام خانوادگی")]
+      public string DriverLastName { get; set; }
     
     [Display(Name = "کدملی")]
     public string DriverNatCode { get; set; }

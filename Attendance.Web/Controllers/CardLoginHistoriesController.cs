@@ -18,7 +18,7 @@ namespace Attendance.Web.Controllers
         // GET: CardLoginHistories
         public ActionResult Index()
         {
-            var cardLoginHistories = db.CardLoginHistories.Include(c => c.Card).Where(c=>c.IsDeleted==false).OrderByDescending(c=>c.CreationDate);
+            var cardLoginHistories = db.CardLoginHistories.Include(c=>c.Driver).Include(c => c.Card).Where(c=>c.IsDeleted==false).OrderByDescending(c=>c.CreationDate);
             return View(cardLoginHistories.ToList());
         }
 

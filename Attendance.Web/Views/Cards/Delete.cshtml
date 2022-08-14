@@ -13,15 +13,27 @@
     <div class="form-horizontal">        
     
          <div class="form-group">
-            @Html.LabelFor(model => model.Driver.FullName, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Driver.FirstName, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.Driver.FullName)
+            @Html.DisplayFor(model => model.Driver.FirstName)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Driver.LastName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Driver.LastName)
       </div></div>
 
          <div class="form-group">
             @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DisplayFor(model => model.Code)
+      </div></div>
+        
+         <div class="form-group">
+            @Html.LabelFor(model => model.Father, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Father)
       </div></div>
 
          <div class="form-group">

@@ -8,6 +8,7 @@ namespace Attendance.Web
     {
         public void Configuration(IAppBuilder app)
         {
+            app.MapSignalR();
             ConfigureAuth(app);
         }
     }

@@ -12,8 +12,9 @@
         .Name("Grid")
         .Columns(columns =>
         {
-        columns.Bound(model => model.Driver.FullName);
-        columns.Bound(model => model.DisplayCode); 
+        columns.Bound(model => model.Driver.FirstName);
+        columns.Bound(model => model.Driver.LastName);
+        columns.Bound(model => model.Code); 
         columns.Bound(model => model.Day); 
         columns.Bound(model => model.IsActive);
         columns.Bound(model => model.CreationDate);

@@ -21,6 +21,8 @@ namespace Attendance.Models.Entities
         [DisplayName("روز هفته")]
         public Attendance.Core.Enums.WeekDays Day { get; set; }
 
+        [Display(Name = "نام پدر")]
+        public string Father { get; set; }
 
         [Display(Name = "کد نمایشی")]
         [MaxLength(20, ErrorMessage = "مقدار {0} نباید بیشتر از {1} باشد")]

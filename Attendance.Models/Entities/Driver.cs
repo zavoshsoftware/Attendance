@@ -9,8 +9,11 @@ namespace Attendance.Models.Entities
 {
    public class Driver:BaseEntity
     {
-        [Display(Name="نام و نام خانوادگی")]
-        public string FullName { get; set; }
+        [Display(Name="نام")]
+        public string FirstName { get; set; }
+
+        [Display(Name="نام خانوادگی")]
+        public string LastName { get; set; }
         [Display(Name="شماره موبایل")]
         public string CellNumber { get; set; }
 

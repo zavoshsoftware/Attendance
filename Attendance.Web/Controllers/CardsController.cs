@@ -161,20 +161,22 @@ namespace Attendance.Web.Controllers
 
 
         public ActionResult AuthenticateForm(Guid id)
-        { 
+        {
+            var cardId = id;
             ViewBag.plecks = db.Cars.Select(c => new Select2Model{ id = c.Id.ToString(), text = c.Number }).ToList();
-            var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
-            var card = db.Cards.Include(x => x.Driver).FirstOrDefault(x => x.Id == login.CardId);
+            //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
+            var card = db.Cards.Include(x => x.Driver).FirstOrDefault(x => x.Id == id);
             return PartialView(
                 new AuthenticateFormViewModel()
                 {
-                    LoginId = id,
+                    LoginId = Guid.NewGuid(),
                     Driver = card?.Driver ?? default,
                     //Car = card?.Driver?.
                     Car = card?.CardLoginHistories?.FirstOrDefault()?.Car,
                     Card = card,
                     cardId = card.Id,
-                    DriverFullName = card.Driver.FullName,
+                    DriverFirstName = card.Driver.FirstName,
+                    DriverLastName = card.Driver.LastName,
                     DriverNatCode = card.Driver.NationalCode
                 }
                 );
@@ -195,8 +197,11 @@ namespace Attendance.Web.Controllers
         [HttpPost]
         public ActionResult SubmitForm(AuthenticateFormViewModel model)
         {
-            var cardLoginHistory = db.CardLoginHistories.FirstOrDefault(c => c.Id == model.LoginId);
+            //var cardLoginHistory = db.CardLoginHistories.FirstOrDefault(c => c.Id == model.LoginId);
+            var cardLoginHistory = new CardLoginHistory();
 
+            cardLoginHistory.Id = model.LoginId;
+            
             //Driver
             //Deiver exist?
             var driver = db.Drivers.FirstOrDefault(d => d.NationalCode.Trim() == model.DriverNatCode.Trim());
@@ -206,7 +211,8 @@ namespace Attendance.Web.Controllers
                 driver = new Driver()
                 {
                     Id = Guid.NewGuid(),
-                    FullName = model.DriverFullName,
+                    FirstName = model.DriverFirstName,
+                    LastName = model.DriverLastName,
                     NationalCode = model.DriverNatCode
                 };
                 db.Drivers.Add(driver);
@@ -229,8 +235,11 @@ namespace Attendance.Web.Controllers
             cardLoginHistory.AssistanceName = model.AssistanceName;
             cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode;
             cardLoginHistory.LoginDate = DateTime.Now;
-            db.CardLoginHistories.Add(cardLoginHistory);
-            db.Entry(cardLoginHistory).State = EntityState.Modified;
+            cardLoginHistory.IsActive = true;
+            cardLoginHistory.CreationDate = DateTime.Now;
+            cardLoginHistory.LoginDate = DateTime.Now;
+            cardLoginHistory.IsActive = true;
+            db.CardLoginHistories.Add(cardLoginHistory); 
             db.SaveChanges();
             return Redirect("/cards");
         }
