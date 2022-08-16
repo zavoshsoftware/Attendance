@@ -7,13 +7,13 @@ namespace Attendance.Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class v15 : IMigrationMetadata
+    public sealed partial class V14 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(v15));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(V14));
         
         string IMigrationMetadata.Id
         {
-            get { return "202208140800303_v15"; }
+            get { return "202208160529365_V14"; }
         }
         
         string IMigrationMetadata.Source

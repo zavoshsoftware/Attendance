@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc; 
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System.Threading.Tasks;
@@ -19,15 +19,14 @@ namespace Attendance.Web.Controllers
     {
         private DatabaseContext db = new DatabaseContext();
 
-      
+
         private ActionResult RedirectToLocal(string returnUrl, string role)
         {
 
             if (role.ToLower().Contains("admin"))
                 return RedirectToAction("index", "Drivers");
-           
 
-           
+            return RedirectToAction("Authenticate", "Cards");
 
             return Redirect("/");
         }
@@ -101,6 +100,6 @@ namespace Attendance.Web.Controllers
             return View(model);
         }
 
-       
+
     }
 }

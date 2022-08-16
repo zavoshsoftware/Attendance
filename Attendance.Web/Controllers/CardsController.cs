@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
 
@@ -18,8 +19,31 @@ namespace Attendance.Web.Controllers
         // GET: Cards
         public ActionResult Index()
         {
-            var cards = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == false).OrderByDescending(c => c.CreationDate);
+            List<Card> cards;
+            if (IsSuperAdmin())
+                cards = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == false)
+                    .OrderByDescending(c => c.CreationDate).ToList();
+            else
+                cards = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == false && c.IsHidden == false)
+                    .OrderByDescending(c => c.CreationDate).ToList();
+
             return View(cards.ToList());
+        }
+
+        public bool IsSuperAdmin()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+                string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+
+                if (role == SecurityRole.SuperAdmin)
+                    return true;
+
+                return false;
+            }
+            return false;
+
         }
 
         // GET: Cards/Details/5
@@ -40,7 +64,7 @@ namespace Attendance.Web.Controllers
         // GET: Cards/Create
         public ActionResult Create()
         {
-            ViewBag.DriverId = new SelectList(db.Drivers.Select(x=>new { Id = x.Id,FullName = x.FirstName + " " + x.LastName}).ToList(), "Id", "FullName");
+            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName");
             return View();
         }
 
@@ -85,18 +109,15 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DriverId = new SelectList(db.Drivers.Select(x => new { Id = x.Id, FullName = x.FirstName + " " + x.LastName }).ToList(), "Id", "FullName",card.DriverId);
+            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName", card.DriverId);
             return View(card);
         }
 
-        // POST: Cards/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Card card)
         {
-           // Type day = typeof(Core.Enums.Enums.DayOfWeek);
+            // Type day = typeof(Core.Enums.Enums.DayOfWeek);
             if (ModelState.IsValid)
             {
                 card.IsDeleted = false;
@@ -105,7 +126,7 @@ namespace Attendance.Web.Controllers
                 var driver = db.Drivers.Find(card.DriverId);
                 if (driver != null)
                 {
-                    var day= (int)card.Day;
+                    var day = (int)card.Day;
                     card.DisplayCode = $"{day}-{driver.NationalCode.Substring(3)}";
                 }
 
@@ -163,7 +184,7 @@ namespace Attendance.Web.Controllers
         public ActionResult AuthenticateForm(Guid id)
         {
             var cardId = id;
-            ViewBag.plecks = db.Cars.Select(c => new Select2Model{ id = c.Id.ToString(), text = c.Number }).ToList();
+            ViewBag.plecks = db.Cars.Select(c => new Select2Model { id = c.Id.ToString(), text = c.Number }).ToList();
             //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
             var card = db.Cards.Include(x => x.Driver).FirstOrDefault(x => x.Id == id);
             return PartialView(
@@ -201,10 +222,10 @@ namespace Attendance.Web.Controllers
             var cardLoginHistory = new CardLoginHistory();
 
             cardLoginHistory.Id = model.LoginId;
-            
+
             //Driver
             //Deiver exist?
-            var driver = db.Drivers.FirstOrDefault(d => 
+            var driver = db.Drivers.FirstOrDefault(d =>
             d.NationalCode.Trim() == model.DriverNatCode.Trim());
             if (driver == null)
             {
@@ -236,21 +257,21 @@ namespace Attendance.Web.Controllers
 
             cardLoginHistory.AssistanceLastName = model.AssistanceLastName;
             cardLoginHistory.AssistanceName = model.AssistanceName;
-            cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode; 
+            cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode;
             cardLoginHistory.IsActive = true;
             cardLoginHistory.CreationDate = DateTime.Now;
             cardLoginHistory.LoginDate = DateTime.Now;
             cardLoginHistory.IsActive = true;
             cardLoginHistory.IsSuccess = true;
-            
-            db.CardLoginHistories.Add(cardLoginHistory); 
+
+            db.CardLoginHistories.Add(cardLoginHistory);
             db.SaveChanges();
             return Redirect("/cards/authenticate");
         }
 
         public JsonResult GetPleckList(string q)
         {
-            if (q==null)
+            if (q == null)
             {
                 q = string.Empty;
             }

@@ -22,5 +22,13 @@ namespace Attendance.Models.Entities
 
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 }

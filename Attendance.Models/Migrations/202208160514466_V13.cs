@@ -3,7 +3,7 @@ namespace Attendance.Models.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class v15 : DbMigration
+    public partial class V13 : DbMigration
     {
         public override void Up()
         {

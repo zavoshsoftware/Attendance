@@ -24,6 +24,9 @@ namespace Attendance.Models.Entities
         [Display(Name = "نام پدر")]
         public string Father { get; set; }
 
+        [Display(Name = "کارت مخفی است؟")]
+        public bool IsHidden { get; set; }
+
         [Display(Name = "کد نمایشی")]
         [MaxLength(20, ErrorMessage = "مقدار {0} نباید بیشتر از {1} باشد")]
         public string DisplayCode { get; set; }
