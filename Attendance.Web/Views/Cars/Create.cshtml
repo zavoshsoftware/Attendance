@@ -7,65 +7,100 @@
 
 <h2>افزودن @Html.DisplayNameFor(model => model)</h2>
 
-@using (Html.BeginForm("Create", "Cars",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Create", "Cars", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">        
+
+    <div class="form-horizontal">
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-        <div class="form-group">
-            @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CarTypeId", String.Empty)
-                @Html.ValidationMessageFor(model => model.CarTypeId)
+            <div class="form-group">
+                @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CarTypeId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.CarTypeId)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.Title)
 
-                @Html.ValidationMessageFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                    @Html.EditorFor(model => model.Number)
 
-                @Html.ValidationMessageFor(model => model.Number)
+            <div class="form-group">
+                @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Number, htmlAttributes: new { hidden = "hidden" })
+                    <div class="form-inline">
+                        <div class="row">
+                            <div style="width:40px; display:inline-flex">ایران</div>
+                            <div style="width:30px; display:inline-flex">
+                                <input type="text" style="width:30px;" id="carNo1" onkeyup="pleckWriter()" />
+                            </div>
+                            <span style=" width:10px; display:inline-block; text-align:center">-</span>
+                            <div style="width:40px; display:inline-flex">
+                                <input type="text" style="width:40px;" id="carNo2" onkeyup="pleckWriter()" />
+                            </div>
+                            <div style="width:52px; display:inline-flex">
+                                @Html.DropDownList("Alphabet", (IEnumerable<SelectListItem>)ViewBag.Alphabet, "الف",
+                               htmlAttributes: new { onchange = "pleckWriter()" })
+
+                            </div>
+                            <div style="width:40px; display:inline-flex">
+                                <input type="text" style="width:40px;" id="carNo3" onkeyup="pleckWriter()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-			<div class="col-md-2">
+             
+            <div class="form-group">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive)
+                </div>
             </div>
-            <div class="col-md-10">
-                    @Html.EditorFor(model => model.IsActive) 
-                @Html.ValidationMessageFor(model => model.IsActive)
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.Description)
 
-                @Html.ValidationMessageFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
             </div>
-        </div>
 
-        <div class="form-group" id="buttons">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="ایجاد" class="btn btn-primary" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
+            <div class="form-group" id="buttons">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="ایجاد" class="btn btn-primary" />
+                    @Html.ActionLink("بازگشت به فهرست", "Index")
+                </div>
             </div>
         </div>
-        </div>
-</div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        function pleckWriter() {
+            var carNumber = document.getElementById("Number");
+            var carNo1 = document.getElementById("carNo1");
+            var carNo2 = document.getElementById("carNo2");
+            var carNo3 = document.getElementById("carNo3");
+            var alphabet = document.getElementById("Alphabet");
+            var carno = "ایران" + " " + carNo1.value + " - " + carNo2.value
+                + " " + alphabet.options[alphabet.selectedIndex].text + " " + carNo3.value;
+
+            carNumber.value = carno
+        } 
+    </script>
 }
 

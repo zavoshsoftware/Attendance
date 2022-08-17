@@ -11,58 +11,114 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">        
-        <hr />
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.Id)
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CarTypeId", String.Empty)
-                @Html.ValidationMessageFor(model => model.CarTypeId)
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("CarTypeId", String.Empty)
+            @Html.ValidationMessageFor(model => model.CarTypeId)
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                                  @Html.EditorFor(model => model.Title)
-                @Html.ValidationMessageFor(model => model.Title)
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                                  @Html.EditorFor(model => model.Number)
-                @Html.ValidationMessageFor(model => model.Number)
-            </div>
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Number, htmlAttributes: new { hidden = "hidden" })
+            <div class="form-inline">
+                <div class="row">
+                    <div style="width:40px; display:inline-flex">ایران</div>
+                    <div style="width:50px; display:inline-flex">
+                        <input class="form-control" type="text" id="carNo1" onkeyup="pleckWriter()" />
+                    </div>
+                    <span style=" width:10px; display:inline-block; text-align:center">-</span>
+                    <div style="width:60px; display:inline-flex">
+                        <input class="form-control" type="text" id="carNo2" onkeyup="pleckWriter()" />
+                    </div> 
+                    <div style="width:52px; display:inline-flex">
+                        @Html.DropDownList("Alphabet", (IEnumerable<SelectListItem>)ViewBag.Alphabet, "الف",
+                       htmlAttributes: new { onchange = "pleckWriter()" , @class= "k-select" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                                  @Html.EditorFor(model => model.IsActive)
-                @Html.ValidationMessageFor(model => model.IsActive)
-            </div>
-        </div>
-
-	 @Html.HiddenFor(model => model.CreationDate)
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                                  @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
-            </div>
-        </div>
-
-        <div class="form-group" id="buttons">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="ثبت" class="btn btn-primary" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
+                    </div>
+                    <div style="width:50px; display:inline-flex">
+                        <input type="text" class="form-control" id="carNo3" onkeyup="pleckWriter()" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.IsActive)
+            @Html.ValidationMessageFor(model => model.IsActive)
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.CreationDate)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+    </div>
+
+    <div class="form-group" id="buttons">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="ثبت" class="btn btn-primary" />
+            @Html.ActionLink("بازگشت به فهرست", "Index")
+        </div>
+    </div>
+</div>
 }
 
+
+
+@section scripts{
+    <script>
+        function pleckWriter() {
+            var carNumber = document.getElementById("Number");
+            var carNo1 = document.getElementById("carNo1");
+            var carNo2 = document.getElementById("carNo2");
+            var carNo3 = document.getElementById("carNo3");
+            var alphabet = document.getElementById("Alphabet");
+            var carno = "ایران" + " " + carNo1.value + " - " + carNo2.value
+                + " " + alphabet.options[alphabet.selectedIndex].text + " " + carNo3.value;
+
+            carNumber.value = carno
+        }
+        $(document).ready(function () {
+            var carNo = $("#Number").val();
+            var carnosplited = carNo.split('-');
+            var carNo1 = carnosplited[0].substring(carnosplited[0].length - 3, carnosplited[0].length).trim();
+            var carNo2 = carnosplited[1].substring(0, 4).trim();
+            var carNo3 = carnosplited[1].substring(carnosplited[1].length - 2, carnosplited[1].length).trim();
+
+            $("#carNo1").val(carNo1);
+            $("#carNo2").val(carNo2);
+            $("#carNo3").val(carNo3);
+            var alphabet = carNo.split(' ')[4];
+            if (alphabet === 'الف') {
+                /*  $("#Alphabet").find('option:eq(0)').prop('selected', true);*/
+                var myDDL = $('#Alphabet');
+                myDDL.selectedIndex = 1;
+            } else {
+                $("#Alphabet").val(alphabet);
+            }
+            /* $("#Alphabet").val(alphabet);*/
+        });
+    </script>
+    }

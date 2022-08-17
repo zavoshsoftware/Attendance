@@ -27,8 +27,8 @@ namespace Attendance.Models.Entities
 
         [Display(Name = "تاریخ ایجاد")]
         public System.DateTime CreationDate { get; set; }
-      
 
+        [Display(Name = "تاریخ بروزرسانی")]
         public System.DateTime? LastModifiedDate { get; set; }
 
         [System.ComponentModel.DefaultValue(false)]

@@ -40,6 +40,14 @@ namespace Attendance.Web.Controllers
         // GET: Cars/Create
         public ActionResult Create()
         {
+            ViewBag.Alphabet  = new SelectList(new List<string>() {
+                "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ",
+                "ر", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ",
+                "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
+                "و", "ه", "ی"});
+
+
+            
             ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title");
             return View();
         }
@@ -77,6 +85,12 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Alphabet = new SelectList(new List<string>() {
+                "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ",
+                "ر", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ",
+                "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
+                "و", "ه", "ی"});
+
             ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title", car.CarTypeId);
             return View(car);
         }

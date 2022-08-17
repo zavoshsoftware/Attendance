@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "اکسل";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+
+
+
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <div class="panel">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.Label("آپلود فایل اکسل", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <p>برای دانلود قالب کلیک کنید</p>
+                        <form action="/Drivers/importexcel" enctype="multipart/form-data" method="post">
+                            <input id="upFile" name="upFile" type="file" class="k-file" />
+                            <input class="btn btn-success" value="ثبت" type="submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

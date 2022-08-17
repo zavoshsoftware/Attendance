@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using ExcelDataReader;
 
 namespace Attendance.Web.Controllers
 {
@@ -18,7 +20,7 @@ namespace Attendance.Web.Controllers
         // GET: Drivers
         public ActionResult Index()
         {
-            return View(db.Drivers.Where(a=>a.IsDeleted==false).OrderByDescending(a=>a.CreationDate).ToList());
+            return View(db.Drivers.Where(a => a.IsDeleted == false).OrderByDescending(a => a.CreationDate).ToList());
         }
 
         // GET: Drivers/Details/5
@@ -51,9 +53,9 @@ namespace Attendance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-				driver.IsDeleted=false;
-				driver.CreationDate= DateTime.Now; 
-					
+                driver.IsDeleted = false;
+                driver.CreationDate = DateTime.Now;
+
                 driver.Id = Guid.NewGuid();
                 db.Drivers.Add(driver);
                 db.SaveChanges();
@@ -87,8 +89,8 @@ namespace Attendance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-				driver.IsDeleted=false;
-					driver.LastModifiedDate=DateTime.Now;
+                driver.IsDeleted = false;
+                driver.LastModifiedDate = DateTime.Now;
                 db.Entry(driver).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -117,9 +119,9 @@ namespace Attendance.Web.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Driver driver = db.Drivers.Find(id);
-			driver.IsDeleted=true;
-			driver.DeletionDate=DateTime.Now;
- 
+            driver.IsDeleted = true;
+            driver.DeletionDate = DateTime.Now;
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -132,5 +134,68 @@ namespace Attendance.Web.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Import()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ImportExcel(HttpPostedFileBase upFile)
+        {
+            try
+            {
+                if (upFile.ContentLength > 0)
+                {
+                    string _FileName = Path.GetFileName(upFile.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/Files"), _FileName);
+                    upFile.SaveAs(_path);
+                    ViewBag.Message = "File Uploaded Successfully!!";
+
+                    var list = new List<Driver>();
+                    FileStream stream = System.IO.File.Open(_path, FileMode.Open, FileAccess.Read);
+                    IExcelDataReader excelReader = null;
+                    if (upFile.FileName.Split('.')[1] == "xls")
+                    {
+                        //1. Reading from a binary Excel file ('97-2003 format; *.xls)
+                        excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+                    }
+                    else
+                    {
+                        //2. Reading from a OpenXml Excel file (2007 format; *.xlsx)
+                        excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                    }
+
+                    while (excelReader.Read())
+                    {
+                        var obj = new Driver
+                        {
+                            Id = Guid.NewGuid(),
+                            FirstName = excelReader[0].ToString(),
+                            LastName = excelReader[1].ToString(),
+                            CellNumber = excelReader[2].ToString(),
+                            NationalCode = excelReader[3].ToString(),
+                            CreationDate = DateTime.Now,
+                            IsActive = true
+                        };
+
+                        list.Add(obj);
+                    }
+
+                    excelReader.Close();
+                    list.RemoveAt(0);
+                    db.Drivers.AddRange(list);
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex;
+                return RedirectToAction("import");
+            }
+        }
+
     }
 }
