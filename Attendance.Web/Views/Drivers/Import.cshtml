@@ -18,7 +18,7 @@
                 <div class="form-group">
                     @Html.Label("آپلود فایل اکسل", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <p>برای دانلود قالب کلیک کنید</p>
+                        <p><a download="/Files/drivers.xlsx" href="/Files/drivers.xlsx">برای دانلود قالب کلیک کنید</a></p>
                         <form action="/Drivers/importexcel" enctype="multipart/form-data" method="post">
                             <input id="upFile" name="upFile" type="file" class="k-file" />
                             <input class="btn btn-success" value="ثبت" type="submit" />
