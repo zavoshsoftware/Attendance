@@ -11,7 +11,7 @@ namespace Attendance.Models.Entities
 {
    public class Card:BaseEntity
     {
-        [Display(Name="کد کارت")]
+        [Display(Name="کد سیستمی کارت")]
         public string Code { get; set; }
 
         [Display(Name="راننده")]

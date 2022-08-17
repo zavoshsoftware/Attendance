@@ -19,14 +19,32 @@ namespace Attendance.Web.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.Where(a => a.IsDeleted == false).OrderByDescending(a => a.CreationDate).ToList());
+            if (IsSuperAdmin())
+                return View(db.Users.Where(a => a.IsDeleted == false).OrderByDescending(a => a.CreationDate).ToList());
+            return View(db.Users.Where(a => a.IsDeleted == false && a.SecurityRole != SecurityRole.SuperAdmin).OrderByDescending(a => a.CreationDate).ToList());
+
+        }
+        public bool IsSuperAdmin()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+                string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+
+                if (role == SecurityRole.SuperAdmin)
+                    return true;
+
+                return false;
+            }
+            return false;
+
         }
 
         public List<SelectListItem> UserSecurityRoleEnums()
         {
             if (User.Identity.IsAuthenticated)
             {
-                var identity = (System.Security.Claims.ClaimsIdentity) User.Identity;
+                var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
                 string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 
                 if (role == SecurityRole.SuperAdmin)

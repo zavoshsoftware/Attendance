@@ -709,9 +709,11 @@
     <Compile Include="Controllers\Cars.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CarTypesController.cs" />
+    <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WalkingLoginHistoriesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -994,6 +996,17 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Drivers\Import.cshtml" />
+    <Content Include="Views\WalkingLoginHistories\Create.cshtml" />
+    <Content Include="Views\WalkingLoginHistories\Delete.cshtml" />
+    <Content Include="Views\WalkingLoginHistories\Details.cshtml" />
+    <Content Include="Views\WalkingLoginHistories\Edit.cshtml" />
+    <Content Include="Views\WalkingLoginHistories\Index.cshtml" />
+    <Content Include="Views\CardLoginHistories\IndexNotExit.cshtml" />
+    <Content Include="Views\Configs\Create.cshtml" />
+    <Content Include="Views\Configs\Delete.cshtml" />
+    <Content Include="Views\Configs\Details.cshtml" />
+    <Content Include="Views\Configs\Edit.cshtml" />
+    <Content Include="Views\Configs\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

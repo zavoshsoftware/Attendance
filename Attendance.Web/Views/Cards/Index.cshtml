@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.Card>
 @using Attendance.Core.Enums
 @{
-    ViewBag.Title = "فهرست کارت ها";
+	ViewBag.Title = "فهرست کارت ها";
 
-    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+	Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -12,10 +12,10 @@
         .Name("Grid")
         .Columns(columns =>
         {
+        columns.Bound(model => model.DisplayCode);
         columns.Bound(model => model.Driver.FirstName);
         columns.Bound(model => model.Driver.LastName);
         columns.Bound(model => model.Code);
-        columns.Bound(model => model.Day);
 		columns.Bound(item => @item.Id).Title("روز").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.Day.GetDisplayName()</text>).Width(200);
         columns.Bound(model => model.IsActive);

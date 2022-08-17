@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Date\Date.cs" />
     <Compile Include="Enums\EnumExtensions.cs" />
+    <Compile Include="Enums\WalkingLoginHistoryType.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Enums\SecurityRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

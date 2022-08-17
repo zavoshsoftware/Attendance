@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.CardLoginHistory>
 
 @{
-    ViewBag.Title = "فهرست ";
+    ViewBag.Title = "فهرست ورودهای خارج نشده";
 
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
@@ -12,21 +12,22 @@
               .Name("Grid")
               .Columns(columns =>
                   {
-                                    columns.Bound(model => model.Card.DisplayCode).Width(200);
+                                    columns.Bound(model => model.Card.Code).Width(200);
         columns.Bound(item => @item.Id).Title("تاریخ ورود").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@item.LoginDate.ToShamsi('s')  
 									</text>).Width(200);
-	                  columns.Bound(model => model.Driver.FullName).Width(200);
+                                    columns.Bound(model => model.Driver.FullName).Width(200);
 
-        columns.Bound(item => @item.Id).Title("تاریخ خروج").Filterable(false).Groupable(false)
+	                  columns.Bound(item => @item.Id).Title("تاریخ خروج").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@(item.ExitDate.ToShamsi().Equals("")?"خارج نشده":item.ExitDate.ToShamsi('s'))
 									</text>).Width(200);
 	    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
-									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"}) 
-									</text>).Width(200);
+									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("ثبت ورود و خروج پیاده", "index","WalkingLoginHistories", new {id = @item.Id}, new {@class = "k-button"})
+							           </text>).Width(200);
 		})
 		.ToolBar(toolbar =>
 					{

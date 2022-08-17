@@ -56,9 +56,11 @@
     <Compile Include="Entities\Card.cs" />
     <Compile Include="Entities\CardLoginHistory.cs" />
     <Compile Include="Entities\CarType.cs" />
+    <Compile Include="Entities\Config.cs" />
     <Compile Include="Entities\Driver.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserLogin.cs" />
+    <Compile Include="Entities\WalkingLoginHistory.cs" />
     <Compile Include="Migrations\202207300443162_V01.cs" />
     <Compile Include="Migrations\202207300443162_V01.Designer.cs">
       <DependentUpon>202207300443162_V01.cs</DependentUpon>
@@ -115,6 +117,14 @@
     <Compile Include="Migrations\202208160529365_V14.Designer.cs">
       <DependentUpon>202208160529365_V14.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208171405001_V15.cs" />
+    <Compile Include="Migrations\202208171405001_V15.Designer.cs">
+      <DependentUpon>202208171405001_V15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208171434479_V16.cs" />
+    <Compile Include="Migrations\202208171434479_V16.Designer.cs">
+      <DependentUpon>202208171434479_V16.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -170,6 +180,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208160529365_V14.resx">
       <DependentUpon>202208160529365_V14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208171405001_V15.resx">
+      <DependentUpon>202208171405001_V15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208171434479_V16.resx">
+      <DependentUpon>202208171434479_V16.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

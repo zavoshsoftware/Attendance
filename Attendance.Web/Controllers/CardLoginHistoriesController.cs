@@ -22,6 +22,13 @@ namespace Attendance.Web.Controllers
             return View(cardLoginHistories.ToList());
         }
 
+        public ActionResult IndexNotExit()
+        {
+            var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
+                .Where(c => c.IsDeleted == false&&c.ExitDate==null).OrderByDescending(c => c.CreationDate);
+            return View(cardLoginHistories.ToList());
+        }
+
         // GET: CardLoginHistories/Details/5
         public ActionResult Details(Guid? id)
         {
