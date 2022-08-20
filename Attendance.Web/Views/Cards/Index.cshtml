@@ -15,12 +15,12 @@
         columns.Bound(model => model.DisplayCode);
         columns.Bound(model => model.Driver.FirstName);
         columns.Bound(model => model.Driver.LastName);
+        columns.Bound(model => model.Driver.NationalCode);
         columns.Bound(model => model.Code);
 		columns.Bound(item => @item.Id).Title("روز").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.Day.GetDisplayName()</text>).Width(200);
         columns.Bound(model => model.IsActive);
-        columns.Bound(item => @item.Id).Title("تاریخ").Sortable(true).Filterable(true).Groupable(false)
-                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+    
         columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
                       .Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
@@ -32,7 +32,7 @@
 					{
 						toolbar.Custom().Action("Create","Cards").Text("افزودن");
 					}
-		)
+		).Sortable().Filterable()
 		.DataSource(dataSource => dataSource
 									.Server()
 
