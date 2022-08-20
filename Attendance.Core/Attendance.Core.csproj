@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\PersToEng.cs" />
     <Compile Include="Date\Date.cs" />
     <Compile Include="Enums\EnumExtensions.cs" />
     <Compile Include="Enums\WalkingLoginHistoryType.cs" />

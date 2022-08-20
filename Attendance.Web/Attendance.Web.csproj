@@ -503,6 +503,8 @@
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\AdminJS\app.v2.js" />
     <Content Include="Scripts\AdminJS\app.v2.min.js" />
@@ -511,6 +513,8 @@
     <Content Include="Scripts\AdminJS\landing.js" />
     <Content Include="Scripts\AdminJS\landing.min.js" />
     <Content Include="Scripts\AdminJS\PersianDatePicker.min.js" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\function.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -661,6 +665,8 @@
     <Content Include="Scripts\kendo\2017.3.913\pako_deflate.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\BackEndLayout\_BackEndLayout.cshtml" />
     <Content Include="Views\Shared\BackEndLayout\_MenuPartial.cshtml" />
@@ -706,7 +712,6 @@
     <Compile Include="Controllers\CardDaysController.cs" />
     <Compile Include="Controllers\CardLoginHistoriesController.cs" />
     <Compile Include="Controllers\CardsController.cs" />
-    <Compile Include="Controllers\Cars.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CarTypesController.cs" />
     <Compile Include="Controllers\ConfigsController.cs" />
@@ -722,6 +727,7 @@
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -996,6 +1002,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Drivers\Import.cshtml" />
+<<<<<<< Updated upstream
     <Content Include="Views\WalkingLoginHistories\Create.cshtml" />
     <Content Include="Views\WalkingLoginHistories\Delete.cshtml" />
     <Content Include="Views\WalkingLoginHistories\Details.cshtml" />
@@ -1007,6 +1014,9 @@
     <Content Include="Views\Configs\Details.cshtml" />
     <Content Include="Views\Configs\Edit.cshtml" />
     <Content Include="Views\Configs\Index.cshtml" />
+=======
+    <Content Include="Views\Cars\Import.cshtml" />
+>>>>>>> Stashed changes
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1016,8 +1026,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\Cars\" />
     <Folder Include="Files\Drivers\" />
-    <Folder Include="Files\Templates\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>

@@ -148,7 +148,7 @@ namespace Attendance.Web.Controllers
                 if (upFile.ContentLength > 0)
                 {
                     string _FileName = Path.GetFileName(upFile.FileName);
-                    string _path = Path.Combine(Server.MapPath("~/Files"), _FileName);
+                    string _path = Path.Combine(Server.MapPath("~/Files/Drivers"), _FileName);
                     upFile.SaveAs(_path);
                     ViewBag.Message = "File Uploaded Successfully!!";
 
@@ -179,7 +179,10 @@ namespace Attendance.Web.Controllers
                             IsActive = true
                         };
 
-                        list.Add(obj);
+                        if (!db.Drivers.Any(d=>d.NationalCode.Trim() == obj.NationalCode.ConvertDigit().Trim()))
+                        {
+                            list.Add(obj);
+                        }
                     }
 
                     excelReader.Close();
@@ -187,11 +190,12 @@ namespace Attendance.Web.Controllers
                     db.Drivers.AddRange(list);
                     db.SaveChanges();
                 }
-
+                ViewBag.Toastr = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
+                ViewBag.Toastr = new ToastrViewModel() { Class = "danger", Text = ex.Message };
                 ViewBag.Message = ex;
                 return RedirectToAction("import");
             }

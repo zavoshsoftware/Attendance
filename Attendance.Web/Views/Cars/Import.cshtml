@@ -1,19 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "بارگذاری فایل اکسل رانندگان";
+    ViewBag.Title = "بارگذاری فایل اکسل خودروها";
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
  
 <div class="container">
     <div class="panel panel-primary">
-        <div class="panel-heading">بارگذاری فایل اکسل رانندگان</div>
+        <div class="panel-heading">بارگذاری فایل اکسل خودروها</div>
         <div class="panel-body">
             <div class="form-group">
                 <div class="form-group">
                     @Html.Label("آپلود فایل اکسل", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <p><a download="/Files/drivers.xlsx" href="/Files/drivers.xlsx">برای دانلود قالب کلیک کنید</a></p>
-                        <form action="/cars/importexcel" enctype="multipart/form-data" method="post">
+                        <p><a download="/Files/cars.xlsx" href="/Files/cars.xlsx">برای دانلود قالب کلیک کنید</a></p>
+                        <form action="/Cars/importexcel" enctype="multipart/form-data" method="post">
                             <input id="upFile" name="upFile" type="file" class="k-file" />
                             <input class="btn btn-success" value="ثبت" type="submit" />
                         </form>

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using ExcelDataReader;
 
 namespace Attendance.Web.Controllers
 {
@@ -141,6 +143,80 @@ namespace Attendance.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult Import()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult importexcel(HttpPostedFileBase upFile) 
+        {
+            try
+            {
+                if (upFile.ContentLength > 0)
+                {
+                    string _FileName = Path.GetFileName(upFile.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/Files/Cars"), _FileName);
+                    upFile.SaveAs(_path);
+                    ViewBag.Message = "File Uploaded Successfully!!";
+
+                    var list = new List<Car>();
+                    FileStream stream = System.IO.File.Open(_path, FileMode.Open, FileAccess.Read);
+                    IExcelDataReader excelReader = null;
+                    if (upFile.FileName.Split('.')[1] == "xls")
+                    {
+                        //1. Reading from a binary Excel file ('97-2003 format; *.xls)
+                        excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+                    }
+                    else
+                    {
+                        //2. Reading from a OpenXml Excel file (2007 format; *.xlsx)
+                        excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                    }
+
+                    while (excelReader.Read())
+                    {
+                        var carTypeTitle = excelReader[0].ToString().ConvertDigit();
+                        var carType = db.CarTypes.FirstOrDefault(c => c.Title.Trim() == carTypeTitle);
+                        if (carType == null)
+                        {
+                            carType = db.CarTypes.FirstOrDefault();
+                        }
+                        
+                        var car = new Car
+                        {
+                            Id = Guid.NewGuid(),
+                            CarTypeId = carType.Id,
+                            CarType=carType,
+                            Title = excelReader[1].ToString().Trim().ConvertDigit(),
+                            Number = excelReader[2].ToString().Trim().ConvertDigit(),  
+                            CreationDate = DateTime.Now,
+                            IsActive = true
+                        };
+
+                        var pleck = car.Number.ConvertDigit().Trim();
+                        if (!db.Cars.Any(d => d.Number.Trim() == pleck))
+                        {
+                            list.Add(car);
+                        }
+                    }
+
+                    excelReader.Close();
+                    list.RemoveAt(0);
+                    db.Cars.AddRange(list);
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex;
+                return RedirectToAction("import");
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {

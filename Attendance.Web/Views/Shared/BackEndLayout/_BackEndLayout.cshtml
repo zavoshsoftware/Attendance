@@ -44,6 +44,7 @@
     <link href="~/Content/admin/admin-font-awesome.css" rel="stylesheet" />
     <link href="~/Content/admin/AdminStyle.css" rel="stylesheet" />
     <link href="~/Content/Admin/style.css" rel="stylesheet" />
+    <link href="~/Content/toastr.css" rel="stylesheet" type="text/css" />
     @RenderSection("head", required: false)
 
 </head>
@@ -59,12 +60,12 @@
             </div>
             <ul class="nav navbar-nav hidden-xs"></ul>
             <ul class="nav navbar-nav navbar-right hidden-xs nav-user">
-                
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-											<span class="thumb-sm avatar pull-left">
-												<img src="~/Images/avatar_default.jpg" />
-											</span>
+                        <span class="thumb-sm avatar pull-left">
+                            <img src="~/Images/avatar_default.jpg" />
+                        </span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight">
@@ -87,8 +88,8 @@
 
                         <section class="w-f scrollable">
                             <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px" data-color="#333333">
-	                            <!-- nav -->
-	                            @Html.Partial("BackEndLayout/_MenuPartial")
+                                <!-- nav -->
+                                @Html.Partial("BackEndLayout/_MenuPartial")
                             </div>
                         </section>
 
@@ -107,7 +108,34 @@
         </section>
     </section>
 
-    <script src="~/Scripts/jquery-3.4.1.js"  type="text/javascript"></script>
+    <script src="~/Scripts/jquery-3.4.1.js" type="text/javascript"></script>
+    <script src="~/Scripts/toastr.js"></script>
+    @if (ViewBag.Toastr != null)
+    {
+        ToastrViewModel toastr =ViewBag.Toastr as ToastrViewModel;
+<script>
+            alert("@Html.Raw(toastr.Class)@Html.Raw(toastr.Text)")
+            toastr["@Html.Raw(toastr.Class)"]("@Html.Raw(toastr.Text)")
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+</script>
+    }
     <script type="text/javascript">
         $(document).ready(function () {
             var URL = window.location.pathname;
@@ -142,7 +170,7 @@
                 $('#colorLi').addClass('active');
             }
         });
-    </script> 
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>
