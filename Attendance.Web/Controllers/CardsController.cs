@@ -88,12 +88,24 @@ namespace Attendance.Web.Controllers
                 }
 
                 card.Id = Guid.NewGuid();
-                db.Cards.Add(card);
-                db.SaveChanges();
+                if (!db.Cards.Any(c => c.Driver.NationalCode.Trim() == driver.NationalCode.Trim()))
+                {
+                    db.Cards.Add(card);
+                    db.SaveChanges();
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                }
+                else
+                {
+                    TempData["Toastr"]= new ToastrViewModel() { Class = "warning", Text = "یک کارت با مشخصات این راننده در سیستم وجود دارد. " };
+                }
                 return RedirectToAction("Index");
             }
-
+             
             ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName", card.DriverId);
+            TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage))
+        };
             return View(card);
         }
 

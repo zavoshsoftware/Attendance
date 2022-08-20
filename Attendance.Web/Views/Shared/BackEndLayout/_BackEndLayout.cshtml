@@ -110,9 +110,9 @@
 
     <script src="~/Scripts/jquery-3.4.1.js" type="text/javascript"></script>
     <script src="~/Scripts/toastr.js"></script>
-    @if (ViewBag.Toastr != null)
+    @if (TempData["Toastr"] != null)
     {
-        ToastrViewModel toastr =ViewBag.Toastr as ToastrViewModel;
+        ToastrViewModel toastr =TempData["Toastr"] as ToastrViewModel;
 <script>
             alert("@Html.Raw(toastr.Class)@Html.Raw(toastr.Text)")
             toastr["@Html.Raw(toastr.Class)"]("@Html.Raw(toastr.Text)")

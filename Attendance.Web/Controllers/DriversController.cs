@@ -190,12 +190,12 @@ namespace Attendance.Web.Controllers
                     db.Drivers.AddRange(list);
                     db.SaveChanges();
                 }
-                ViewBag.Toastr = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ViewBag.Toastr = new ToastrViewModel() { Class = "danger", Text = ex.Message };
+                TempData["Toastr"] = new ToastrViewModel() { Class = "danger", Text = ex.Message };
                 ViewBag.Message = ex;
                 return RedirectToAction("import");
             }
