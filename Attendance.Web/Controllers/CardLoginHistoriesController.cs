@@ -16,10 +16,23 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: CardLoginHistories
-        public ActionResult Index()
+        public ActionResult Index(Guid? cardId,Guid? driverId)
         {
+            if (cardId.HasValue)
+            {
+                var cardLoginHistories = db.CardLoginHistories.Where(c=>c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false).OrderByDescending(c => c.CreationDate);
+                return View(cardLoginHistories.ToList());
+            }
+            else if (driverId.HasValue)
+            {
+                var cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false).OrderByDescending(c => c.CreationDate);
+                return View(cardLoginHistories.ToList());
+            }
+            else
+            { 
             var cardLoginHistories = db.CardLoginHistories.Include(c=>c.Driver).Include(c => c.Card).Where(c=>c.IsDeleted==false).OrderByDescending(c=>c.CreationDate);
             return View(cardLoginHistories.ToList());
+            }
         }
 
         public ActionResult IndexNotExit()

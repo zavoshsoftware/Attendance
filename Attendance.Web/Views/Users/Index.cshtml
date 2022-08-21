@@ -23,16 +23,19 @@ ViewBag.Title = "فهرست کاربران";
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
-									</text>).Width(200);  
-		})
-		.ToolBar(toolbar =>
-					{				
-						toolbar.Custom().Action("Create","Users").Text("افزودن");                          
-					}
-		)         
-		.DataSource(dataSource => dataSource
-									.Server()
-							
-									.Model(model => model.Id(item => item.Id))
-					)              
-	)
+									</text>).Width(200);
+                  })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Action("Create","Users").Text("افزودن");
+        }
+        )
+        .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
+        .Filterable(filterable => filterable.Extra(false).Operators(o => o.ForString(fs => fs.StartsWith("شروع با").Contains("شامل")
+          .EndsWith("اتمام با").IsEqualTo("برابر"))))
+        .DataSource(dataSource => dataSource
+                                    .Server()
+
+                                    .Model(model => model.Id(item => item.Id))
+                    )
+    )
