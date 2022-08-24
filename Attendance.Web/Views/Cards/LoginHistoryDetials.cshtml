@@ -12,7 +12,8 @@
         جزییات ورود
     </div>
     <div class="container">
-        <form>
+        <form method="post" action="/cards/LoginHistory">
+            @Html.HiddenFor(model => model.Id)
             <div class="form-row">
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Driver.FirstName):
@@ -61,13 +62,13 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Description):
-                    @Html.DisplayFor(model => model.Description, new { @class = "form-control" }) 
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" }) 
                 </div> 
             </div>
             <div class="form-row">
-                <a href="/cards/authenticate" class="btn btn-primary">بازگشت</a>
+                <button type="submit" class="btn btn-primary">ثبت اطلاعات</button>
             </div>
             <br />
         </form>

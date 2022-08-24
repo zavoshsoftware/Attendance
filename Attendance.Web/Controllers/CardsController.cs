@@ -237,8 +237,9 @@ namespace Attendance.Web.Controllers
 
             //Driver
             //Deiver exist?
+            var driverId = Guid.Parse(model.DriverNatCode.Trim());
             var driver = db.Drivers.FirstOrDefault(d =>
-            d.NationalCode.Trim() == model.DriverNatCode.Trim());
+            d.Id == driverId);
             if (driver == null)
             {
                 //create exist
@@ -278,6 +279,7 @@ namespace Attendance.Web.Controllers
 
             db.CardLoginHistories.Add(cardLoginHistory);
             db.SaveChanges();
+
             return Redirect("/cards/authenticate");
         }
 
@@ -294,10 +296,20 @@ namespace Attendance.Web.Controllers
 
         public ActionResult LoginHistoryDetials(Guid id)
         {
-            var login = db.CardLoginHistories.Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
+            CardLoginHistory login = db.CardLoginHistories.Where(x=>!x.IsDeleted).Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
             return View(login);
+        }
+
+        [HttpPost]
+        public ActionResult LoginHistory(CardLoginHistory cardLoginHistory)
+        {
+            var loginHistory = db.CardLoginHistories.Find(cardLoginHistory.Id);
+            loginHistory.Description = cardLoginHistory.Description;
+            db.SaveChanges();
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            return Redirect("/CardLoginHistories");
         }
 
         public JsonResult GetDriverList(string q)
