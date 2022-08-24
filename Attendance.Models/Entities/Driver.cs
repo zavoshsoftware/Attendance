@@ -17,6 +17,10 @@ namespace Attendance.Models.Entities
         [Display(Name="شماره موبایل")]
         public string CellNumber { get; set; }
 
+
+        [Display(Name = "نام پدر")]
+        public string Father { get; set; }
+
         [Display(Name="کدملی")]
         public string NationalCode { get; set; }
 

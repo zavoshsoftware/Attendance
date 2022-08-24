@@ -516,6 +516,7 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\app.v2.js" />
     <Content Include="Scripts\function.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -1001,7 +1002,7 @@
     <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Drivers\Import.cshtml" /> 
+    <Content Include="Views\Drivers\Import.cshtml" />
     <Content Include="Views\WalkingLoginHistories\Create.cshtml" />
     <Content Include="Views\WalkingLoginHistories\Delete.cshtml" />
     <Content Include="Views\WalkingLoginHistories\Details.cshtml" />
@@ -1012,8 +1013,8 @@
     <Content Include="Views\Configs\Delete.cshtml" />
     <Content Include="Views\Configs\Details.cshtml" />
     <Content Include="Views\Configs\Edit.cshtml" />
-    <Content Include="Views\Configs\Index.cshtml" /> 
-    <Content Include="Views\Cars\Import.cshtml" /> 
+    <Content Include="Views\Configs\Index.cshtml" />
+    <Content Include="Views\Cars\Import.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

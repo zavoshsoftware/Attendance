@@ -21,8 +21,6 @@ namespace Attendance.Models.Entities
         [DisplayName("روز هفته")]
         public Attendance.Core.Enums.WeekDays Day { get; set; }
 
-        [Display(Name = "نام پدر")]
-        public string Father { get; set; }
 
         [Display(Name = "کارت مخفی است؟")]
         public bool IsHidden { get; set; }
