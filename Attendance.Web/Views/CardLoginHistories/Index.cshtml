@@ -9,15 +9,16 @@
 <h2>@ViewBag.Title</h2>
 
 @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                                    columns.Bound(model => model.Card.DisplayCode).Width(200);
-        columns.Bound(item => @item.Id).Title("تاریخ ورود").Filterable(false).Groupable(false)
-							.Template(@<text>
-									@item.LoginDate.ToShamsi('s')  
+      .Name("Grid")
+      .Columns(columns =>
+      {
+      columns.Bound(model => model.Card.DisplayCode).Width(200);
+      columns.Bound(model => model.Driver.FullName).Width(200);
+      columns.Bound(item => @item.Id).Title("تاریخ ورود").Filterable(false).Groupable(false)
+                    .Template(@<text>
+									@item.LoginDate.ToShamsi('s')
 									</text>).Width(200);
-	                  columns.Bound(model => model.Driver.FullName).Width(200);
+
 
         columns.Bound(item => @item.Id).Title("تاریخ خروج").Filterable(false).Groupable(false)
 							.Template(@<text>
@@ -25,17 +26,20 @@
 									</text>).Width(200);
 	    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
-									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"}) 
+									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-		})
-		.ToolBar(toolbar =>
-					{
-						 
-					}
-		)        .Filterable().Sortable()
-		.DataSource(dataSource => dataSource
-									.Server()
+                  })
+        .ToolBar(toolbar =>
+        {
 
-									.Model(model => model.Id(item => item.Id))
-					)
+        }
+        )
+        .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
+        .Filterable(filterable => filterable.Extra(false).Operators(o => o.ForString(fs => fs.StartsWith("شروع با").Contains("شامل")
+          .EndsWith("اتمام با").IsEqualTo("برابر"))))
+        .DataSource(dataSource => dataSource
+                                    .Server()
+
+                                    .Model(model => model.Id(item => item.Id))
+                    )
 	)

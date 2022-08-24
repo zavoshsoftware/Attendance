@@ -35,7 +35,8 @@ namespace Attendance.Web.Controllers.api
                 } 
                 if (db.Cards.Any(s =>((Attendance.Core.Enums.WeekDays)s.Day).ToString() == today))
                 { 
-                    hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName, null, $"با کد {card.Code} اجازه ورود دارد");
+                    hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
+                        null, $"با کد {card.Code} اجازه ورود دارد",card.DisplayCode);
                     return Ok(new CustomResponseViewModel()
                     {
                         Extra = "",
@@ -69,10 +70,17 @@ namespace Attendance.Web.Controllers.api
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
             if (card!=null)
             {
-                var login = card.CardLoginHistories.LastOrDefault(x=>!x.ExitDate.HasValue);
-                login.ExitDate = DateTime.Now;
-                db.SaveChanges();
-                hubContext.Clients.All.Exit(login.Id, $"خروج با موفقیت ثبت شد");
+                var login = card.CardLoginHistories.OrderBy(x=>x.CreationDate).LastOrDefault(x=>!x.ExitDate.HasValue);
+                if (login != null)
+                {
+                    login.ExitDate = DateTime.Now;
+                    db.SaveChanges();
+                    hubContext.Clients.All.Exit(login.Id, $"خروج با موفقیت ثبت شد");
+                }
+                else
+                { 
+                    hubContext.Clients.All.Exit(null, $"ورود این کاربر ثبت نشده است");
+                }
                 return Ok(new CustomResponseViewModel()
                 {
                     Extra = "",

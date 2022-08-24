@@ -20,23 +20,71 @@
         <div class="col-md-6">
             <div class="panel panel-primary ">
                 <div class="panel-heading">
-                    <h3 class="panel-title">اطلاعات راننده</h3>
+                    <h3 class="panel-title">اطلاعات </h3>
                 </div>
                 <div class="panel-body">
                     <div class="form-horizontal"> 
                         <div class="form-group">
                             @Html.LabelFor(model => model.DriverFirstName, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.DriverFirstName,new { @id = "DriverFullName" })
+                            @Html.DisplayFor(model => model.DriverFirstName,new { @id = "DriverFullName" })
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.DriverLastName, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.DriverLastName,new { @id = "DriverFullName" })
+                            @Html.DisplayFor(model => model.DriverLastName,new { @id = "DriverFullName" })
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" }) 
-                            <input class="k-textbox" id="DriverNatCode" name="DriverNatCode" value="@Model.Driver.NationalCode" required />
+                            <input class="k-textbox" id="DriverNatCode" disabled name="DriverNatCode" value="@Model.Driver.NationalCode" required />
                         
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">تاریخ</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.Label("تاریخ", new { @class = "control-label" })
+                            @Html.Label($"{DateTime.Now.ToShamsi('s')}")
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("تاریخ(میلادی)", new { @class = "control-label" })
+                            @Html.Label($"{DateTime.UtcNow.ToString("MM/dd/yyyy-HH:mm:ss")}")
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("روز", new { @class = "control-label" })
+                            @Html.Label($"{Date.DayName(DateTime.Now)}")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row"> 
+        <div class="col-md-6">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات راننده</h3>
+                </div> 
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })
+                            <select id="DriverNatCode" name="DriverNatCode" class="DriverSelect form-control k-select" required></select>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DriverFirstName, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DriverFirstName, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DriverLastName, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DriverLastName, new { @id = "DriverFullName" })
+                        </div> 
                     </div>
                 </div>
             </div>
@@ -152,6 +200,49 @@
                     //console.log(data.Type, data.Weight)
                     document.getElementById("Type").value = data.Type;
                     document.getElementById("Weight").value = parseFloat(data.Weight);
+                });
+        });;
+
+
+
+        var selData = $(".DriverSelect").select2({
+            ajax: {
+                url: '/cards/GetDriverList',
+                data: function (params) {
+                    return {
+                        q: params.term// search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".DriverSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+
+        $('.DriverSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cards/GetDriver",
+                {
+                    q: lastValue
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    console.log(data.DriverFirstName, data.DriverLastName)
+                    document.getElementById("DriverFirstName").value = data.DriverFirstName;
+                    document.getElementById("DriverLastName").value = data.DriverLastName;
                 });
         });;
 

@@ -4,9 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+  
    public static class Date
     {
+
+
     public static string ToShamsi(this DateTime d, char type = 'a')
     {
         PersianCalendar pc = new PersianCalendar();
@@ -33,5 +35,24 @@ using System.Threading.Tasks;
             return "";
         }
         return ToShamsi(date.Value,type);
+    }
+
+    public static string DayName(this DateTime date)
+    {
+        Dictionary<string, string[]> DayOfWeeks = new Dictionary<string, string[]>();
+        DayOfWeeks.Add("en", new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Thursday", "Wednesday", "Friday" });
+        DayOfWeeks.Add("fa", new string[] { "شنبه", "یک شنبه", "دو شنبه", "سه شنبه", "چهار شنبه", "پنج شنبه", "جمعه" });
+        return DayOfWeeks["fa"][DayOfWeekReformat((int)date.DayOfWeek)];
+    }
+
+    public static int DayOfWeekReformat(this int day)
+    { 
+        if (day == 0) return 1;
+        else if (day == 1) return 2;
+        else if (day == 2) return 3;
+        else if (day == 3) return 4;
+        else if (day == 4) return 5;
+        else if (day == 5) return 6;
+        else return 0;
     }
 } 

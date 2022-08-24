@@ -64,7 +64,7 @@ namespace Attendance.Web.Controllers
         // GET: Cards/Create
         public ActionResult Create()
         {
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName");
+            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName");
             return View();
         }
 
@@ -101,7 +101,7 @@ namespace Attendance.Web.Controllers
                 return RedirectToAction("Index");
             }
              
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName", card.DriverId);
+            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName", card.DriverId);
             TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = string.Join("; ", ModelState.Values
                                         .SelectMany(x => x.Errors)
                                         .Select(x => x.ErrorMessage))
@@ -121,7 +121,7 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName", card.DriverId);
+            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName", card.DriverId);
             return View(card);
         }
 
@@ -146,7 +146,7 @@ namespace Attendance.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DriverId = new SelectList(db.Drivers, "Id", "FullName", card.DriverId);
+            ViewBag.DriverId = new SelectList(db.Drivers.Where(d=>!d.IsDeleted), "Id", "FullName", card.DriverId);
             return View(card);
         }
 
@@ -196,7 +196,7 @@ namespace Attendance.Web.Controllers
         public ActionResult AuthenticateForm(Guid id)
         {
             var cardId = id;
-            ViewBag.plecks = db.Cars.Select(c => new Select2Model { id = c.Id.ToString(), text = c.Number }).ToList();
+            ViewBag.plecks = db.Cars.Where(c=>!c.IsDeleted).Select(c => new Select2Model { id = c.Id.ToString(), text = c.Number }).ToList();
             //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
             var card = db.Cards.Include(x => x.Driver).FirstOrDefault(x => x.Id == id);
             return PartialView(
@@ -287,7 +287,7 @@ namespace Attendance.Web.Controllers
             {
                 q = string.Empty;
             }
-            var result = db.Cars.Where(c => c.Number.Contains(q)).Select(c => new { Id = c.Id, Text = c.Number }).ToList();
+            var result = db.Cars.Where(c =>!c.IsDeleted && c.Number.Contains(q)).Select(c => new { Id = c.Id, Text = c.Number }).ToList();
             return Json(new { items = result }, JsonRequestBehavior.AllowGet);
 
         }
@@ -298,6 +298,36 @@ namespace Attendance.Web.Controllers
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
             return View(login);
+        }
+
+        public JsonResult GetDriverList(string q)
+        {
+            if (q == null)
+            {
+                q = string.Empty;
+            }
+            var result = db.Drivers.Where(c =>!c.IsDeleted && c.NationalCode.Contains(q)).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
+            return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+        }
+       
+        [HttpPost]
+        public JsonResult GetDriver(string q)
+        {
+            Guid driverId;
+            if (Guid.TryParse(q, out driverId))
+            { 
+                var driver = db.Drivers.FirstOrDefault(x => x.Id == driverId) ?? default;
+                return Json(new
+                {
+                    DriverFirstName = driver.FirstName,
+                    DriverLastName = driver.LastName
+                });
+            }
+            return Json(new
+            {
+                DriverFirstName = "",
+                DriverLastName = ""
+            });
         }
 
     }
