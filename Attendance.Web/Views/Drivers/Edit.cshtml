@@ -7,47 +7,43 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Edit", "Drivers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using(Html.BeginForm("Edit", "Drivers", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.Id)
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName)
+<div class="form-horizontal">
 
-                @Html.ValidationMessageFor(model => model.FirstName)
-            </div>
-        </div>
 
+    <hr />
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
     <div class="form-group">
-	    @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
-	    <div class="col-md-10">
-		    @Html.EditorFor(model => model.LastName)
-
-		    @Html.ValidationMessageFor(model => model.LastName)
-	    </div>
-    </div>
-    
-    <div class="form-group">
-	    @Html.LabelFor(model => model.Father, new { @class = "control-label col-md-2" })
-	    <div class="col-md-10">
-		    @Html.EditorFor(model => model.Father)
-
-		    @Html.ValidationMessageFor(model => model.Father)
-	    </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.CellNumber, new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.CellNumber)
-            @Html.ValidationMessageFor(model => model.CellNumber)
+            @Html.EditorFor(model => model.FirstName)
 
+            @Html.ValidationMessageFor(model => model.FirstName)
         </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.LastName)
+
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Father, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Father)
+
+            @Html.ValidationMessageFor(model => model.Father)
+        </div>
+    </div>
+    <div class="form-group"> 
 
         <div class="form-group">
             @Html.LabelFor(model => model.CellNumber, new { @class = "control-label col-md-2" })
@@ -81,9 +77,10 @@
             </div>
         </div>
     </div>
-}
-
+</div>
+        }
 
 @section scripts{
     <script src="~/Scripts/kendo/2017.3.913/kendo.validator.min.js"></script>
     }
+         

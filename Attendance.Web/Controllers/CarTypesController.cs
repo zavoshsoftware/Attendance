@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Attendance.Core.Data;
 using Attendance.Models;
 using Attendance.Models.Entities;
 
@@ -132,5 +136,42 @@ namespace Attendance.Web.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+        public ActionResult Export()
+        {
+            var dt = db.CarTypes.Include(c => c.Cars).Where(c => !c.IsDeleted).ToList().Select(c =>
+                new {
+                    Title = c.Title,
+                    Brand = c.Brand,
+                    Weight = c.Weight, 
+                    IsActive = c.IsActive ? "فعال" : "غیرفعال",
+                    CreateDate = c.CreationDate.ToShamsi('s'),
+                    UpdateDate = c.CreationDate.ToShamsi('s'),
+                    Description = c.Description
+                }).ToList().ToDataTable();
+            dt.TableName = "اکسل نوع خودرو";
+            var grid = new GridView();
+            grid.DataSource = dt;
+            grid.DataBind();
+             
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToString("F")}.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+            return RedirectToAction("Index");
+        }
+
     }
 }

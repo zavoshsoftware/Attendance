@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
@@ -340,6 +344,47 @@ namespace Attendance.Web.Controllers
                 DriverFirstName = "",
                 DriverLastName = ""
             });
+        }
+
+
+        public ActionResult Export()
+        {
+            var dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
+                new {
+                    Code = c?.Code,
+                    DisplayCode = c?.DisplayCode,
+                    IsHidden = c.IsHidden?"مخفی":"قابل مشاهده",
+                    Day = c?.Day.GetDisplayName(),
+                    Driver = c?.Driver.FullName,
+                    NationalCode = c?.Driver?.NationalCode,
+                    IsActive = c.IsActive ? "فعال" : "غیرفعال",
+                    CreateDate = c?.CreationDate.ToShamsi('s'),
+                    UpdateDate = c?.CreationDate.ToShamsi('s'),
+                    Description = c?.Description
+                }).ToList().ToDataTable();
+            dt.TableName = "اکسل کارت ها"; 
+            var grid = new GridView();
+            grid.DataSource = dt;
+            grid.DataBind();
+            
+
+
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToString("F")}.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            return RedirectToAction("Index");
         }
 
     }

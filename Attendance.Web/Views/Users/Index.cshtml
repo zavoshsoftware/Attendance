@@ -28,6 +28,7 @@ ViewBag.Title = "فهرست کاربران";
         .ToolBar(toolbar =>
         {
             toolbar.Custom().Action("Create","Users").Text("افزودن");
+            toolbar.Custom().Action("Export", "Users").Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

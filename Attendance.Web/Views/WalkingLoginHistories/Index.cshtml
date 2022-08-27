@@ -27,6 +27,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Custom().Action("Create","WalkingLoginHistories").Text("افزودن");
+            toolbar.Custom().Action("Export", "WalkingLoginHistories").Text("خروجی اکسل");
         }
         )
                 .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
