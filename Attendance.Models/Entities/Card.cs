@@ -32,5 +32,6 @@ namespace Attendance.Models.Entities
         [ForeignKey("DriverId")]
         public virtual Driver Driver { get; set; }
         public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
+        public virtual ICollection<Penalty> Penalties { get; set; }
     }
 }

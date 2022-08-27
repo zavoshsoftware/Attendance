@@ -58,6 +58,7 @@
     <Compile Include="Entities\CarType.cs" />
     <Compile Include="Entities\Config.cs" />
     <Compile Include="Entities\Driver.cs" />
+    <Compile Include="Entities\Penalty.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserLogin.cs" />
     <Compile Include="Entities\WalkingLoginHistory.cs" />
@@ -141,6 +142,18 @@
     <Compile Include="Migrations\202208270651427_v20.Designer.cs">
       <DependentUpon>202208270651427_v20.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208271008388_v21.cs" />
+    <Compile Include="Migrations\202208271008388_v21.Designer.cs">
+      <DependentUpon>202208271008388_v21.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208271024234_v22.cs" />
+    <Compile Include="Migrations\202208271024234_v22.Designer.cs">
+      <DependentUpon>202208271024234_v22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208271110590_v23.cs" />
+    <Compile Include="Migrations\202208271110590_v23.Designer.cs">
+      <DependentUpon>202208271110590_v23.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -214,6 +227,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208270651427_v20.resx">
       <DependentUpon>202208270651427_v20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208271008388_v21.resx">
+      <DependentUpon>202208271008388_v21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208271024234_v22.resx">
+      <DependentUpon>202208271024234_v22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208271110590_v23.resx">
+      <DependentUpon>202208271110590_v23.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

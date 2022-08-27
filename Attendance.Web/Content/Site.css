@@ -1,6 +1,6 @@
 ﻿@font-face {
     font-family: 'IRANSansWeb';
-    src: url('../fonts/IranSans/IRANSansWebFaNum.woff2') format('woff2'), url('../fonts/IranSans/IRANSansWeb_Bold.woff2') format('woff2'), url('../fonts/IranSans/IRANSansWeb_Light.woff2') format('woff2'), url('../fonts/IranSans/IRANSansWeb_Medium.woff2') format('woff2'), url('font/IranSans/woff2/IRANSansWeb_UltraLight.woff2') format('woff2');
+    src: local('../fonts/IranSans/IRANSansWebFaNum.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Bold.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Light.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Medium.woff2') format('woff2'), local('font/IranSans/woff2/IRANSansWeb_UltraLight.woff2') format('woff2');
 }
 
 *{

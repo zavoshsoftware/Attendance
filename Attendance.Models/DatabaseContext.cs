@@ -20,5 +20,7 @@ namespace Attendance.Models
         public DbSet<CarType> CarTypes { get; set; }
         public DbSet<WalkingLoginHistory> WalkingLoginHistories  { get; set; }
         public DbSet<Config> Configs { get; set; }
+
+        public System.Data.Entity.DbSet<Attendance.Models.Entities.Penalty> Penalties { get; set; }
     }
 }

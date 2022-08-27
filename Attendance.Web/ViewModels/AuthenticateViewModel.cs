@@ -29,6 +29,9 @@ public class AuthenticateViewModel
     [Display(Name = "کدملی")]
     public string DriverNatCode { get; set; }
 
+    [Display(Name = "بار")]
+    public decimal Load { get; set; }
+
     public Car Car { get; set; }
 
     [Display(Name = "شماره پلاک")]

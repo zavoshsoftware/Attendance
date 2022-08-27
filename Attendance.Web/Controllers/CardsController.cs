@@ -280,7 +280,7 @@ namespace Attendance.Web.Controllers
             cardLoginHistory.LoginDate = DateTime.Now;
             cardLoginHistory.IsActive = true;
             cardLoginHistory.IsSuccess = true;
-
+            cardLoginHistory.Load = model.Load;
             db.CardLoginHistories.Add(cardLoginHistory);
             db.SaveChanges();
 
@@ -371,7 +371,7 @@ namespace Attendance.Web.Controllers
 
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToString("F")}.xls");
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
             Response.ContentType = "application/ms-excel";
 
             Response.Charset = "";

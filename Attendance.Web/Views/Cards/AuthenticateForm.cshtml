@@ -5,7 +5,7 @@
 @section styles{
     @*<link href="~/Content/select2.min.css" rel="stylesheet" />*@
 }
-<div class="animate__animated animate__backInLeft">
+<div class="animate__animated animate__fadeIn animate__slow">
 
 <form  action="/cards/submitform" method="post">
     @Html.HiddenFor(x => x.cardId)
@@ -124,6 +124,12 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Pleck, new { @class = "control-label" })
                             <select id="pleck" name="pleck" class="accountSelect form-control input-group"  ></select>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Load, new { @class = "control-label" }) 
+                            <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)"
+                                   type="text" value="0.00" class="k-textbox input-group">
                         </div>
                     </div>
                 </div>
@@ -247,4 +253,16 @@
         });;
 
     });
+
+
+    function loadControl(inp) {
+        var Allowed = 300;
+        var load = parseInt(document.getElementById("Load").value);
+        var weight = parseInt(document.getElementById("Weight").value);
+  
+        if ((load + weight)>Allowed) {
+            toastr["warning"]('مقدار ورودی بیشتر از حد مجاز است')
+        }
+    }
+
 </script>

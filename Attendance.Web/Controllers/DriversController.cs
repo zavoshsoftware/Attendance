@@ -210,7 +210,7 @@ namespace Attendance.Web.Controllers
 
         public ActionResult Export()
         {
-            var dt = db.Drivers.Where(c => !c.IsDeleted).ToList().Select(c =>
+            var dt = db.Drivers.Include(d=>d.Cards).Where(c => !c.IsDeleted).ToList().Select(c =>
                 new {
                     FirstName = c.FirstName,
                     LastName = c.LastName,
@@ -227,10 +227,11 @@ namespace Attendance.Web.Controllers
             grid.DataSource = dt;
             grid.DataBind();
 
-            Response.ClearContent();
+            Response.Clear();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToString("F")}.xls");
-            Response.ContentType = "application/ms-excel";
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
+            Response.Charset = "";
+            Response.ContentType = "application/vnd.ms-excel";
 
             Response.Charset = "";
             StringWriter sw = new StringWriter();
