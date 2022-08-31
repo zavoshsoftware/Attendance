@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.ViewModels;
 
 namespace Attendance.Web.Controllers
 {
@@ -228,6 +229,23 @@ namespace Attendance.Web.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetUserInfo(string q)
+        {
+            Guid id = Guid.Parse(q);
+            var driver = db.Drivers.FirstOrDefault(x => x.Id == id);
+            string fullName = "";
+            if (driver != null)
+            {
+                fullName = driver.FullName;
+            }
+
+            return Json(new DriverInfoViewModel()
+            {
+                FullName = fullName
+            });
+        }
+
+        [HttpPost]
         public ActionResult SubmitForm(AuthenticateFormViewModel model)
         {
             //var cardLoginHistory = db.CardLoginHistories.FirstOrDefault(c => c.Id == model.LoginId);
@@ -289,7 +307,15 @@ namespace Attendance.Web.Controllers
             }
             var result = db.Cars.Where(c =>!c.IsDeleted && c.Number.Contains(q)).Select(c => new { Id = c.Id, Text = c.Number }).ToList();
             return Json(new { items = result }, JsonRequestBehavior.AllowGet);
-
+        }
+        public JsonResult GetDriverNames(string q)
+        {
+            if (q == null)
+            {
+                q = string.Empty;
+            }
+            var result = db.Drivers.Where(c =>!c.IsDeleted && c.NationalCode.Contains(q)).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
+            return Json(new { items = result }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult LoginHistoryDetials(Guid id)

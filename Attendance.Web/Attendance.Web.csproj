@@ -516,7 +516,6 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\app.v2.js" />
     <Content Include="Scripts\function.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -727,6 +726,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
+    <Compile Include="ViewModels\DriverInfoViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
   </ItemGroup>
