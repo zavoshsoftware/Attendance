@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
@@ -255,8 +259,9 @@ namespace Attendance.Web.Controllers
 
             //Driver
             //Deiver exist?
+            var driverId = Guid.Parse(model.DriverNatCode.Trim());
             var driver = db.Drivers.FirstOrDefault(d =>
-            d.NationalCode.Trim() == model.DriverNatCode.Trim());
+            d.Id == driverId);
             if (driver == null)
             {
                 //create exist
@@ -293,9 +298,10 @@ namespace Attendance.Web.Controllers
             cardLoginHistory.LoginDate = DateTime.Now;
             cardLoginHistory.IsActive = true;
             cardLoginHistory.IsSuccess = true;
-
+            cardLoginHistory.Load = model.Load;
             db.CardLoginHistories.Add(cardLoginHistory);
             db.SaveChanges();
+
             return Redirect("/cards/authenticate");
         }
 
@@ -320,10 +326,20 @@ namespace Attendance.Web.Controllers
 
         public ActionResult LoginHistoryDetials(Guid id)
         {
-            var login = db.CardLoginHistories.Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
+            CardLoginHistory login = db.CardLoginHistories.Where(x=>!x.IsDeleted).Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
             return View(login);
+        }
+
+        [HttpPost]
+        public ActionResult LoginHistory(CardLoginHistory cardLoginHistory)
+        {
+            var loginHistory = db.CardLoginHistories.Find(cardLoginHistory.Id);
+            loginHistory.Description = cardLoginHistory.Description;
+            db.SaveChanges();
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            return Redirect("/CardLoginHistories");
         }
 
         public JsonResult GetDriverList(string q)
@@ -354,6 +370,47 @@ namespace Attendance.Web.Controllers
                 DriverFirstName = "",
                 DriverLastName = ""
             });
+        }
+
+
+        public ActionResult Export()
+        {
+            var dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
+                new {
+                    Code = c?.Code,
+                    DisplayCode = c?.DisplayCode,
+                    IsHidden = c.IsHidden?"مخفی":"قابل مشاهده",
+                    Day = c?.Day.GetDisplayName(),
+                    Driver = c?.Driver.FullName,
+                    NationalCode = c?.Driver?.NationalCode,
+                    IsActive = c.IsActive ? "فعال" : "غیرفعال",
+                    CreateDate = c?.CreationDate.ToShamsi('s'),
+                    UpdateDate = c?.CreationDate.ToShamsi('s'),
+                    Description = c?.Description
+                }).ToList().ToDataTable();
+            dt.TableName = "اکسل کارت ها"; 
+            var grid = new GridView();
+            grid.DataSource = dt;
+            grid.DataBind();
+            
+
+
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            return RedirectToAction("Index");
         }
 
     }

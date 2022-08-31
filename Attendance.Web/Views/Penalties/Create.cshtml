@@ -1,4 +1,4 @@
-﻿@model Attendance.Models.Entities.Driver
+﻿@model Attendance.Models.Entities.Penalty
 
 @{
     ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
@@ -7,55 +7,45 @@
 
 <h2>افزودن @Html.DisplayNameFor(model => model)</h2>
 
-@using (Html.BeginForm("Create", "Drivers",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Create", "Penalties", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">        
+
+    <div class="form-horizontal">
         @Html.ValidationSummary(true)
 
         <div class="form-group">
             <div class="form-group">
-                @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.CardId, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.FirstName)
-
-                    @Html.ValidationMessageFor(model => model.FirstName)
+                    @Html.DropDownList("CardId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.CardId)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Reason, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastName)
-
-                    @Html.ValidationMessageFor(model => model.LastName)
-                </div>
-            </div> 
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Father, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                    @Html.EditorFor(model => model.Father)
-
-                @Html.ValidationMessageFor(model => model.Father)
-            </div>
-        </div> 
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.NationalCode, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.NationalCode)
-                    @Html.ValidationMessageFor(model => model.NationalCode)
+                    @Html.EditorFor(model => model.Reason)
+                    @Html.ValidationMessageFor(model => model.Reason)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.CellNumber, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.PenaltyType, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CellNumber)
+                    @Html.EnumDropDownListFor(model => model.PenaltyType)
 
-                    @Html.ValidationMessageFor(model => model.CellNumber)
+                    @Html.ValidationMessageFor(model => model.PenaltyType)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Solved)
+
                 </div>
             </div>
 
@@ -64,7 +54,7 @@
                 </div>
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive)
+
                 </div>
             </div>
 
@@ -75,13 +65,14 @@
 
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
-            </div> 
+            </div>
+
             <div class="form-group" id="buttons">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="ایجاد" class="btn btn-primary" />
                     @Html.ActionLink("بازگشت به فهرست", "Index")
                 </div>
             </div>
-        </div> 
+        </div>
+    </div>
 }
-

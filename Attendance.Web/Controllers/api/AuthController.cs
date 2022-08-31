@@ -36,7 +36,7 @@ namespace Attendance.Web.Controllers.api
                 if (db.Cards.Any(s =>((Attendance.Core.Enums.WeekDays)s.Day).ToString() == today))
                 { 
                     hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
-                        null, $"با کد {card.Code} اجازه ورود دارد",card.DisplayCode);
+                        null, $"با کد {card.DisplayCode} اجازه ورود دارد",card.Code);
                     return Ok(new CustomResponseViewModel()
                     {
                         Extra = "",

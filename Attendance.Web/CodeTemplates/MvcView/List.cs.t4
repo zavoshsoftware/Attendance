@@ -102,6 +102,7 @@ if (pkName != null) {
 		.ToolBar(toolbar =>
 					{				
 						toolbar.Custom().Action("Create","<#= ViewDataTypeName.Split('.').Last()+"s" #>").Text("افزودن");                          
+						toolbar.Custom().Action("Export","<#= ViewDataTypeName.Split('.').Last()+"s" #>").Text("خروجی اکسل");                          
 					}
 		)         
 		.DataSource(dataSource => dataSource

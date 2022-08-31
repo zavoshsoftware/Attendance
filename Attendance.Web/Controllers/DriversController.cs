@@ -5,8 +5,12 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Attendance.Core.Data;
 using Attendance.Models;
 using Attendance.Models.Entities;
 using ExcelDataReader;
@@ -200,6 +204,48 @@ namespace Attendance.Web.Controllers
                 return RedirectToAction("import");
             }
         }
+
+
+
+
+        public ActionResult Export()
+        {
+            var dt = db.Drivers.Include(d=>d.Cards).Where(c => !c.IsDeleted).ToList().Select(c =>
+                new {
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    FatherName = c.Father, 
+                    Mobile = c.CellNumber,
+                    NationalCode = c.NationalCode,
+                    IsActive = c.IsActive ? "فعال" : "غیرفعال",
+                    CreateDate = c.CreationDate.ToShamsi('s'),
+                    UpdateDate = c.CreationDate.ToShamsi('s'),
+                    Description = c.Description
+                }).ToList().ToDataTable();
+            dt.TableName = "اکسل رانندگان";
+            var grid = new GridView();
+            grid.DataSource = dt;
+            grid.DataBind();
+
+            Response.Clear();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
+            Response.Charset = "";
+            Response.ContentType = "application/vnd.ms-excel";
+
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End(); 
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

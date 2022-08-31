@@ -32,6 +32,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Custom().Action("Create","Cards").Text("افزودن");
+            toolbar.Custom().Action("Export", "Cards").Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

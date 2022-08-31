@@ -31,6 +31,10 @@ namespace Attendance.Models.Entities
         [Display(Name="شماره کارت")]
         public string CarNumber { get; set; }
          
+
+        [Display(Name="بار")]
+        public decimal Load { get; set; }
+         
         public decimal? TotalLoad { get; set; }
 
         [Display(Name = "نام کمک راننده")]

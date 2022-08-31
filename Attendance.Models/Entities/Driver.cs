@@ -14,6 +14,7 @@ namespace Attendance.Models.Entities
 
         [Display(Name="نام خانوادگی")]
         public string LastName { get; set; }
+
         [Display(Name="شماره موبایل")]
         public string CellNumber { get; set; }
 
@@ -22,6 +23,9 @@ namespace Attendance.Models.Entities
         public string Father { get; set; }
 
         [Display(Name="کدملی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MinLength(10,ErrorMessage ="مقدار {0} باید {1} رقم باشد")]
+        [MaxLength(10,ErrorMessage ="مقدار {0} باید {1} رقم باشد")]
         public string NationalCode { get; set; }
 
         public virtual ICollection<Card> Cards { get; set; }

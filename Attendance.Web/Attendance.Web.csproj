@@ -717,6 +717,7 @@
     <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PenaltiesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WalkingLoginHistoriesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1015,6 +1016,11 @@
     <Content Include="Views\Configs\Edit.cshtml" />
     <Content Include="Views\Configs\Index.cshtml" />
     <Content Include="Views\Cars\Import.cshtml" />
+    <Content Include="Views\Penalties\Create.cshtml" />
+    <Content Include="Views\Penalties\Delete.cshtml" />
+    <Content Include="Views\Penalties\Details.cshtml" />
+    <Content Include="Views\Penalties\Edit.cshtml" />
+    <Content Include="Views\Penalties\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
