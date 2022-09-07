@@ -24,6 +24,9 @@ using System.Threading.Tasks;
            case 's':
                 result = string.Format("{0}/{1}/{2}-{3}:{4}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d), pc.GetHour(d).ToString("00"), pc.GetMinute(d).ToString("00"));
                 break;
+           case 'e':
+                result = string.Format("{0}/{1}/{2}-{3}:{4}:{5}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d), pc.GetHour(d).ToString("00"), pc.GetMinute(d).ToString("00"), pc.GetSecond(d).ToString("00"));
+                break;
 
         }
         return result;

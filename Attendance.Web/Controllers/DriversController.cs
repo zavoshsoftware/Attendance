@@ -226,23 +226,23 @@ namespace Attendance.Web.Controllers
             var grid = new GridView();
             grid.DataSource = dt;
             grid.DataBind();
-
+             
             Response.Clear();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
-            Response.Charset = "";
-            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("content-disposition", $"attachment;filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
 
-            Response.Charset = "";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Web.UI.HtmlTextWriter hw = new HtmlTextWriter(sw);
 
-            grid.RenderControl(htw);
+            grid.RenderControl(hw);
 
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            Response.Output.Write(sw.ToString());
-            Response.Flush();
-            Response.End(); 
+            Response.Write(sw.ToString());
+            Response.End();
+
+          
             return RedirectToAction("Index");
         }
 
