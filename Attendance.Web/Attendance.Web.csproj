@@ -994,7 +994,6 @@
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\Accounts\OtpLogin.cshtml" />
     <Content Include="Views\CardLoginHistories\Create.cshtml" />
-    <Content Include="Views\CardLoginHistories\Delete.cshtml" />
     <Content Include="Views\CardLoginHistories\Details.cshtml" />
     <Content Include="Views\CardLoginHistories\Edit.cshtml" />
     <Content Include="Views\CardLoginHistories\Index.cshtml" />
@@ -1021,6 +1020,7 @@
     <Content Include="Views\Penalties\Details.cshtml" />
     <Content Include="Views\Penalties\Edit.cshtml" />
     <Content Include="Views\Penalties\Index.cshtml" />
+    <Content Include="Views\CardLoginHistories\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

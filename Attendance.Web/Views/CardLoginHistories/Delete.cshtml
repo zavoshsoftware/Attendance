@@ -13,9 +13,21 @@
     <div class="form-horizontal">        
     
          <div class="form-group">
+            @Html.LabelFor(model => model.Car.Title, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Car.Title)
+      </div></div>
+
+         <div class="form-group">
             @Html.LabelFor(model => model.Card.Code, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DisplayFor(model => model.Card.Code)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Driver.FirstName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Driver.FirstName)
       </div></div>
 
          <div class="form-group">
@@ -43,21 +55,39 @@
       </div></div>
 
          <div class="form-group">
-            @Html.LabelFor(model => model.DriverHelperName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.DriverHelperName)
-      </div></div>
-
-         <div class="form-group">
             @Html.LabelFor(model => model.CarNumber, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DisplayFor(model => model.CarNumber)
       </div></div>
 
          <div class="form-group">
+            @Html.LabelFor(model => model.Load, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Load)
+      </div></div>
+
+         <div class="form-group">
             @Html.LabelFor(model => model.TotalLoad, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DisplayFor(model => model.TotalLoad)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.AssistanceName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.AssistanceName)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.AssistanceLastName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.AssistanceLastName)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.AssistanceNationalCode)
       </div></div>
 
          <div class="form-group">

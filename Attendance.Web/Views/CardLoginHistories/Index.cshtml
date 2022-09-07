@@ -4,6 +4,8 @@
     ViewBag.Title = "فهرست ";
 
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+    string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -26,7 +28,11 @@
 									</text>).Width(200);
 	    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
-									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("جزییات", "LoginHistoryDetials", "Cards", new { id = @item.Id }, new { @class = "k-button" })
+	                     
+                                @if (role == "SuperAdmin" || role == "Admin")
+		{
+									@Html.ActionLink("حذف", "Delete", new { id = @item.Id }, new { @class = "k-button" })}
 									</text>).Width(200);
                   })
         .ToolBar(toolbar =>
