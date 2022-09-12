@@ -9,6 +9,7 @@ namespace Attendance.Models.Entities
 {
     public class Config:BaseEntity
     {
+        [Display(Name = "شناسه")]
         public int Code { get; set; }
 
         [Display(Name = "کلید")] 

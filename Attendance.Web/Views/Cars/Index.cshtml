@@ -25,9 +25,9 @@
                   })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","Cars").Text("افزودن");
-            toolbar.Custom().Action("import","Cars").Text("افزودن اکسل ماشین ها");
-            toolbar.Custom().Action("Export", "Cars").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","Cars").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
+            toolbar.Custom().Action("import","Cars").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن اکسل ماشین ها");
+            toolbar.Custom().Action("Export", "Cars").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

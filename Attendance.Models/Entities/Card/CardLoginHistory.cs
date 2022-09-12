@@ -10,7 +10,7 @@ namespace Attendance.Models.Entities
 {
     public class CardLoginHistory : BaseEntity
     {
-        [Display(Name="تاریخ ثبت")]
+        [Display(Name="تاریخ ورود")]
         public DateTime LoginDate { get; set; }
 
         [Display(Name="موفق؟")]
@@ -34,7 +34,8 @@ namespace Attendance.Models.Entities
 
         [Display(Name="بار")]
         public decimal Load { get; set; }
-         
+
+        [Display(Name = "مجموع بار")]
         public decimal? TotalLoad { get; set; }
 
         [Display(Name = "نام کمک راننده")]

@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Attendance.Models.Entities
 {
-   public class Card:BaseEntity
+    public class Card : BaseEntity
     {
-        [Display(Name="کد سیستمی کارت")]
+        [Display(Name = "کد سیستمی کارت")]
         public string Code { get; set; }
 
-        [Display(Name="راننده")]
+        [Display(Name = "راننده")]
         public Guid DriverId { get; set; }
          
-        [Display(Name= "روز هفته")]
+
+        [Display(Name = "روز هفته")]
         [DisplayName("روز هفته")]
         public Attendance.Core.Enums.WeekDays Day { get; set; }
 
@@ -30,8 +31,10 @@ namespace Attendance.Models.Entities
         public string DisplayCode { get; set; }
 
         [ForeignKey("DriverId")]
-        public virtual Driver Driver { get; set; }
+        public virtual Driver Driver { get; set; }  
         public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
+        public virtual ICollection<CardStatusHistory> CardStatusHistories { get; set; }
+        public virtual ICollection<CardGroupItemCard> CardGroupItems { get; set; }
         public virtual ICollection<Penalty> Penalties { get; set; }
     }
 }

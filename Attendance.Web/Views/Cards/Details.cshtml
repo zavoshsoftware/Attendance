@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
-<h2>جزییا</h2>
+<h2>جزییات</h2>
 
 <div>
     <h4>Card</h4>
@@ -54,7 +54,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreationDate)
+            @Model.CreationDate.ToShamsi('s')
         </dd>
 
         <dt>
@@ -62,7 +62,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastModifiedDate)
+            @Model.LastModifiedDate.ToShamsi('s')
         </dd>
 
         <dt>

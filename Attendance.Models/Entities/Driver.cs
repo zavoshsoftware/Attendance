@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Attendance.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,9 +29,12 @@ namespace Attendance.Models.Entities
         [MaxLength(10,ErrorMessage ="مقدار {0} باید {1} رقم باشد")]
         public string NationalCode { get; set; }
 
+        [Display(Name = "نوع")]
+        public DriverType DriverType { get; set; }
+
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
-
+        [Display(Name = "نام و نام خانوادگی")]
         public string FullName
         {
             get

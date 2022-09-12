@@ -123,13 +123,13 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Pleck, new { @class = "control-label" })
-                            <select id="pleck" name="pleck" class="accountSelect form-control input-group"  ></select>
+                            <select id="pleck" name="pleck" class="accountSelect form-control input-group  input-lg"  ></select>
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Load, new { @class = "control-label" }) 
                             <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)"
-                                   type="text" value="0.00" class="k-textbox input-group">
+                                   type="text" value="0.00" class="k-textbox input-group  input-lg">
                         </div>
                     </div>
                 </div>
@@ -144,13 +144,13 @@
                     <div class="form-horizontal">
                         <div class="form-group col-md-6"> 
                             @Html.LabelFor(model => model.Type, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Type,new {@class = "form-control"})
+                            @Html.EditorFor(model => model.Type,new {@class = "form-control  input-lg" })
                         </div>
                         <div class="form-group col-md-6">
                             @Html.LabelFor(model => model.Weight, new { @class = "control-label" })
                            
                             <input data-val="true"  id="Weight" name="Weight" 
-                                   type="text" value="0.00" class="k-textbox input-group">
+                                   type="text" value="0.00" class="k-textbox input-group  input-lg">
                         </div>
                     </div>
                 </div>

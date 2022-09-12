@@ -24,15 +24,15 @@
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("رفع توقیف", "Cancel", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-		})
-		.ToolBar(toolbar =>
-					{ 
-						toolbar.Custom().Action("Export","Penalties").Text("خروجی اکسل");
-					}
-		)
-		.DataSource(dataSource => dataSource
-									.Server()
+                  })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Action("Export","Penalties").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+        }
+        )
+        .DataSource(dataSource => dataSource
+                                    .Server()
 
-									.Model(model => model.Id(item => item.Id))
-					)
+                                    .Model(model => model.Id(item => item.Id))
+                    )
 	)

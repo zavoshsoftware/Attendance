@@ -22,8 +22,8 @@
                   })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","CardDays").Text("افزودن");
-            toolbar.Custom().Action("Export","CardDays").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","CardDays").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
+            toolbar.Custom().Action("Export","CardDays").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

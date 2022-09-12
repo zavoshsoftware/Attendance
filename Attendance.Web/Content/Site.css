@@ -3,11 +3,23 @@
     src: local('../fonts/IranSans/IRANSansWebFaNum.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Bold.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Light.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Medium.woff2') format('woff2'), local('font/IranSans/woff2/IRANSansWeb_UltraLight.woff2') format('woff2');
 }
 
-*{
-    font-family:IRANSansWeb;
+* {
+    font-family: IRANSansWeb;
 }
+
 a, h1, h2, h3, h4, h5, h6, p, li, u, ul, small, bold {
     font-family: IRANSansWeb;
+}
+
+
+a, label, input, p, div, span {
+    font-size: medium !important
+}
+button {
+    font-size: large !important
+}
+td {
+    font-size: large !important
 }
 /*body {
     padding-top: 50px;
@@ -34,3 +46,27 @@ textarea {
 ul {
     list-style-type: none;
 }*/
+
+.font-large {
+    font-size: large !important;
+}
+
+.font-larger {
+    font-size: larger !important;
+}
+
+.font-small {
+    font-size: small !important;
+}
+
+.font-medium {
+    font-size: medium !important;
+}
+
+.font-smaller {
+    font-size: smaller !important;
+}
+
+.toast-message{
+    bottom:5px!important;
+}

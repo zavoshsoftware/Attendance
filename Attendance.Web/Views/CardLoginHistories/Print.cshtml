@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "تاریخچه ورود و خروج";
+    Layout = "~/Views/Shared/_Print.cshtml"; 
+    var list = TempData["CardLoginHistory"] as List<Attendance.Models.Entities.CardLoginHistory>;
+} 
+
+ 
+        <table class="table">
+            <thead class="text-center">
+                <tr style="text-align:center">
+                    <th  class="text-center">کدنمایشی</th>
+                    <th  class="text-center">نام راننده</th>
+                    <th  class="text-center">تاریخ ورود</th>
+                    <th  class="text-center">تاریخ خروج</th>
+                </tr>
+            </thead>
+            @foreach (var item in list)
+            {
+                <tr>
+                    <td  class="text-center">@item.Card.DisplayCode.ConvertDigitEngToPers()</td>
+                    <td  class="text-center">@item.Driver.FullName</td>
+                    <td  class="text-center">@item.LoginDate.ToShamsi('s').ConvertDigitEngToPers()</td>
+                    <td  class="text-center">@item.ExitDate.ToShamsi('s').ConvertDigitEngToPers()</td>
+                </tr>
+            }
+        </table> 

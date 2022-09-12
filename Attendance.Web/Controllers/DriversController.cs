@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,9 +11,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Attendance.Core.Code;
 using Attendance.Core.Data;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.Services.Errors;
 using ExcelDataReader;
 
 namespace Attendance.Web.Controllers
@@ -20,7 +23,11 @@ namespace Attendance.Web.Controllers
     public class DriversController : Controller
     {
         private DatabaseContext db = new DatabaseContext();
-
+        private IErrorService _errors;
+        public DriversController()
+        {
+            _errors = new ErrorService();
+        }
         // GET: Drivers
         public ActionResult Index()
         {
@@ -121,13 +128,28 @@ namespace Attendance.Web.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
-        {
-            Driver driver = db.Drivers.Find(id);
-            driver.IsDeleted = true;
-            driver.DeletionDate = DateTime.Now;
-
-            db.SaveChanges();
-            return RedirectToAction("Index");
+        { 
+                Driver driver = db.Drivers.Find(id);
+            try
+            {
+                driver.IsDeleted = true;
+                driver.DeletionDate = DateTime.Now;
+                db.Entry(driver).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (DbEntityValidationException e)
+            { 
+               string errors= _errors.HandleError(e,Debugger.Info());
+                //TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = $"خطایی پیش آمده{errors}" }; 
+            }
+            finally
+            {
+                db.Drivers.Remove(driver);
+                db.SaveChanges();
+                TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            }
+                return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

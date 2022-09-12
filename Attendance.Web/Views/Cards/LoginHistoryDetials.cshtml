@@ -4,89 +4,119 @@
     ViewBag.Title = ViewBag.PageTitle;
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
-
-
  
-<div class="panel panel-primary ">
-    <div class="panel-heading">
-        جزییات ورود
-    </div>
-    <div class="container">
-        <form method="post" action="/cards/LoginHistory">
-            @Html.HiddenFor(model => model.Id)
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Driver.FirstName):
-                    @Html.DisplayFor(model => model.Driver.FirstName, new { @class = "form-control" })
-                </div>
-                
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Driver.LastName):
-                    @Html.DisplayFor(model => model.Driver.LastName, new { @class = "form-control" })
-                </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Card.Code):
-                    @Html.DisplayFor(model => model.Card.Code, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-row">
+<h2>فهرست </h2>
 
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.LoginDate):
-                   @(Model.LoginDate.ToShamsi('s'))
-                </div> 
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.ExitDate): 
-                   @(Model.ExitDate?.ToShamsi('s'))
+<div class="k-widget k-grid k-display-block" id="Grid" data-role="grid">
+    <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
+    <br />
+    <form>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Driver.FullName):
+                    @Html.DisplayFor(model => model.Driver.FullName, new { @class = "form-control font-medium " })
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.Label("وضعیت"):
-                    @(Model.IsSuccess?"موفق":"ناموفق") 
+                <div class=" col-md-4">
+                    @Html.LabelFor(model => model.Driver.NationalCode):
+                    @Html.DisplayFor(model => model.Driver.NationalCode, new { @class = "form-control font-medium " })
                 </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Car.Number):
-                    @Html.DisplayFor(model => model.Car.Number, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.AssistanceName):
-                    @Html.DisplayFor(model => model.AssistanceName, new { @class = "form-control" })&nbsp;
-                    @Html.DisplayFor(model => model.AssistanceLastName, new { @class = "form-control" })
-                </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.AssistanceNationalCode):
-                    @Html.DisplayFor(model => model.AssistanceNationalCode, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Description):
-                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" }) 
-                </div> 
-            </div>
-            <div class="form-row">
-                <button type="submit" class="btn btn-primary">ثبت اطلاعات</button>
             </div>
             <br />
-        </form>
-    </div>
-
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Driver.CellNumber):
+                    @Html.DisplayFor(model => model.Driver.CellNumber, new { @class = "form-control font-medium " })
+                </div>
+                <div class=" col-md-4">
+                    @Html.LabelFor(model => model.Driver.Father):
+                    @Html.DisplayFor(model => model.Driver.Father, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Card.DisplayCode):
+                    @Html.DisplayFor(model => model.Card.DisplayCode, new { @class = "form-control font-medium " })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Card.Code):
+                    @Html.DisplayFor(model => model.Card.Code, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.LoginDate):
+                    @(Model.LoginDate.ToShamsi('s'))
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.ExitDate):
+                    @(Model.ExitDate.ToShamsi('s'))
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Car.Title):
+                    @Html.DisplayFor(model => model.Car.Title, new { @class = "form-control font-medium " })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Car.Number):
+                    @Html.DisplayFor(model => model.Car.Number, new { @class = "form-control font-medium " })
+                </div>
+            </div> 
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.AssistanceName):
+                    @Model.AssistanceName @Model.AssistanceLastName
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.AssistanceNationalCode):
+                    @Html.DisplayFor(model => model.AssistanceNationalCode, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Load):
+                    @Model.Load
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.TotalLoad):
+                    @Html.DisplayFor(model => model.TotalLoad, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.Label("وضعیت"):
+                    @(Model.IsSuccess?"موفق":"ناموفق")
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Description):
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </form>
+    <br />
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 

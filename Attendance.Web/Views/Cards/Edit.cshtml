@@ -23,12 +23,20 @@
 			@Html.ValidationMessageFor(model => model.Code)
 		</div>
 	</div>
+	
+	<div class="form-group">
+		@Html.LabelFor(model => model.DisplayCode, new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.DisplayCode)
+			@Html.ValidationMessageFor(model => model.DisplayCode)
+		</div>
+	</div>
 
 
 	<div class="form-group">
 		@Html.LabelFor(model => model.DriverId, new { @class = "control-label col-md-2" })
 		<div class="col-md-10">
-			@Html.DropDownList("DriverId", String.Empty)
+			@Html.DropDownList("DriverId")
 			@Html.ValidationMessageFor(model => model.DriverId)
 		</div>
 	</div>
@@ -78,7 +86,7 @@
 
 	<div class="form-group" id="buttons">
 		<div class="col-md-offset-2 col-md-10">
-			<input type="submit" value="ثبت" class="btn btn-primary" />
+			<input type="submit" value="ثبت" class="btn btn-primary font-medium" />
 			@Html.ActionLink("بازگشت به فهرست", "Index")
 		</div>
 	</div>

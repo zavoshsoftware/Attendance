@@ -24,8 +24,8 @@
                   })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","CarTypes").Text("افزودن");
-            toolbar.Custom().Action("Export", "CarTypes").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","CarTypes").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
+            toolbar.Custom().Action("Export", "CarTypes").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

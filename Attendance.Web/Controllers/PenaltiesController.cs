@@ -45,7 +45,7 @@ namespace Attendance.Web.Controllers
         // GET: Penalties/Create
         public ActionResult Create()
         {
-            ViewBag.CardId = new SelectList(db.Cards, "Id", "Code");
+            ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted), "Id", "Code");
             return View();
         }
 

@@ -27,8 +27,8 @@ ViewBag.Title = "فهرست کاربران";
                   })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","Users").Text("افزودن");
-            toolbar.Custom().Action("Export", "Users").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","Users").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
+            toolbar.Custom().Action("Export", "Users").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

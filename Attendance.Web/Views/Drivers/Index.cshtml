@@ -28,9 +28,9 @@
                   })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","Drivers").Text("افزودن");
-            toolbar.Custom().Action("import","Drivers").Text("بارگذاری اکسل");
-            toolbar.Custom().Action("Export", "Drivers").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
+            toolbar.Custom().Action("import","Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("بارگذاری اکسل");
+            toolbar.Custom().Action("Export", "Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

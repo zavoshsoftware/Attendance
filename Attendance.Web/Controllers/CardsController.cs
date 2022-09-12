@@ -125,7 +125,7 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName", card.DriverId);
+            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName", card);
             return View(card);
         }
 
@@ -283,7 +283,7 @@ namespace Attendance.Web.Controllers
             cardLoginHistory.Load = model.Load;
             db.CardLoginHistories.Add(cardLoginHistory);
             db.SaveChanges();
-
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             return Redirect("/cards/authenticate");
         }
 
@@ -349,19 +349,50 @@ namespace Attendance.Web.Controllers
 
         public ActionResult Export()
         {
-            var dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
-                new {
-                    Code = c?.Code,
-                    DisplayCode = c?.DisplayCode,
-                    IsHidden = c.IsHidden?"مخفی":"قابل مشاهده",
-                    Day = c?.Day.GetDisplayName(),
-                    Driver = c?.Driver.FullName,
-                    NationalCode = c?.Driver?.NationalCode,
-                    IsActive = c.IsActive ? "فعال" : "غیرفعال",
-                    CreateDate = c?.CreationDate.ToShamsi('s'),
-                    UpdateDate = c?.CreationDate.ToShamsi('s'),
-                    Description = c?.Description
-                }).ToList().ToDataTable();
+            var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+            string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+            DataTable dt = new DataTable();
+
+            //Condition1: •	در یوزر مدیر معمولی زمانی که خروجی اکسل میگیریم فیلد
+            //IsHidden
+            //مشاهده نگردد و فقط در مدیر ارشد این قابلیت باشد. 
+            #region Condition1
+            if (role == SecurityRole.SuperAdmin)
+            {
+                dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
+new
+{
+    Code = c?.Code,
+    DisplayCode = c?.DisplayCode,
+    IsHidden = c.IsHidden ? "مخفی" : "قابل مشاهده",
+    Day = c?.Day.GetDisplayName(),
+    Driver = c?.Driver.FullName,
+    NationalCode = c?.Driver?.NationalCode,
+    IsActive = c.IsActive ? "فعال" : "غیرفعال",
+    CreateDate = c?.CreationDate.ToShamsi('s'),
+    UpdateDate = c?.CreationDate.ToShamsi('s'),
+    Description = c?.Description
+}).ToList().ToDataTable();
+            }
+            else
+            {
+                dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
+            new
+            {
+                Code = c?.Code,
+                DisplayCode = c?.DisplayCode,
+                Day = c?.Day.GetDisplayName(),
+                Driver = c?.Driver.FullName,
+                NationalCode = c?.Driver?.NationalCode,
+                IsActive = c.IsActive ? "فعال" : "غیرفعال",
+                CreateDate = c?.CreationDate.ToShamsi('s'),
+                UpdateDate = c?.CreationDate.ToShamsi('s'),
+                Description = c?.Description
+            }).ToList().ToDataTable();
+            }
+            #endregion
+
+
             dt.TableName = "اکسل کارت ها"; 
             var grid = new GridView();
             grid.DataSource = dt;
@@ -385,6 +416,116 @@ namespace Attendance.Web.Controllers
             Response.End();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             return RedirectToAction("Index");
+        }
+
+        public ActionResult PrintLoginHistoryDetails(Guid id)
+        {
+            CardLoginHistory login = db.CardLoginHistories.Where(x => !x.IsDeleted).Include(x => x.Car)
+                .Include(x => x.Driver).Include(x => x.Card).FirstOrDefault(x => x.Id == id);
+            ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
+            return View(login);
+        }
+
+        public ActionResult Status(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Card card = db.Cards.Find(id);
+            if (card == null)
+            {
+                return HttpNotFound();
+            }
+            CardStatusHistory status = new CardStatusHistory()
+            {
+                CardId = id,
+                Card = card
+            };
+            return View(status);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Status(CardStatusHistory status)
+        { 
+            Card card = db.Cards.Find(status.CardId); 
+            var current = new CardStatusHistory()
+            {
+                Id=Guid.NewGuid(),
+                Card=card,
+                CardId=status.CardId,
+                Description = status.Description,
+                PreviousStatus=card.IsActive,
+                CurrentStatus = !card.IsActive,
+                IsActive=true,
+                CreationDate=DateTime.Now
+            };
+            card.IsActive = !card.IsActive;
+            db.Entry(current).State = EntityState.Added;
+            db.Entry(card).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("index");
+        }
+
+
+
+
+        public ActionResult Group(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Card card = db.Cards.Include(x=>x.CardGroupItems).FirstOrDefault(x=>x.Id==id);
+            if (card == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new CardGroupViewModel()
+            {
+                Card=card,
+                CardGroups = db.Groups.Where(x=>x.GroupItems.Any())
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Group(List<GroupCardViewModel> model)
+        {
+            try
+            {
+                model.ForEach(x =>
+                {
+                    var cardId = Guid.Parse(x.CardId);
+                    var groupItemId = Guid.Parse(x.GroupItemId);
+                    if (!db.CardGroupItemCards.Any(c => c.CardId == cardId && c.CardGroupItemId == groupItemId))
+                    {
+                        var card = db.Cards.Find(cardId);
+                        var groupItem = db.GroupItems.FirstOrDefault(gi=>gi.Id ==groupItemId);
+
+                        db.CardGroupItemCards.RemoveRange(db.CardGroupItemCards.Where(cg => cg.GroupItem.GroupId == groupItem.GroupId && cg.CardId ==cardId));
+
+                        db.CardGroupItemCards.Add(new CardGroupItemCard()
+                        {
+                            Card = card,
+                            CardId = cardId,
+                            GroupItem = groupItem,
+                            CardGroupItemId = groupItemId,
+                            Id = Guid.NewGuid(),
+                            CreationDate = DateTime.Now,
+                            IsActive = true
+                        });
+                        db.SaveChanges();
+                    }
+                });
+
+                return Json(new { code = 0, message = "عملیات با موفقیت انجام شد" });
+            }
+            catch (Exception ex )
+            {
+                return Json(new { code = -1, message = "عملیات با خطا روبرو شد"+ ex.Message });
+            }
         }
 
     }

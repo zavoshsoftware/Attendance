@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.Card>
 @using Attendance.Core.Enums
 @{
-	ViewBag.Title = "فهرست کارت ها";
+    ViewBag.Title = "فهرست کارت ها";
 
-	Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -20,19 +20,22 @@
 		columns.Bound(item => @item.Id).Title("روز").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.Day.GetDisplayName()</text>).Width(200);
         columns.Bound(model => model.IsActive);
-    
+
         columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
                       .Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
-									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"}) 
+									@Html.ActionLink("دسته بندی", "Group", new {id = @item.Id}, new {@class = "k-button"}) 
+                                    <a class="k-button" href="/cards/status?id=@item.Id">@(item.IsActive?"غیرفعالسازی":"فعالسازی")</a>
 									@Html.ActionLink("ورود و خروج", "Index", "CardLoginHistories", new { cardId = @item.Id}, new {@class = "k-button"})
 									@*@Html.ActionLink("تعیین روزهای مجاز", "Index","CardDays", new {id = @item.Id}, new {@class = "k-button"})*@
 							           </text>).Width(200);
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","Cards").Text("افزودن");
-            toolbar.Custom().Action("Export", "Cards").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","Cards")
+             .HtmlAttributes(new { @class = "font-medium" })
+            .Text("افزودن"); 
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
