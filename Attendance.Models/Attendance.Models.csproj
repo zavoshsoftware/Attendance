@@ -54,6 +54,7 @@
     <Compile Include="Entities\Card\CardGroup.cs" />
     <Compile Include="Entities\Card\CardGroupItem.cs" />
     <Compile Include="Entities\Card\CardGroupItemCard.cs" />
+    <Compile Include="Entities\Penalty\PenaltyReason.cs" />
     <Compile Include="Entities\System\BaseEntity.cs" />
     <Compile Include="Entities\Car\Car.cs" />
     <Compile Include="Entities\Card\Card.cs" />
@@ -62,8 +63,9 @@
     <Compile Include="Entities\Car\CarType.cs" />
     <Compile Include="Entities\System\Config.cs" />
     <Compile Include="Entities\Driver.cs" />
+    <Compile Include="Entities\System\SystemLog.cs" />
     <Compile Include="Entities\System\ExceptionLoggers.cs" />
-    <Compile Include="Entities\Penalty.cs" />
+    <Compile Include="Entities\Penalty\Penalty.cs" />
     <Compile Include="Entities\User\User.cs" />
     <Compile Include="Entities\User\UserLogin.cs" />
     <Compile Include="Entities\WalkingLoginHistory.cs" />
@@ -187,6 +189,22 @@
     <Compile Include="Migrations\202209121138387_V30.Designer.cs">
       <DependentUpon>202209121138387_V30.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209130539240_V301.cs" />
+    <Compile Include="Migrations\202209130539240_V301.Designer.cs">
+      <DependentUpon>202209130539240_V301.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209130628264_V31.cs" />
+    <Compile Include="Migrations\202209130628264_V31.Designer.cs">
+      <DependentUpon>202209130628264_V31.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209130804542_V32.cs" />
+    <Compile Include="Migrations\202209130804542_V32.Designer.cs">
+      <DependentUpon>202209130804542_V32.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209131446111_V33.cs" />
+    <Compile Include="Migrations\202209131446111_V33.Designer.cs">
+      <DependentUpon>202209131446111_V33.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -290,6 +308,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209121138387_V30.resx">
       <DependentUpon>202209121138387_V30.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209130539240_V301.resx">
+      <DependentUpon>202209130539240_V301.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209130628264_V31.resx">
+      <DependentUpon>202209130628264_V31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209130804542_V32.resx">
+      <DependentUpon>202209130804542_V32.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209131446111_V33.resx">
+      <DependentUpon>202209131446111_V33.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

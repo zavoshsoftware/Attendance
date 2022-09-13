@@ -163,9 +163,10 @@ namespace Attendance.Web.Controllers
             return View(cards);
         }
 
-        public ActionResult CardStatus(bool id,bool status)
+        public ActionResult CardStatus(Guid itemId,bool status)
         {
-            if (id == null)
+            var id = itemId;
+            if (itemId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -188,7 +189,9 @@ namespace Attendance.Web.Controllers
                         Id=Guid.NewGuid(),
                         CreationDate=DateTime.Now,
                         IsActive = true,
-                        Description=$"بصورت گروهی {statusStr} شد"
+                        Description=$"بصورت گروهی {statusStr} شد",
+                        PreviousStatus = c.IsActive,
+                        CurrentStatus = status
                     });
                 });
                 db.SaveChanges();

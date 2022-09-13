@@ -48,6 +48,14 @@ using System.Threading.Tasks;
         return DayOfWeeks["fa"][DayOfWeekReformat((int)date.DayOfWeek)];
     }
 
+    public static DateTime ToMiladi(this string shamsi)
+    {
+        PersianCalendar persianCalendar = new PersianCalendar();
+        int[] date = shamsi.Split('/').Select(s=>int.Parse(s)).ToArray();
+        DateTime dt = new DateTime(date[0], date[1], date[2], persianCalendar);
+        return dt;
+    }
+
     public static int DayOfWeekReformat(this int day)
     { 
         if (day == 0) return 1;

@@ -71,7 +71,7 @@
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
             </a>
         </li>
-        <li id="sliderLi2" class="menuitem">
+        @*<li id="sliderLi2" class="menuitem">
             <a href="/penalties/create">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>توقیف</span>
             </a>
@@ -80,12 +80,51 @@
             <a href="/penalties">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>رفع توقیف</span>
             </a>
-        </li>
+        </li>*@
     </ul>
-		}
-
-		if (role == "User")
-		{
+        }
+        if (role == SecurityRole.Monitoring)
+        {
+<ul class="nav">
+    <li id="sliderLi" class="menuitem">
+        <a href="" onclick="window.history.go(-1); return false;">
+            <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
+        </a>
+    </li>
+    <li id="sliderLi" class="menuitem">
+        <a href="/Drivers">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
+        </a>
+    </li>  
+    <li id="sliderLi1" class="menuitem">
+        <a href="/cars">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
+        </a>
+    </li>
+    <li id="sliderLi3" class="menuitem">
+        <a href="/Cards/Authenticate">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
+        </a>
+    </li> 
+    <li id="sliderLi2" class="menuitem">
+        <a href="/CardLoginHistories/IndexNotExit">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>ورود و خروج پیاده</span>
+        </a>
+    </li> 
+    <li id="sliderLi2" class="menuitem">
+        <a href="/penalties/create">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>توقیف</span>
+        </a>
+    </li>
+    <li id="sliderLi2" class="menuitem">
+        <a href="/penalties">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>رفع توقیف</span>
+        </a>
+    </li>
+</ul>
+        }
+        if (role == "User")
+        {
 			<ul class="nav">
 				 
 				<li id="sliderLi3" class="menuitem">
@@ -103,4 +142,8 @@
 			</ul>
 		}
 	}
+
+
+
+
 </nav>

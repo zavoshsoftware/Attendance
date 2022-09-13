@@ -13,8 +13,8 @@
         .Columns(columns =>
         {
         columns.Bound(model => model.DisplayCode);
-        columns.Bound(model => model.Driver.FirstName);
-        columns.Bound(model => model.Driver.LastName);
+       	columns.Bound(item => @item.Driver.FirstName).Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.Driver.FullName</text>).Width(200); 
         columns.Bound(model => model.Driver.NationalCode);
         columns.Bound(model => model.Code);
 		columns.Bound(item => @item.Id).Title("روز").Filterable(false).Groupable(false)
@@ -24,10 +24,11 @@
         columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
                       .Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
-									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"}) 
-									@Html.ActionLink("دسته بندی", "Group", new {id = @item.Id}, new {@class = "k-button"}) 
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("دسته بندی", "Group", new {id = @item.Id}, new {@class = "k-button"})
                                     <a class="k-button" href="/cards/status?id=@item.Id">@(item.IsActive?"غیرفعالسازی":"فعالسازی")</a>
 									@Html.ActionLink("ورود و خروج", "Index", "CardLoginHistories", new { cardId = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("توقیفات", "Index", "penalties", new { cardId = @item.Id}, new {@class = "k-button"})
 									@*@Html.ActionLink("تعیین روزهای مجاز", "Index","CardDays", new {id = @item.Id}, new {@class = "k-button"})*@
 							           </text>).Width(200);
         })
@@ -35,7 +36,7 @@
         {
             toolbar.Custom().Action("Create","Cards")
              .HtmlAttributes(new { @class = "font-medium" })
-            .Text("افزودن"); 
+            .Text("افزودن");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

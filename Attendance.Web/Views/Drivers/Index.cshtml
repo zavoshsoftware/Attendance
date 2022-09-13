@@ -23,6 +23,8 @@
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("جزئیات", "details", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("توقیفات", "index", "Penalties", new {driverId = @item.Id}, new {@class = "k-button"})
 @Html.ActionLink("ورود و خروج", "Index", "CardLoginHistories", new { driverId = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
                   })

@@ -30,11 +30,11 @@ namespace Attendance.Models.Entities
 
         [Display(Name="شماره کارت")]
         public string CarNumber { get; set; }
-         
 
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         [Display(Name="بار")]
         public decimal Load { get; set; }
-
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         [Display(Name = "مجموع بار")]
         public decimal? TotalLoad { get; set; }
 

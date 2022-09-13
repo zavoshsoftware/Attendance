@@ -32,12 +32,13 @@
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("CardStatus", "CardGroupItems", new { id = ViewBag.cardGroupItemId , status = false })
+            toolbar.Custom().Action("CardStatus", "CardGroupItems", new { itemId = ViewBag.cardGroupItemId , status = false })
              .HtmlAttributes(new { @class = "font-medium text-danger" })
             .Text("غیرفعالسازی همه");
-            toolbar.Custom().Action("CardStatus", "CardGroupItems", new { id = ViewBag.cardGroupItemId, status = true })
+            toolbar.Custom().Action("CardStatus", "CardGroupItems", new { itemId = ViewBag.cardGroupItemId, status = true })
              .HtmlAttributes(new { @class = "font-medium text-danger" })
             .Text("فعالسازی همه");
+            
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

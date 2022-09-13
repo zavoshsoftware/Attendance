@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal"> 
+<div class="form-horizontal">
     <hr />
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.Id)
@@ -30,6 +30,12 @@
             @Html.EditorFor(model => model.LastName)
 
             @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.BirthDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="text" id="BirthDateShamsi" class="k-textbox" name="BirthDateShamsi" value="@(Model.BirthDate.HasValue?Model.BirthDate.ToShamsi('a'):DateTime.Now.ToShamsi('a'))" onclick="PersianDatePicker.Show(this,'@Model.BirthDate.ToShamsi('a')');" />
         </div>
     </div>
 

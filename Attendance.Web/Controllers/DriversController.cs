@@ -27,6 +27,7 @@ namespace Attendance.Web.Controllers
         public DriversController()
         {
             _errors = new ErrorService();
+            
         }
         // GET: Drivers
         public ActionResult Index()
@@ -60,13 +61,13 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Driver driver)
+        public ActionResult Create(Driver driver, string BirthDateShamsi)
         {
             if (ModelState.IsValid)
             {
                 driver.IsDeleted = false;
                 driver.CreationDate = DateTime.Now;
-
+                driver.BirthDate = BirthDateShamsi.ToMiladi();
                 driver.Id = Guid.NewGuid();
                 db.Drivers.Add(driver);
                 db.SaveChanges();
@@ -96,12 +97,13 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Driver driver)
+        public ActionResult Edit(Driver driver, string BirthDateShamsi)
         {
             if (ModelState.IsValid)
             {
                 driver.IsDeleted = false;
                 driver.LastModifiedDate = DateTime.Now;
+                driver.BirthDate = BirthDateShamsi.ToMiladi(); ;
                 db.Entry(driver).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -201,6 +203,7 @@ namespace Attendance.Web.Controllers
                             LastName = excelReader[1].ToString(),
                             CellNumber = excelReader[2].ToString(),
                             NationalCode = excelReader[3].ToString(),
+                            BirthDate = excelReader[4]?.ToString()?.ToMiladi()??null,
                             CreationDate = DateTime.Now,
                             IsActive = true
                         };
@@ -240,8 +243,8 @@ namespace Attendance.Web.Controllers
                     Mobile = c.CellNumber,
                     NationalCode = c.NationalCode,
                     IsActive = c.IsActive ? "فعال" : "غیرفعال",
-                    CreateDate = c.CreationDate.ToShamsi('s'),
-                    UpdateDate = c.CreationDate.ToShamsi('s'),
+                    CreateDate = c.CreationDate.ToShamsi('s'),  
+                    BirthDate = c.BirthDate.ToShamsi('a'),
                     Description = c.Description
                 }).ToList().ToDataTable();
             dt.TableName = "اکسل رانندگان";

@@ -14,7 +14,7 @@ namespace Attendance.Models.Entities
         [Display(Name = "کد سیستمی کارت")]
         public string Code { get; set; }
 
-        [Display(Name = "راننده")]
+        [Display(Name = "صاحب کارت")]
         public Guid DriverId { get; set; }
          
 

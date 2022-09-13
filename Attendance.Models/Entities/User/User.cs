@@ -42,5 +42,6 @@ namespace Attendance.Models.Entities
         public string SecurityRole { get; set; }
 
         public virtual ICollection<UserLogin> UserLogins { get; set; }
+        public virtual ICollection<SystemLog> SystemLogs { get; set; }
     }
 }

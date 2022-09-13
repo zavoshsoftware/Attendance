@@ -1,27 +1,44 @@
 ﻿
 @{
     ViewBag.Title = "تاریخچه ورود و خروج";
-    Layout = "~/Views/Shared/_Print.cshtml"; 
+    Layout = "~/Views/Shared/_Print.cshtml";
     var list = TempData["CardLoginHistory"] as List<Attendance.Models.Entities.CardLoginHistory>;
-} 
-
+}
  
-        <table class="table">
-            <thead class="text-center">
-                <tr style="text-align:center">
-                    <th  class="text-center">کدنمایشی</th>
-                    <th  class="text-center">نام راننده</th>
-                    <th  class="text-center">تاریخ ورود</th>
-                    <th  class="text-center">تاریخ خروج</th>
-                </tr>
-            </thead>
-            @foreach (var item in list)
-            {
-                <tr>
-                    <td  class="text-center">@item.Card.DisplayCode.ConvertDigitEngToPers()</td>
-                    <td  class="text-center">@item.Driver.FullName</td>
-                    <td  class="text-center">@item.LoginDate.ToShamsi('s').ConvertDigitEngToPers()</td>
-                    <td  class="text-center">@item.ExitDate.ToShamsi('s').ConvertDigitEngToPers()</td>
-                </tr>
-            }
-        </table> 
+    @(Html.Kendo().Grid(list)
+      .Name("Grid")
+      .Columns(columns =>
+      {
+      columns.Bound(model => model.Card.DisplayCode).Filterable(false).Groupable(false).Sortable(false);
+           	columns.Bound(item => @item.Card.Driver.FullName).Title("سرکارت(نام)")
+                      .Template(@<text>	@item.Card.Driver.FullName</text>);
+      columns.Bound(item => @item.Driver.FullName).Title("سرکارت(کدملی)")
+                      .Template(@<text>	@item.Card.Driver.NationalCode</text>);
+
+      columns.Bound(item => @item.Driver.FullName).Title("(نام)")
+                      .Template(@<text>	@item.Driver.FullName</text>);
+      columns.Bound(item => @item.Driver.FullName).Title("(کدملی)")
+                      .Template(@<text>	@item.Driver.NationalCode</text>);
+      columns.Bound(model => model.Car.Number);
+      columns.Bound(item => @item.LoginDate).Title("تاریخ ورود")
+                    .Template(@<text>
+									@item.LoginDate.ToShamsi('s')
+									</text>);
+
+
+        columns.Bound(item => @item.ExitDate).Title("تاریخ خروج")
+							.Template(@<text>
+									@(item.ExitDate.ToShamsi().Equals("")?"خارج نشده":item.ExitDate.ToShamsi('s'))
+									</text>);
+      })
+        
+        .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
+        .Filterable(filterable => filterable.Extra(false).Operators(o => o.ForString(fs => fs.StartsWith("شروع با").Contains("شامل")
+          .EndsWith("اتمام با").IsEqualTo("برابر"))))
+        .DataSource(dataSource => dataSource
+                                    .Server()
+
+                                    .Model(model => model.Id(item => item.Id))
+                    )
+	)
+     

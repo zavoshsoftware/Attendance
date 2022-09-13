@@ -24,7 +24,7 @@ namespace Attendance.Web.Controllers.api
         public IHttpActionResult Authenticate(string id)
         {
             var today= System.DateTime.Now.ToString("dddd"); ;
-            var card = db.Cards.Include(c=>c.Driver).FirstOrDefault(s => s.Code == id && s.IsActive);
+            var card = db.Cards.Include(c=>c.Driver).Include(c=>c.CardLoginHistories).FirstOrDefault(s => s.Code == id && s.IsActive);
             List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
             
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
@@ -39,7 +39,7 @@ namespace Attendance.Web.Controllers.api
                     {
                         Extra = "",
                         Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
-                        Ok = true
+                        Ok = false
                     });
                 }
 
@@ -48,7 +48,20 @@ namespace Attendance.Web.Controllers.api
 
 
                 if (card.Day.ToString() == today)
-                { 
+                {
+                    if (card.Driver.BirthDate.HasValue && (DateTime.Now - card.Driver.BirthDate.Value).TotalDays< (365 * 18))
+                    {
+                        var message = $"سن غیرمجاز، سن صاحب کارت زیر 18 سال است. سن صاحب کارت ({Convert.ToInt32((DateTime.Now - card.Driver.BirthDate.Value).TotalDays/365)})";
+                        hubContext.Clients.All.Alarm(null, message);
+                        return Ok(new CustomResponseViewModel()
+                        {
+                            Extra = "",
+                            Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
+                            Ok = false
+                        });
+                    }
+
+                     
                     hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
                         null, $"با کد {card.DisplayCode} اجازه ورود دارد",card.Code);
                     return Ok(new CustomResponseViewModel()

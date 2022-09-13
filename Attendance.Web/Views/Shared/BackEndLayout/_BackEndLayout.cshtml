@@ -106,7 +106,12 @@
                 </section>
             </section>
         </section>
-    </section> 
+    </section>
+
+    <audio controls="controls" hidden id="ding"> 
+        <source src="~/Files/ding.mp3" type="audio/mpeg" />
+    </audio>
+     
     @*<script src="~/Scripts/jquery-3.4.1.js" type="text/javascript">window.rootUrl = '@Url.Content("~/")';</script>*@
     <script src="~/Scripts/toastr.js"></script>
     @if (TempData["Toastr"] != null)
@@ -145,7 +150,7 @@
 
             toastEl = $('.toast-message')
 
-            if (toastEl!=null) {
+            if (toastEl != null) {
                 toastEl.attr('style', 'bottom: 12px;left: 12px;')
             }
 
@@ -175,7 +180,7 @@
                 $('#colorLi').addClass('active');
             }
 
-            $(":input").on("keyup change", function (e) { 
+            $(":input").on("keyup change", function (e) {
                 $(e.target).val(toEnglishNumber(e.target.value))
             })
 

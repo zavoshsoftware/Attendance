@@ -223,11 +223,13 @@ namespace Attendance.Web.Controllers
         public JsonResult GetCarType(string q)
         {
             Guid carId = Guid.Parse(q);
-            var type = db.Cars.Include(x => x.CarType).FirstOrDefault(x => x.Id == carId)?.CarType ?? default;
+            var car = db.Cars.Include(x => x.CarType).FirstOrDefault(x => x.Id == carId);
+            var type = car?.CarType ?? default;
             return Json(new AuthenticateFormViewModel()
             {
-                Type = type.Title,
-                Weight = type.Weight
+                Type = type?.Title??"",
+                Weight = type?.Weight??decimal.Zero,
+                Err = car.IsActive && type.IsActive?false : true 
             });
         }
 
@@ -294,7 +296,8 @@ namespace Attendance.Web.Controllers
                 q = string.Empty;
             }
             var result = db.Cars.Where(c =>!c.IsDeleted && c.Number.Contains(q)).Select(c => new { Id = c.Id, Text = c.Number }).ToList();
-            return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            return Json(new { items = result 
+            }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -313,7 +316,7 @@ namespace Attendance.Web.Controllers
             loginHistory.Description = cardLoginHistory.Description;
             db.SaveChanges();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            return Redirect("/CardLoginHistories");
+            return RedirectToAction("LoginHistoryDetials",new { id = loginHistory.Id}); 
         }
 
         public JsonResult GetDriverList(string q)

@@ -175,20 +175,27 @@ namespace Attendance.Web.Controllers
         }
 
         public ActionResult Print(Guid? cardId, Guid? driverId)
-        { 
+        {
             ViewBag.CardId = cardId;
             ViewBag.DriverId = driverId;
-            IOrderedQueryable<CardLoginHistory> cardLoginHistories=null;
             if (cardId.HasValue)
             {
-                 cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                var cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+            TempData["CardLoginHistory"] = cardLoginHistories?.ToList()??Array.Empty<CardLoginHistory>().ToList();
+                return View(cardLoginHistories.ToList());
             }
             else if (driverId.HasValue)
             {
-                  cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-            }
+                var cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
             TempData["CardLoginHistory"] = cardLoginHistories?.ToList()??Array.Empty<CardLoginHistory>().ToList();
-            return View();
+                return View(cardLoginHistories.ToList());
+            }
+            else
+            {
+                var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+            TempData["CardLoginHistory"] = cardLoginHistories?.ToList()??Array.Empty<CardLoginHistory>().ToList();
+                return View(cardLoginHistories.ToList());
+            } 
         }
 
 

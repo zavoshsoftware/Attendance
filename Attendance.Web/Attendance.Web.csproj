@@ -506,6 +506,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="Files\ding.mp3" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\AdminJS\app.v2.js" />
     <Content Include="Scripts\AdminJS\app.v2.min.js" />
@@ -722,14 +723,18 @@
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PenaltiesController.cs" />
+    <Compile Include="Controllers\PenaltyReasonsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WalkingLoginHistoriesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Logs\LogService.cs" />
+    <Compile Include="Services\Logs\ILogService.cs" />
     <Compile Include="Services\Errors\ErrorService.cs" />
     <Compile Include="Services\Errors\IErrorService.cs" />
+    <Compile Include="Services\System\Configurations.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\CardGroupViewModel.cs" />
@@ -1043,6 +1048,11 @@
     <Content Include="Views\CardGroupItems\Edit.cshtml" />
     <Content Include="Views\CardGroupItems\Index.cshtml" />
     <Content Include="Views\CardGroupItems\GroupItemCards.cshtml" />
+    <Content Include="Views\PenaltyReasons\Create.cshtml" />
+    <Content Include="Views\PenaltyReasons\Delete.cshtml" />
+    <Content Include="Views\PenaltyReasons\Details.cshtml" />
+    <Content Include="Views\PenaltyReasons\Edit.cshtml" />
+    <Content Include="Views\PenaltyReasons\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1055,6 +1065,7 @@
     <Folder Include="Files\Cars\" />
     <Folder Include="Files\Drivers\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>

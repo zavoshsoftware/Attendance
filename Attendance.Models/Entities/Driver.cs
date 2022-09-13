@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace Attendance.Models.Entities
         [MaxLength(10,ErrorMessage ="مقدار {0} باید {1} رقم باشد")]
         public string NationalCode { get; set; }
 
+        [Display(Name = "تاریخ تولد")]
+        public DateTime? BirthDate { get; set; } 
         [Display(Name = "نوع")]
         public DriverType DriverType { get; set; }
 

@@ -27,5 +27,7 @@ namespace Attendance.Models
         public DbSet<CardGroup> Groups { get; set; }
         public DbSet<CardGroupItem> GroupItems{ get; set; } 
         public DbSet<CardGroupItemCard> CardGroupItemCards { get; set; }
+        public DbSet<SystemLog> SystemLogs { get; set; }
+        public DbSet<PenaltyReason> PenaltyReason { get; set; }
     }
 }
