@@ -177,10 +177,6 @@
     <Compile Include="Migrations\202209120753026_V28.Designer.cs">
       <DependentUpon>202209120753026_V28.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202209120809543_V29.cs" />
-    <Compile Include="Migrations\202209120809543_V29.Designer.cs">
-      <DependentUpon>202209120809543_V29.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202209121138387_V30.cs" />
     <Compile Include="Migrations\202209121138387_V30.Designer.cs">
       <DependentUpon>202209121138387_V30.cs</DependentUpon>
@@ -295,9 +291,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209120753026_V28.resx">
       <DependentUpon>202209120753026_V28.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202209120809543_V29.resx">
-      <DependentUpon>202209120809543_V29.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209121138387_V30.resx">
       <DependentUpon>202209121138387_V30.cs</DependentUpon>
