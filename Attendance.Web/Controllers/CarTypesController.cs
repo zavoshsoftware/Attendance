@@ -157,7 +157,7 @@ namespace Attendance.Web.Controllers
              
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
             Response.ContentType = "application/ms-excel";
 
             Response.Charset = "";

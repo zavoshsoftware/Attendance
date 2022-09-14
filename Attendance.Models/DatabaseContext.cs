@@ -21,6 +21,13 @@ namespace Attendance.Models
         public DbSet<WalkingLoginHistory> WalkingLoginHistories  { get; set; }
         public DbSet<Config> Configs { get; set; }
 
-        public System.Data.Entity.DbSet<Attendance.Models.Entities.Penalty> Penalties { get; set; }
+        public DbSet<Penalty> Penalties { get; set; }
+        public DbSet<ExceptionLoggers> ExceptionLoggers { get; set; }
+        public DbSet<CardStatusHistory> CardStatusHistories { get; set; }
+        public DbSet<CardGroup> Groups { get; set; }
+        public DbSet<CardGroupItem> GroupItems{ get; set; } 
+        public DbSet<CardGroupItemCard> CardGroupItemCards { get; set; }
+        public DbSet<SystemLog> SystemLogs { get; set; }
+        public DbSet<PenaltyReason> PenaltyReason { get; set; }
     }
 }

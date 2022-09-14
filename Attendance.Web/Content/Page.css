@@ -1,0 +1,131 @@
+﻿@font-face {
+    font-family: 'IRANSansWeb';
+    src: local('../fonts/IranSans/IRANSansWebFaNum.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Bold.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Light.woff2') format('woff2'), local('../fonts/IranSans/IRANSansWeb_Medium.woff2') format('woff2'), local('font/IranSans/woff2/IRANSansWeb_UltraLight.woff2') format('woff2');
+}
+
+* {
+    font-family: IRANSansWeb;
+}
+
+a, h1, h2, h3, h4, h5, h6, p, li, u, ul, small, bold, td,tr,th,thead,tbody {
+    font-family: IRANSansWeb;
+}
+body {
+    background: rgb(204,204,204);
+    font-family: IRANSansWeb;
+}
+
+page {
+    background: white;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 0.5cm;
+    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    font-family:IRANSansWeb;
+}
+
+    page[size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+        font-family: IRANSansWeb;
+    }
+
+        page[size="A4"][layout="landscape"] {
+            width: 29.7cm;
+            height: 21cm;
+            font-family: IRANSansWeb;
+        }
+
+    page[size="A3"] {
+        width: 29.7cm;
+        height: 42cm;
+        font-family: IRANSansWeb;
+    }
+
+        page[size="A3"][layout="landscape"] {
+            width: 42cm;
+            height: 29.7cm;
+            font-family: IRANSansWeb;
+        }
+
+    page[size="A5"] {
+        width: 14.8cm;
+        height: 21cm;
+        font-family: IRANSansWeb;
+    }
+
+        page[size="A5"][layout="landscape"] {
+            width: 21cm;
+            height: 14.8cm;
+            font-family: IRANSansWeb;
+        }
+
+@media print {
+    body, page {
+        margin: 0;
+        box-shadow: 0;
+        font-family: IRANSansWeb;
+    }
+}
+
+table.table {
+    width: 100%;
+}
+
+.table th, .table td {
+    text-align: left;
+    padding: 0.25em;
+}
+
+.table tr {
+    border-bottom: 1px solid #DDD;
+}
+
+td.edit-buttons {
+    text-align: right;
+}
+
+button {
+    border-radius: 3px;
+    border: none;
+    margin: 0 0.25em;
+    transition: all 0.3s;
+}
+
+    button:hover {
+        box-shadow: 0 0 4px rgba(3,3,3,0.8);
+        opacity: 0.9;
+    }
+
+    button.edit {
+        background: #6F9;
+    }
+
+    button.delete {
+        background: #F69;
+    }
+
+@media screen and (max-width: 800px) {
+    tr {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 0.5em 0;
+        border: 1px solid rgba(3,3,3,0.2);
+    }
+
+    td, th {
+        flex: 1 1 150px;
+        border: 0.5px solid rgba(3,3,3,0.2);
+    }
+
+        td.edit-buttons, td.empty {
+            /*flex: 1 0 90%;
+    text-align: center;*/
+        }
+}
+
+* {
+    box-model: border-box;
+    font-family: IRANSansWeb;
+}

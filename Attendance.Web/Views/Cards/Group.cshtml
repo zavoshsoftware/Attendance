@@ -1,0 +1,127 @@
+﻿@model CardGroupViewModel
+@{
+    ViewBag.Title = "دسته بندی";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    var j = 0;
+}
+
+
+
+
+<h2>ثبت دسته بندی  </h2>
+
+<div class="k-widget k-grid k-display-block" id="Grid" data-role="grid">
+    <div class="k-header k-grid-toolbar k-grid-top"><span class="font-medium k-button k-button-icontext ">دسته بندی</span></div>
+    <br />
+    <form>
+        <p>&nbsp;&nbsp;&nbsp; اطلاعات کارت</p>
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Card.Driver.FullName):
+                    @Html.DisplayFor(model => model.Card.Driver.FullName, new { @class = "form-control font-medium " })
+                </div>
+                <div class=" col-md-4">
+                    @Html.LabelFor(model => model.Card.Driver.NationalCode):
+                    @Html.DisplayFor(model => model.Card.Driver.NationalCode, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+            <br />
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Card.Driver.CellNumber):
+                    @Html.DisplayFor(model => model.Card.Driver.CellNumber, new { @class = "form-control font-medium " })
+                </div>
+                <div class=" col-md-4">
+                    @Html.LabelFor(model => model.Card.Driver.Father):
+                    @Html.DisplayFor(model => model.Card.Driver.Father, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="container">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Card.DisplayCode):
+                    @Html.DisplayFor(model => model.Card.DisplayCode, new { @class = "form-control font-medium " })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Card.Code):
+                    @Html.DisplayFor(model => model.Card.Code, new { @class = "form-control font-medium " })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="container">
+            <ul class="nav nav-tabs">
+                @for (int i = 0; i < Model.CardGroups.Count(); i++)
+                {
+                    <li class="@(i==0?"active":"")"><a data-toggle="tab" href="@($"#Item{i}")">@Model.CardGroups.ToArray()[i].Title</a></li>
+
+                }
+            </ul>
+
+            <div class="tab-content" style="margin-right:5px">
+                <br />
+                @foreach (var item in Model.CardGroups)
+                {
+                    var list = new SelectList(item.GroupItems.ToList(), "Id", "Title");
+                    <div id="@($"Item{j}")" class="tab-pane container fade in @(j == 0 ? "active" : "")">
+                        @Html.DropDownList($"{item.Id}", list, htmlAttributes: new { @class = "gpItems" })
+                    </div>
+                    j = j + 1;
+                }
+            </div>
+            <br />
+            <div class="form-group" id="buttons">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="ثبت" class="btn btn-primary font-medium" onclick="saveGroup()" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <br />
+
+</div>
+
+
+<script>
+   
+    function saveGroup() {
+        myList =[]
+        $('select.gpItems').each(function () {
+            var conceptval = $(this).find(":selected").val();
+            var conceptName = $(this).find(":selected").text();
+            console.log(myData);
+            console.log(myList);
+            var myData = {
+                GroupItemId: conceptval,
+                CardId: '@Html.Raw(Model.Card.Id)'
+            };
+            myList.push(myData);
+        
+        });
+        
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify(myList);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("/cards/Group", requestOptions)
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log(responseData);
+                toastr["success"](responseData.message)
+            })
+            .catch(error => console.warn(error));
+
+         
+    }
+</script>

@@ -5,95 +5,149 @@
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="container">
+    <h2>@ViewBag.Title</h2>
 
-<h3>آیا از حذف این مورد اطمینان دارید؟</h3>
-<div>    
-    <hr />
-    <div class="form-horizontal">        
-    
-         <div class="form-group">
-            @Html.LabelFor(model => model.Card.Code, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.Card.Code)
-      </div></div>
+    <h3>آیا از حذف این مورد اطمینان دارید؟</h3>
+    <div>
+        <hr />
+        <div class="form-horizontal">
 
-         <div class="form-group">
-            @Html.LabelFor(model => model.LoginDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.LoginDate)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.IsSuccess, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.IsSuccess)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.ExitDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.ExitDate)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.DriverName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.DriverName)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.DriverHelperName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.DriverHelperName)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.CarNumber, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.CarNumber)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.TotalLoad, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.TotalLoad)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.IsActive)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.CreationDate)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.LastModifiedDate)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.Description)
-      </div></div>
-
-  </div>  
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-       <div class="form-group" id="buttons">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="تایید حذف" class="btn btn-primary" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
+            <div class="form-group">
+                @Html.LabelFor(model => model.Car.Title, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.Car.Title)
+                </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Card.Code, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.Card.Code)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Driver.FirstName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.Driver.FirstName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LoginDate, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Model.LoginDate.ToShamsi('s')
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsSuccess, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.IsSuccess)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ExitDate, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Model.ExitDate.ToShamsi('s')
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.DriverName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CarNumber, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.CarNumber)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Load, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.Load)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalLoad, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.TotalLoad)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AssistanceName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.AssistanceName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AssistanceLastName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.AssistanceLastName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.AssistanceNationalCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.IsActive)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Model.CreationDate.ToShamsi('s')
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Model.LastModifiedDate.ToShamsi('s')
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium ">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+
         </div>
-    }
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group" id="buttons">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="تایید حذف" class="btn btn-primary font-medium" />
+                    @Html.ActionLink("بازگشت به فهرست", "Index")
+                </div>
+            </div>
+        }
+        <br />
+        <br />
+        <br />
+    </div>
+
 </div>

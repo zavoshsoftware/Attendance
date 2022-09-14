@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Attendance.Models.Entities.CardGroupItem>
+
+@{
+    ViewBag.Title = "فهرست ";
+
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  { 
+                  columns.Bound(item => @item.Id).Title("گروه").Filterable(false).Groupable(false)
+                      .Template(@<a href="/cardgroups/index?id=@item.GroupId">	@item.Group.Title</a>).Width(200);
+        columns.Bound(model => model.Title);
+        columns.Bound(model => model.IsActive);
+        columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.ActionLink("مشاهده کارت ها", "GroupItemCards", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									</text>).Width(200);
+                  })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Action("Create","CardGroupItems",new { groupId = ViewBag.GroupId }).Text("افزودن"); 
+        }
+        )
+        .DataSource(dataSource => dataSource
+                                    .Server()
+
+                                    .Model(model => model.Id(item => item.Id))
+                    )
+    )

@@ -21,6 +21,7 @@ namespace Attendance.Models.Entities
         [MaxLength(100, ErrorMessage = "مقدار {0} نباید بیشتر از {1} باشد")]
         public string Brand { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         [Display(Name = "وزن")]
         public decimal Weight { get; set; }
 

@@ -106,7 +106,12 @@
                 </section>
             </section>
         </section>
-    </section> 
+    </section>
+
+    <audio controls="controls" hidden id="ding"> 
+        <source src="~/Files/ding.mp3" type="audio/mpeg" />
+    </audio>
+     
     @*<script src="~/Scripts/jquery-3.4.1.js" type="text/javascript">window.rootUrl = '@Url.Content("~/")';</script>*@
     <script src="~/Scripts/toastr.js"></script>
     @if (TempData["Toastr"] != null)
@@ -143,6 +148,12 @@
                 $('#productLi').addClass('active');
             }
 
+            toastEl = $('.toast-message')
+
+            if (toastEl != null) {
+                toastEl.attr('style', 'bottom: 12px;left: 12px;')
+            }
+
             else if (URL.includes('/Orders')) {
                 $('.menuitem').removeClass('active');
                 $('#orderLi').addClass('active');
@@ -168,7 +179,26 @@
                 $('.menuitem').removeClass('active');
                 $('#colorLi').addClass('active');
             }
+
+            $(":input").on("keyup change", function (e) {
+                $(e.target).val(toEnglishNumber(e.target.value))
+            })
+
         });
+
+        function toEnglishNumber(strNum) {
+            var pn = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+            var en = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+            var an = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+            var cache = strNum;
+            for (var i = 0; i < 10; i++) {
+                var regex_fa = new RegExp(pn[i], 'g');
+                var regex_ar = new RegExp(an[i], 'g');
+                cache = cache.replace(regex_fa, en[i]);
+                cache = cache.replace(regex_ar, en[i]);
+            }
+            return cache;
+        }
     </script>
 
     @RenderSection("scripts", required: false)

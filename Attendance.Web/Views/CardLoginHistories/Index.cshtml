@@ -4,6 +4,8 @@
     ViewBag.Title = "فهرست ";
 
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+    string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -12,26 +14,39 @@
       .Name("Grid")
       .Columns(columns =>
       {
-      columns.Bound(model => model.Card.DisplayCode).Width(200);
-      columns.Bound(model => model.Driver.FullName).Width(200);
-      columns.Bound(item => @item.Id).Title("تاریخ ورود").Filterable(false).Groupable(false)
+      columns.Bound(model => model.Card.DisplayCode).Width(200); 
+           	columns.Bound(item => @item.Card.Driver.FullName).Title("سرکارت(نام)").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.Card.Driver.FullName</text>).Width(200);     
+      columns.Bound(item => @item.Driver.FullName).Title("سرکارت(کدملی)").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.Card.Driver.NationalCode</text>).Width(200);
+
+      columns.Bound(item => @item.Driver.FullName).Title("(نام)").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.Driver.FullName</text>).Width(200);     
+      columns.Bound(item => @item.Driver.FullName).Title("(کدملی)").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.Driver.NationalCode</text>).Width(200);
+      columns.Bound(model => model.Car.Number).Width(200); 
+      columns.Bound(item => @item.LoginDate).Title("تاریخ ورود")
                     .Template(@<text>
 									@item.LoginDate.ToShamsi('s')
 									</text>).Width(200);
 
 
-        columns.Bound(item => @item.Id).Title("تاریخ خروج").Filterable(false).Groupable(false)
+        columns.Bound(item => @item.ExitDate).Title("تاریخ خروج")
 							.Template(@<text>
 									@(item.ExitDate.ToShamsi().Equals("")?"خارج نشده":item.ExitDate.ToShamsi('s'))
 									</text>).Width(200);
 	    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
-									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("جزییات", "LoginHistoryDetials", "Cards", new { id = @item.Id }, new { @class = "k-button" })
+
+                                @if (role == "SuperAdmin" || role == "Admin")
+		{
+									@Html.ActionLink("حذف", "Delete", new { id = @item.Id }, new { @class = "k-button" })}
 									</text>).Width(200);
-                  })
+      })
         .ToolBar(toolbar =>
         {
-
+            toolbar.Custom()/*.Action("print", "cardloginhistories",new { cardId = ViewBag.CardId, driverId = ViewBag.DriverId })*/.HtmlAttributes(new { @class = "font-medium", @onclick = "PrintElem(this)" }).Text("چاپ");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
@@ -43,3 +58,24 @@
                                     .Model(model => model.Id(item => item.Id))
                     )
 	)
+
+<script>
+    function PrintElem(elem) {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html dir = "rtl"><head><title>' + document.title + '</title>');
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById('Grid').innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+</script>

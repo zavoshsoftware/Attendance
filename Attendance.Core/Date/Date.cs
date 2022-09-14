@@ -24,6 +24,9 @@ using System.Threading.Tasks;
            case 's':
                 result = string.Format("{0}/{1}/{2}-{3}:{4}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d), pc.GetHour(d).ToString("00"), pc.GetMinute(d).ToString("00"));
                 break;
+           case 'e':
+                result = string.Format("{0}/{1}/{2}-{3}:{4}:{5}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d), pc.GetHour(d).ToString("00"), pc.GetMinute(d).ToString("00"), pc.GetSecond(d).ToString("00"));
+                break;
 
         }
         return result;
@@ -43,6 +46,14 @@ using System.Threading.Tasks;
         DayOfWeeks.Add("en", new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Thursday", "Wednesday", "Friday" });
         DayOfWeeks.Add("fa", new string[] { "شنبه", "یک شنبه", "دو شنبه", "سه شنبه", "چهار شنبه", "پنج شنبه", "جمعه" });
         return DayOfWeeks["fa"][DayOfWeekReformat((int)date.DayOfWeek)];
+    }
+
+    public static DateTime ToMiladi(this string shamsi)
+    {
+        PersianCalendar persianCalendar = new PersianCalendar();
+        int[] date = shamsi.Split('/').Select(s=>int.Parse(s)).ToArray();
+        DateTime dt = new DateTime(date[0], date[1], date[2], persianCalendar);
+        return dt;
     }
 
     public static int DayOfWeekReformat(this int day)
