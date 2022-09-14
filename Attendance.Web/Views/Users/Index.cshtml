@@ -1,24 +1,24 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.User>
 
 @{
-ViewBag.Title = "فهرست کاربران";
-    
+    ViewBag.Title = "فهرست کاربران";
+
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
-        @(Html.Kendo().Grid(Model)
+@(Html.Kendo().Grid(Model)
               .Name("Grid")
               .Columns(columns =>
                   {
                               columns.Bound(model => model.CellNum);
-        columns.Bound(model => model.Password);
         columns.Bound(model => model.FullName);
         columns.Bound(model => model.Email);
         columns.Bound(model => model.SecurityRole);
         columns.Bound(model => model.IsActive);
-        columns.Bound(model => model.CreationDate);
+            columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
@@ -27,8 +27,8 @@ ViewBag.Title = "فهرست کاربران";
                   })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","Users").Text("افزودن");
-            toolbar.Custom().Action("Export", "Users").Text("خروجی اکسل");
+            toolbar.Custom().Action("Create","Users").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
+            toolbar.Custom().Action("Export", "Users").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

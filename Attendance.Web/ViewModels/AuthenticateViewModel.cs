@@ -28,7 +28,7 @@ public class AuthenticateViewModel
     
     [Display(Name = "کدملی")]
     public string DriverNatCode { get; set; }
-
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
     [Display(Name = "بار")]
     public decimal Load { get; set; }
 
@@ -39,12 +39,15 @@ public class AuthenticateViewModel
     
     [Display(Name = "نوع")]
     public string Type { get; set; }
+    
+    [Display(Name = "خطا")]
+    public bool Err { get; set; }
 
     
     [Display(Name = "برند")]
     public string Brand { get; set; }
 
-    
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
     [Display(Name = "وزن")]
     public decimal Weight { get; set; }
 

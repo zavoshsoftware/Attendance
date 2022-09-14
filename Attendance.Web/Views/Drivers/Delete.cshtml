@@ -1,75 +1,94 @@
 ﻿@model Attendance.Models.Entities.Driver
-
+@using Attendance.Core.Enums
 @{
     ViewBag.Title = "حذف " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="container">
+    <h2>@ViewBag.Title</h2>
 
-<h3>آیا از حذف این مورد اطمینان دارید؟</h3>
-<div>    
-    <hr />
-    <div class="form-horizontal">        
-    
-         <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.FirstName)
-      </div></div>
-        
-         <div class="form-group">
-            @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.LastName)
-      </div></div>
+    <h3>آیا از حذف این مورد اطمینان دارید؟</h3>
+    <div>
+        <hr />
+        <div class="form-horizontal">
 
-         <div class="form-group">
-            @Html.LabelFor(model => model.CellNumber, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.CellNumber)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.IsActive)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.CreationDate)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.LastModifiedDate)
-      </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.Description)
-      </div></div>
-        
-         <div class="form-group">
-            @Html.LabelFor(model => model.NationalCode, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.NationalCode)
-      </div></div>
-
-  </div>  
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-       <div class="form-group" id="buttons">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="تایید حذف" class="btn btn-primary" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Html.DisplayFor(model => model.FirstName)
+                </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Html.DisplayFor(model => model.LastName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CellNumber, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Html.DisplayFor(model => model.CellNumber)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverType, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Model.DriverType.GetDisplayName()
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Html.DisplayFor(model => model.IsActive)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Model.CreationDate.ToShamsi('s')
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Model.LastModifiedDate.ToShamsi('s')
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NationalCode, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 font-medium">
+                    @Html.DisplayFor(model => model.NationalCode)
+                </div>
+            </div>
+
         </div>
-    }
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group" id="buttons">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="تایید حذف" class="btn btn-primary font-medium" />
+                    @Html.ActionLink("بازگشت به فهرست", "Index")
+                </div>
+            </div>
+        }
+    </div>
+
 </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,9 +11,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Attendance.Core.Code;
 using Attendance.Core.Data;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.Services.Errors;
 using ExcelDataReader;
 
 namespace Attendance.Web.Controllers
@@ -20,7 +23,12 @@ namespace Attendance.Web.Controllers
     public class DriversController : Controller
     {
         private DatabaseContext db = new DatabaseContext();
-
+        private IErrorService _errors;
+        public DriversController()
+        {
+            _errors = new ErrorService();
+            
+        }
         // GET: Drivers
         public ActionResult Index()
         {
@@ -53,13 +61,13 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Driver driver)
+        public ActionResult Create(Driver driver, string BirthDateShamsi)
         {
             if (ModelState.IsValid)
             {
                 driver.IsDeleted = false;
                 driver.CreationDate = DateTime.Now;
-
+                driver.BirthDate = BirthDateShamsi.ToMiladi();
                 driver.Id = Guid.NewGuid();
                 db.Drivers.Add(driver);
                 db.SaveChanges();
@@ -89,12 +97,13 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Driver driver)
+        public ActionResult Edit(Driver driver, string BirthDateShamsi)
         {
             if (ModelState.IsValid)
             {
                 driver.IsDeleted = false;
                 driver.LastModifiedDate = DateTime.Now;
+                driver.BirthDate = BirthDateShamsi.ToMiladi(); ;
                 db.Entry(driver).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -121,13 +130,28 @@ namespace Attendance.Web.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
-        {
-            Driver driver = db.Drivers.Find(id);
-            driver.IsDeleted = true;
-            driver.DeletionDate = DateTime.Now;
-
-            db.SaveChanges();
-            return RedirectToAction("Index");
+        { 
+                Driver driver = db.Drivers.Find(id);
+            try
+            {
+                driver.IsDeleted = true;
+                driver.DeletionDate = DateTime.Now;
+                db.Entry(driver).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (DbEntityValidationException e)
+            { 
+               string errors= _errors.HandleError(e,Debugger.Info());
+                //TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = $"خطایی پیش آمده{errors}" }; 
+            }
+            finally
+            {
+                db.Drivers.Remove(driver);
+                db.SaveChanges();
+                TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            }
+                return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -179,6 +203,7 @@ namespace Attendance.Web.Controllers
                             LastName = excelReader[1].ToString(),
                             CellNumber = excelReader[2].ToString(),
                             NationalCode = excelReader[3].ToString(),
+                            BirthDate = excelReader[4]?.ToString()?.ToMiladi()??null,
                             CreationDate = DateTime.Now,
                             IsActive = true
                         };
@@ -218,31 +243,31 @@ namespace Attendance.Web.Controllers
                     Mobile = c.CellNumber,
                     NationalCode = c.NationalCode,
                     IsActive = c.IsActive ? "فعال" : "غیرفعال",
-                    CreateDate = c.CreationDate.ToShamsi('s'),
-                    UpdateDate = c.CreationDate.ToShamsi('s'),
+                    CreateDate = c.CreationDate.ToShamsi('s'),  
+                    BirthDate = c.BirthDate.ToShamsi('a'),
                     Description = c.Description
                 }).ToList().ToDataTable();
             dt.TableName = "اکسل رانندگان";
             var grid = new GridView();
             grid.DataSource = dt;
             grid.DataBind();
-
+             
             Response.Clear();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
-            Response.Charset = "";
-            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("content-disposition", $"attachment;filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
 
-            Response.Charset = "";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Web.UI.HtmlTextWriter hw = new HtmlTextWriter(sw);
 
-            grid.RenderControl(htw);
+            grid.RenderControl(hw);
 
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            Response.Output.Write(sw.ToString());
-            Response.Flush();
-            Response.End(); 
+            Response.Write(sw.ToString());
+            Response.End();
+
+          
             return RedirectToAction("Index");
         }
 

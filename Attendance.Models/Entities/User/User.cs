@@ -34,10 +34,14 @@ namespace Attendance.Models.Entities
 
         [Display(Name = "ایمیل")]
         public string Email { get; set; }
+        
+        [Display(Name = "تاریخ تولد")]
+        public DateTime BirthDate { get; set; }
 
         [Display(Name = "نقش")]
         public string SecurityRole { get; set; }
 
         public virtual ICollection<UserLogin> UserLogins { get; set; }
+        public virtual ICollection<SystemLog> SystemLogs { get; set; }
     }
 }

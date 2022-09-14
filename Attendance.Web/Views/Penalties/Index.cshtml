@@ -13,26 +13,27 @@
               .Columns(columns =>
                   {
         columns.Bound(model => model.Card.Code);
-        columns.Bound(model => model.Reason); 
+        columns.Bound(model => model.Reason);
 		columns.Bound(item => @item.PenaltyType).Template(@<text>	@item.PenaltyType.GetDisplayName()</text>).Width(200);
-        columns.Bound(model => model.Solved);
+                  columns.Bound(item => @item.Solved).Filterable(false).Groupable(false)
+                      .Template(@<text>	@(item.Solved?"رفع توقیق شده است":" توقیف شده است")</text>).Width(200);
         columns.Bound(model => model.IsActive);
-        columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
+        columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("رفع توقیف", "Cancel", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-		})
-		.ToolBar(toolbar =>
-					{ 
-						toolbar.Custom().Action("Export","Penalties").Text("خروجی اکسل");
-					}
-		)
-		.DataSource(dataSource => dataSource
-									.Server()
+                  })
+        .ToolBar(toolbar =>
+        {
+            //toolbar.Custom().Action("Export","Penalties").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+        }
+        )
+        .DataSource(dataSource => dataSource
+                                    .Server()
 
-									.Model(model => model.Id(item => item.Id))
-					)
+                                    .Model(model => model.Id(item => item.Id))
+                    )
 	)

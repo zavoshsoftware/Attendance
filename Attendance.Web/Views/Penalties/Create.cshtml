@@ -3,9 +3,10 @@
 @{
     ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    Model.IsActive = true;
 }
 
-<h2>افزودن @Html.DisplayNameFor(model => model)</h2>
+<h2>ثبت توقیفی @Html.DisplayNameFor(model => model)</h2>
 
 @using (Html.BeginForm("Create", "Penalties", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -18,16 +19,16 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CardId, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("CardId", String.Empty)
+                    @Html.DropDownList("CardId")
                     @Html.ValidationMessageFor(model => model.CardId)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Reason, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.ReasonId, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Reason)
-                    @Html.ValidationMessageFor(model => model.Reason)
+                    @Html.DropDownList("ReasonId")
+                    @Html.ValidationMessageFor(model => model.ReasonId)
                 </div>
             </div>
 
@@ -40,16 +41,16 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Solved)
-
-                </div>
+            @*<div class="form-group">
+            <div class="col-md-2">
             </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Solved)
 
-            <div class="form-group">
+            </div>
+        </div>*@
+
+            <div class="form-group" hidden>
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-10">

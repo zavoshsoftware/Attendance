@@ -174,11 +174,12 @@ namespace Attendance.Web.Controllers
 
         public ActionResult Export()
         {
-            var dt = db.CarTypes.Include(c => c.Cars).Where(c => !c.IsDeleted).ToList().Select(c =>
+            var dt = db.Users.Where(c => !c.IsDeleted).ToList().Select(c =>
                 new {
-                    Title = c.Title,
-                    Brand = c.Brand,
-                    Weight = c.Weight,
+                    Title = c.FullName,
+                    PhoneNumber = c.CellNum,
+                    Email = c.Email,
+                    Role = c.SecurityRole,  
                     IsActive = c.IsActive ? "فعال" : "غیرفعال",
                     CreateDate = c.CreationDate.ToShamsi('s'),
                     UpdateDate = c.CreationDate.ToShamsi('s'),
@@ -191,7 +192,7 @@ namespace Attendance.Web.Controllers
 
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
             Response.ContentType = "application/ms-excel";
 
             Response.Charset = "";

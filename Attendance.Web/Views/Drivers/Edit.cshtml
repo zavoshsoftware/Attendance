@@ -12,8 +12,6 @@
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-
-
     <hr />
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.Id)
@@ -32,6 +30,12 @@
             @Html.EditorFor(model => model.LastName)
 
             @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.BirthDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="text" id="BirthDateShamsi" class="k-textbox" name="BirthDateShamsi" value="@(Model.BirthDate.HasValue?Model.BirthDate.ToShamsi('a'):DateTime.Now.ToShamsi('a'))" onclick="PersianDatePicker.Show(this,'@Model.BirthDate.ToShamsi('a')');" />
         </div>
     </div>
 
@@ -62,6 +66,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.DriverType, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.DriverType)
+
+                @Html.ValidationMessageFor(model => model.DriverType)
+            </div>
+        </div>
+        <div class="form-group">
             @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.IsActive)
@@ -80,7 +92,7 @@
 
         <div class="form-group" id="buttons">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="ثبت" class="btn btn-primary" />
+                <input type="submit" value="ثبت" class="btn btn-primary font-medium" />
                 @Html.ActionLink("بازگشت به فهرست", "Index")
             </div>
         </div>

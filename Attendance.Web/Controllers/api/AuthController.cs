@@ -24,17 +24,44 @@ namespace Attendance.Web.Controllers.api
         public IHttpActionResult Authenticate(string id)
         {
             var today= System.DateTime.Now.ToString("dddd"); ;
-            var card = db.Cards.Include(c=>c.Driver).FirstOrDefault(s => s.Code == id && s.IsActive);
-                var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
+            var card = db.Cards.Include(c=>c.Driver).Include(c=>c.CardLoginHistories).FirstOrDefault(s => s.Code == id && s.IsActive);
+            List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
+            
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
             if (card!=null)
             {
-                var logined = card.CardLoginHistories.FirstOrDefault(c => !c.ExitDate.HasValue);
-                if (logined!=null)
+                if (!card.Driver.IsActive)
                 {
-                    hubContext.Clients.All.Alarm(logined.Id, $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.");
-                } 
-                if (db.Cards.Any(s =>((Attendance.Core.Enums.WeekDays)s.Day).ToString() == today))
-                { 
+                    // چنانچه فردی را در قسمت رانندگان غیر فعال کردیم علت درج شود و چنانچه کارت در قسمت کنترل ورود و خروج ثبت شد سیستم اخطار دهد که این فرد به دلیلی که قید شده مجاز به تردد نمی باشد و فرد راننده باید تغییر کند یا از حالت غیر فعال خارج شود
+                    var message = $"{card.Driver.FullName} به دلیل '{card.Driver.Description}' مجاز به تردد نمی باشد. با مدیر سیستم در ارتباط باشید.";
+                    hubContext.Clients.All.Alarm(null, message);
+                    return Ok(new CustomResponseViewModel()
+                    {
+                        Extra = "",
+                        Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
+                        Ok = false
+                    });
+                }
+
+                var logined = card.CardLoginHistories.FirstOrDefault(c => !c.ExitDate.HasValue);
+                if (logined!=null) hubContext.Clients.All.Alarm(logined.Id, $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.");
+
+
+                if (card.Day.ToString() == today)
+                {
+                    if (card.Driver.BirthDate.HasValue && (DateTime.Now - card.Driver.BirthDate.Value).TotalDays< (365 * 18))
+                    {
+                        var message = $"سن غیرمجاز، سن صاحب کارت زیر 18 سال است. سن صاحب کارت ({Convert.ToInt32((DateTime.Now - card.Driver.BirthDate.Value).TotalDays/365)})";
+                        hubContext.Clients.All.Alarm(null, message);
+                        return Ok(new CustomResponseViewModel()
+                        {
+                            Extra = "",
+                            Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
+                            Ok = false
+                        });
+                    }
+
+                     
                     hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
                         null, $"با کد {card.DisplayCode} اجازه ورود دارد",card.Code);
                     return Ok(new CustomResponseViewModel()

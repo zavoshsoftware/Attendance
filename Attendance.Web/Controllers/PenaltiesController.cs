@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Attendance.Core.Data;
+using Attendance.Core.Entity;
 using Attendance.Models;
 using Attendance.Models.Entities;
 using Helpers;
@@ -21,10 +22,23 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: Penalties
-        public ActionResult Index()
+        public ActionResult Index(Guid? driverId,Guid? cardId)
         {
-            var penalties = db.Penalties.Include(p => p.Card).Where(p=>p.IsDeleted==false).OrderByDescending(p=>p.CreationDate);
-            return View(penalties.ToList());
+            if (driverId.HasValue)
+            { 
+                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && !p.Solved && p.Card.DriverId == driverId).OrderByDescending(p => p.CreationDate);
+                return View(penalties.ToList());
+            }
+            else if (cardId.HasValue)
+            {
+                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && !p.Solved && p.CardId == cardId).OrderByDescending(p => p.CreationDate);
+                return View(penalties.ToList());
+            }
+            else
+            {
+                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && !p.Solved).OrderByDescending(p => p.CreationDate);
+                return View(penalties.ToList());
+            }
         }
 
         // GET: Penalties/Details/5
@@ -43,10 +57,21 @@ namespace Attendance.Web.Controllers
         }
 
         // GET: Penalties/Create
-        public ActionResult Create()
+        public ActionResult Create(Guid? cardId)
         {
-            ViewBag.CardId = new SelectList(db.Cards, "Id", "Code");
-            return View();
+            if (cardId.HasValue)
+            {
+                var card = db.Cards.Find(cardId);
+                ViewBag.CardId = new SelectList(db.Cards.Where(c => !c.IsDeleted), "Id", "Code",card); 
+                ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title");
+            }
+            else
+            {
+
+            ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted), "Id", "Code");
+            ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c=>!c.IsDeleted), "Id", "Title");
+            }
+            return View(new Penalty() { });
         }
 
         // POST: Penalties/Create
@@ -68,6 +93,7 @@ namespace Attendance.Web.Controllers
             }
 
             ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted && !c.IsHidden), "Id", "DisplayCode", penalty.CardId);
+            ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title");
             return View(penalty);
         }
 
@@ -84,6 +110,7 @@ namespace Attendance.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.CardId = new SelectList(db.Cards, "Id", "Code", penalty.CardId);
+            ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title",penalty.ReasonId);
             return View(penalty);
         }
 
@@ -103,6 +130,7 @@ namespace Attendance.Web.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.CardId = new SelectList(db.Cards, "Id", "Code", penalty.CardId);
+            ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title", penalty.ReasonId);
             return View(penalty);
         }
 
@@ -175,7 +203,7 @@ namespace Attendance.Web.Controllers
 
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('s')}.xls");
+            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
             Response.ContentType = "application/ms-excel";
 
             Response.Charset = "";

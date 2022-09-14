@@ -1,0 +1,173 @@
+﻿@model Attendance.Models.Entities.CardLoginHistory
+@using Attendance.Core.Enums;
+@{
+    ViewBag.Title = $"جزئیات کارت شماره {Model.Card.DisplayCode}";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+<form action="/cards/submitform" method="post">
+    <div class="row">
+
+        <br />
+
+        <div class="col-md-6">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات کارت</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Card.DisplayCode, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Card.DisplayCode, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Card.Code, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Card.Code, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Card.Day, new { @class = "control-label" })
+                            @Model.Card.Day.GetDisplayName()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">تاریخ</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.Label("تاریخ", new { @class = "control-label" })
+                            @Html.Label($"{DateTime.Now.ToShamsi('s')}")
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("تاریخ(میلادی)", new { @class = "control-label" })
+                            @Html.Label($"{DateTime.UtcNow.ToString("MM/dd/yyyy-HH:mm:ss")}")
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("روز", new { @class = "control-label" })
+                            @Html.Label($"{Date.DayName(DateTime.Now)}")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات راننده</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Driver.FirstName, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Driver.FirstName, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Driver.LastName, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Driver.FirstName, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Driver.NationalCode, new { @id = "DriverFullName" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات کمک راننده</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssistanceName, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.AssistanceName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssistanceLastName, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.AssistanceLastName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.AssistanceNationalCode)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات خودرو</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Car.Title, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Car.Title)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Car.Number, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Car.Number)
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("نوع ماشین", new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Car.CarType.Title)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات بار</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Car.CarType.Weight, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Car.CarType.Weight, new { @class = "form-control  input-lg" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Load, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Load, new { @class = "form-control  input-lg" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TotalLoad, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.TotalLoad, new { @class = "form-control  input-lg" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">اطلاعات بار</h3>
+                </div>
+                <div class="panel-body">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                    @Html.DisplayFor(model => model.Description, new { @class = "form-control  input-lg" })
+                </div> 
+            </div>
+        </div> 
+    </div>
+</form>
+
+
+
