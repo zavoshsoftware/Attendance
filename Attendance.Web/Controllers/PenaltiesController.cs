@@ -23,7 +23,7 @@ namespace Attendance.Web.Controllers
         // GET: Penalties
         public ActionResult Index()
         {
-            var penalties = db.Penalties.Include(p => p.Card).Where(p=>p.IsDeleted==false && !p.Solved).OrderByDescending(p=>p.CreationDate);
+            var penalties = db.Penalties.Include(p => p.Card).Where(p=>p.IsDeleted==false).OrderByDescending(p=>p.CreationDate);
             return View(penalties.ToList());
         }
 

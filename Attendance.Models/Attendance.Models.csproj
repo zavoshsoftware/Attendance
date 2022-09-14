@@ -126,9 +126,9 @@
     <Compile Include="Migrations\202208171434479_V16.Designer.cs">
       <DependentUpon>202208171434479_V16.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202208240857279_v17.cs" />
-    <Compile Include="Migrations\202208240857279_v17.Designer.cs">
-      <DependentUpon>202208240857279_v17.cs</DependentUpon>
+    <Compile Include="Migrations\202208201431539_V17.cs" />
+    <Compile Include="Migrations\202208201431539_V17.Designer.cs">
+      <DependentUpon>202208201431539_V17.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\202208240903486_v18.cs" />
     <Compile Include="Migrations\202208240903486_v18.Designer.cs">
@@ -137,10 +137,6 @@
     <Compile Include="Migrations\202208240913109_v19.cs" />
     <Compile Include="Migrations\202208240913109_v19.Designer.cs">
       <DependentUpon>202208240913109_v19.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208270651427_v20.cs" />
-    <Compile Include="Migrations\202208270651427_v20.Designer.cs">
-      <DependentUpon>202208270651427_v20.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\202208271008388_v21.cs" />
     <Compile Include="Migrations\202208271008388_v21.Designer.cs">
@@ -216,17 +212,14 @@
     <EmbeddedResource Include="Migrations\202208171434479_V16.resx">
       <DependentUpon>202208171434479_V16.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208240857279_v17.resx">
-      <DependentUpon>202208240857279_v17.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208201431539_V17.resx">
+      <DependentUpon>202208201431539_V17.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208240903486_v18.resx">
       <DependentUpon>202208240903486_v18.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208240913109_v19.resx">
       <DependentUpon>202208240913109_v19.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208270651427_v20.resx">
-      <DependentUpon>202208270651427_v20.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208271008388_v21.resx">
       <DependentUpon>202208271008388_v21.cs</DependentUpon>
