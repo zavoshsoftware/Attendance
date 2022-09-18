@@ -738,6 +738,7 @@
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\CardGroupViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
+    <Compile Include="ViewModels\DriverInfoViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
   </ItemGroup>

@@ -207,8 +207,8 @@ namespace Attendance.Web.Controllers
                             CreationDate = DateTime.Now,
                             IsActive = true
                         };
-
-                        if (!db.Drivers.Any(d=>d.NationalCode.Trim() == obj.NationalCode.ConvertDigit().Trim()))
+                        var nationalCode = obj.NationalCode.ConvertDigit().Trim();
+                        if (!db.Drivers.Any(d=>d.NationalCode.Trim() == nationalCode))
                         {
                             list.Add(obj);
                         }
@@ -224,7 +224,7 @@ namespace Attendance.Web.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Toastr"] = new ToastrViewModel() { Class = "danger", Text = ex.Message };
+                TempData["error"] = ex.Message;
                 ViewBag.Message = ex;
                 return RedirectToAction("import");
             }
