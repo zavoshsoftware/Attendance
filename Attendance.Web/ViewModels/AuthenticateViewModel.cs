@@ -43,7 +43,8 @@ public class AuthenticateViewModel
     [Display(Name = "خطا")]
     public bool Err { get; set; }
 
-    
+    public string ErrMessage { get; set; }
+
     [Display(Name = "برند")]
     public string Brand { get; set; }
 

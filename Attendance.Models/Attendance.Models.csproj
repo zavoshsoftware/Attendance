@@ -54,15 +54,18 @@
     <Compile Include="Entities\Card\CardGroup.cs" />
     <Compile Include="Entities\Card\CardGroupItem.cs" />
     <Compile Include="Entities\Card\CardGroupItemCard.cs" />
+    <Compile Include="Entities\CarType\CarTypeStatusHistory.cs" />
+    <Compile Include="Entities\Car\CarStatusHistory.cs" />
+    <Compile Include="Entities\Driver\DriverStatusHistory.cs" />
     <Compile Include="Entities\Penalty\PenaltyReason.cs" />
     <Compile Include="Entities\System\BaseEntity.cs" />
     <Compile Include="Entities\Car\Car.cs" />
     <Compile Include="Entities\Card\Card.cs" />
     <Compile Include="Entities\Card\CardStatusHistory.cs" />
     <Compile Include="Entities\Card\CardLoginHistory.cs" />
-    <Compile Include="Entities\Car\CarType.cs" />
+    <Compile Include="Entities\CarType\CarType.cs" />
     <Compile Include="Entities\System\Config.cs" />
-    <Compile Include="Entities\Driver.cs" />
+    <Compile Include="Entities\Driver\Driver.cs" />
     <Compile Include="Entities\System\SystemLog.cs" />
     <Compile Include="Entities\System\ExceptionLoggers.cs" />
     <Compile Include="Entities\Penalty\Penalty.cs" />
@@ -133,9 +136,9 @@
     <Compile Include="Migrations\202208171434479_V16.Designer.cs">
       <DependentUpon>202208171434479_V16.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202208201431539_V17.cs" />
-    <Compile Include="Migrations\202208201431539_V17.Designer.cs">
-      <DependentUpon>202208201431539_V17.cs</DependentUpon>
+    <Compile Include="Migrations\202208240857279_v17.cs" />
+    <Compile Include="Migrations\202208240857279_v17.Designer.cs">
+      <DependentUpon>202208240857279_v17.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\202208240903486_v18.cs" />
     <Compile Include="Migrations\202208240903486_v18.Designer.cs">
@@ -196,6 +199,26 @@
     <Compile Include="Migrations\202209131446111_V33.cs" />
     <Compile Include="Migrations\202209131446111_V33.Designer.cs">
       <DependentUpon>202209131446111_V33.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209180523355_V34.cs" />
+    <Compile Include="Migrations\202209180523355_V34.Designer.cs">
+      <DependentUpon>202209180523355_V34.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209180725275_V35.cs" />
+    <Compile Include="Migrations\202209180725275_V35.Designer.cs">
+      <DependentUpon>202209180725275_V35.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209180731003_V36.cs" />
+    <Compile Include="Migrations\202209180731003_V36.Designer.cs">
+      <DependentUpon>202209180731003_V36.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209180816382_V37.cs" />
+    <Compile Include="Migrations\202209180816382_V37.Designer.cs">
+      <DependentUpon>202209180816382_V37.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209181116164_V38.cs" />
+    <Compile Include="Migrations\202209181116164_V38.Designer.cs">
+      <DependentUpon>202209181116164_V38.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -259,8 +282,8 @@
     <EmbeddedResource Include="Migrations\202208171434479_V16.resx">
       <DependentUpon>202208171434479_V16.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208201431539_V17.resx">
-      <DependentUpon>202208201431539_V17.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208240857279_v17.resx">
+      <DependentUpon>202208240857279_v17.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208240903486_v18.resx">
       <DependentUpon>202208240903486_v18.cs</DependentUpon>
@@ -306,6 +329,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209131446111_V33.resx">
       <DependentUpon>202209131446111_V33.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209180523355_V34.resx">
+      <DependentUpon>202209180523355_V34.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209180725275_V35.resx">
+      <DependentUpon>202209180725275_V35.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209180731003_V36.resx">
+      <DependentUpon>202209180731003_V36.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209180816382_V37.resx">
+      <DependentUpon>202209180816382_V37.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209181116164_V38.resx">
+      <DependentUpon>202209181116164_V38.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

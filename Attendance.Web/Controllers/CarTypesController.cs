@@ -173,5 +173,51 @@ namespace Attendance.Web.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public ActionResult Status(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var carType = db.CarTypes.Find(id);
+            if (carType == null)
+            {
+                return HttpNotFound();
+            }
+            var status = new CarTypeStatusHistory()
+            {
+                CarTypeId = id,
+                CarType = carType
+            };
+            return View(status);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Status(CarTypeStatusHistory status)
+        {
+            var carType = db.CarTypes.Find(status.CarTypeId);
+            var current = new CarTypeStatusHistory()
+            {
+                Id = Guid.NewGuid(),
+                CarType = carType,
+                CarTypeId = status.CarTypeId,
+                Description = status.Description,
+                PreviousStatus = carType.IsActive,
+                CurrentStatus = !carType.IsActive,
+                IsActive = true,
+                CreationDate = DateTime.Now
+            };
+            carType.IsActive = !carType.IsActive;
+            carType.Description = status.Description;
+            db.Entry(current).State = EntityState.Added;
+            db.Entry(carType).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("index");
+        }
+
+
+
     }
 }

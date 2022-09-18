@@ -13,6 +13,7 @@ using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using ClosedXML.Excel;
 
 namespace Attendance.Web.Controllers
 {
@@ -92,7 +93,7 @@ namespace Attendance.Web.Controllers
                 }
 
                 card.Id = Guid.NewGuid();
-                if (!db.Cards.Any(c => c.Driver.NationalCode.Trim() == driver.NationalCode.Trim()))
+                if (!db.Cards.Any(c => c.Driver.NationalCode.Trim() == driver.NationalCode.Trim() && !c.IsDeleted))
                 {
                     db.Cards.Add(card);
                     db.SaveChanges();
@@ -229,7 +230,8 @@ namespace Attendance.Web.Controllers
             {
                 Type = type?.Title??"",
                 Weight = type?.Weight??decimal.Zero,
-                Err = car.IsActive && type.IsActive?false : true 
+                Err = car.IsActive && type.IsActive?false : true ,
+                ErrMessage = car.IsActive? type.Description:car.Description
             });
         }
 
@@ -270,19 +272,28 @@ namespace Attendance.Web.Controllers
 
             //Car is exist? should be exist
             var carId = Guid.Parse(model.Pleck);
-            var car = db.Cars.FirstOrDefault(c => c.Id == carId);
+            var car = db.Cars.Include(s=>s.CarType).FirstOrDefault(c => c.Id == carId);
             cardLoginHistory.Car = car;
             cardLoginHistory.CarId = carId;
 
-            cardLoginHistory.AssistanceLastName = model.AssistanceLastName;
-            cardLoginHistory.AssistanceName = model.AssistanceName;
-            cardLoginHistory.AssistanceNationalCode = model.AssistanceNationalCode;
+           
+            var assistId = Guid.Parse(model.DriverNatCode.Trim());
+            var assist = db.Drivers.FirstOrDefault(d =>
+            d.Id == driverId);
+            if (assist !=null)
+            {
+
+                cardLoginHistory.AssistanceLastName = assist.FirstName;
+                cardLoginHistory.AssistanceName = assist.LastName;
+                cardLoginHistory.AssistanceNationalCode = assist.NationalCode;
+            }
             cardLoginHistory.IsActive = true;
             cardLoginHistory.CreationDate = DateTime.Now;
             cardLoginHistory.LoginDate = DateTime.Now;
             cardLoginHistory.IsActive = true;
             cardLoginHistory.IsSuccess = true;
             cardLoginHistory.Load = model.Load;
+            cardLoginHistory.TotalLoad = model.Load + car.CarType.Weight;
             db.CardLoginHistories.Add(cardLoginHistory);
             db.SaveChanges();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
@@ -305,6 +316,7 @@ namespace Attendance.Web.Controllers
         {
             CardLoginHistory login = db.CardLoginHistories.Where(x=>!x.IsDeleted).Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
+            ViewBag.Weight =(int) db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId).Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
             return View(login);
         }
@@ -314,32 +326,43 @@ namespace Attendance.Web.Controllers
         {
             var loginHistory = db.CardLoginHistories.Find(cardLoginHistory.Id);
             loginHistory.Description = cardLoginHistory.Description;
+            loginHistory.Devices = cardLoginHistory.Devices;
             db.SaveChanges();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             return RedirectToAction("LoginHistoryDetials",new { id = loginHistory.Id}); 
         }
 
-        public JsonResult GetDriverList(string q)
+        public JsonResult GetDriverList(string q,int type=0)
         {
             if (q == null)
             {
                 q = string.Empty;
             }
-            var result = db.Drivers.Where(c =>!c.IsDeleted && c.NationalCode.Contains(q)).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
-            return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            Guid driverId;
+            if (Guid.TryParse(q,out driverId))
+            {
+                var result = db.Drivers.Where(c => !c.IsDeleted && c.Id.Equals(driverId) && c.DriverType == (DriverType)type).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = db.Drivers.Where(c => !c.IsDeleted && c.NationalCode.Contains(q) && c.DriverType == (DriverType)type).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
         }
        
         [HttpPost]
-        public JsonResult GetDriver(string q)
+        public JsonResult GetDriver(string q,int type = 0)
         {
             Guid driverId;
             if (Guid.TryParse(q, out driverId))
             { 
-                var driver = db.Drivers.FirstOrDefault(x => x.Id == driverId) ?? default;
+                var driver = db.Drivers.Where(x=>x.DriverType == (DriverType)type).FirstOrDefault(x => x.Id == driverId) ?? default;
                 return Json(new
                 {
                     DriverFirstName = driver.FirstName,
-                    DriverLastName = driver.LastName
+                    DriverLastName = driver.LastName,
+                    Id = driverId
                 });
             }
             return Json(new
@@ -393,31 +416,20 @@ new
                 Description = c?.Description
             }).ToList().ToDataTable();
             }
-            #endregion
+            #endregion 
 
-
-            dt.TableName = "اکسل کارت ها"; 
-            var grid = new GridView();
-            grid.DataSource = dt;
-            grid.DataBind();
-            
-
-
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
-            Response.ContentType = "application/ms-excel";
-
-            Response.Charset = "";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
-
-            grid.RenderControl(htw);
-
-            Response.Output.Write(sw.ToString());
-            Response.Flush();
-            Response.End();
-            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            dt.TableName = "اکسل کارت ها";
+            using (XLWorkbook wb = new XLWorkbook())
+            { 
+                wb.Worksheets.Add(dt);
+                wb.Worksheets.FirstOrDefault().ColumnWidth = 20;
+                using (MemoryStream stream = new MemoryStream())
+                {
+            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" }; 
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{dt.TableName}{DateTime.Now.ToShamsi('e')}.xlsx");
+                }
+            }
             return RedirectToAction("Index");
         }
 
@@ -465,6 +477,7 @@ new
                 CreationDate=DateTime.Now
             };
             card.IsActive = !card.IsActive;
+            card.Description = status.Description;
             db.Entry(current).State = EntityState.Added;
             db.Entry(card).State = EntityState.Modified;
             db.SaveChanges();

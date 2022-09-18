@@ -25,6 +25,10 @@ namespace Attendance.Models.Entities
         [Display(Name = "وزن")]
         public decimal Weight { get; set; }
 
-        public ICollection<Car> Cars { get; set; }
+        [Display(Name = "شناسه")]
+        public string Code { get; set; }
+
+        public virtual ICollection<Car> Cars { get; set; }
+        public virtual ICollection<CarTypeStatusHistory> CarTypeStatusHistories { get; set; }
     }
 }

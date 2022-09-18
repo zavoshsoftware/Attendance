@@ -7,105 +7,171 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Edit", "Cards",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Edit", "Cards", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
 
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.DriverId, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("DriverId")
-            @Html.ValidationMessageFor(model => model.DriverId)
-        </div>
-    </div>
-
-    
-    <div class="form-group">
-        @Html.LabelFor(model => model.Driver.FullName, new { @class = "control-label col-md-2" })
-        <div class="col-md-5">
-            @Html.DisplayFor(model => model.Driver.FullName, new { @class = "control-label col-md-2" })
-        </div>
-        @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label col-md-2" })
-    <div class="">
-        @Html.DisplayFor(model => model.Driver.NationalCode, new { @class = "control-label col-md-2" })
-    </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Code)
-            @Html.ValidationMessageFor(model => model.Code)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DisplayCode, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DisplayCode)
-            @Html.ValidationMessageFor(model => model.DisplayCode)
-        </div>
-    </div>
-
-
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Day, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.Day)
-            @Html.ValidationMessageFor(model => model.Day)
-        </div>
-    </div>
-
-
-    @if (User.Identity.IsAuthenticated)
-    {
-        var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
-        string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
-        if (role == "SuperAdmin")
-        {
-            <div class="form-group">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IsHidden)
-                    @Html.ValidationMessageFor(model => model.IsHidden)
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DriverId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("DriverId", String.Empty)*@
+                @Html.ValidationMessageFor(model => model.DriverId)
+                <select id="DriverId"   name="DriverId" class="DriverSelect form-control k-select" required>
+                    <option selected value="@Model.DriverId">@Model.Driver.NationalCode</option>
+                </select>
             </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.FullName, new { @class = "control-label col-md-2" })
+            <div class="col-md-5 FullName">
+                @Html.DisplayFor(model => model.Driver.FullName, new { @class = "control-label col-md-2" })
+            </div> 
+        </div>
+
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Code)
+                @Html.ValidationMessageFor(model => model.Code)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisplayCode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DisplayCode)
+                @Html.ValidationMessageFor(model => model.DisplayCode)
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Day, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Day)
+                @Html.ValidationMessageFor(model => model.Day)
+            </div>
+        </div>
+
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+            string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+            if (role == "SuperAdmin")
+            {
+                <div class="form-group">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IsHidden)
+                        @Html.ValidationMessageFor(model => model.IsHidden)
+                    </div>
+                </div>
+            }
         }
-    }
-    <div class="form-group">
-        @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.IsActive)
-            @Html.ValidationMessageFor(model => model.IsActive)
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.CreationDate)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+
+        <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ثبت" class="btn btn-primary font-medium" />
+                @Html.ActionLink("بازگشت به فهرست", "Index")
+            </div>
         </div>
     </div>
-
-    @Html.HiddenFor(model => model.CreationDate)
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-    </div>
-
-
-    <div class="form-group" id="buttons">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="ثبت" class="btn btn-primary font-medium" />
-            @Html.ActionLink("بازگشت به فهرست", "Index")
-        </div>
-    </div>
-</div>
 }
 
+
+@section scripts {
+    <script src="~/Scripts/select2.min.js"></script>
+    <!--Script references. -->
+    <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
+    <!--Reference the SignalR library. -->
+    <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+    <!--Reference the autogenerated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+    <!--SignalR script to update the chat page and send messages.-->
+    <script>
+        $(document).ready(function () {
+           
+
+            @*var id = '@Html.Raw(Model.DriverId)'
+            console.log(id)
+            $.post("/Cards/GetDriver",
+                {
+                    q: id
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    $('.DriverSelect option[value="' + data.Id + '"]')
+                    console.log(data.DriverFirstName, data.Id)
+                });*@
+        });
+ 
+        var selData = $(".DriverSelect").select2({
+            ajax: {
+                url: '/cards/GetDriverList',
+                data: function (params) {
+                    return {
+                        q: params.term// search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".DriverSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+
+        $('.DriverSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cards/GetDriver",
+                {
+                    q: lastValue
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    console.log(data.DriverFirstName, data.DriverLastName)
+                    $('.FullName').html(data.DriverFirstName + ' ' + data.DriverLastName)
+                });
+        });
+    </script>
+}

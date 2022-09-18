@@ -15,11 +15,13 @@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.CreationDate)
+        @Html.HiddenFor(model => model.BirthDate)
 
         <div class="form-group">
             @Html.LabelFor(model => model.CellNum, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                                  @Html.EditorFor(model => model.CellNum)
+                @Html.EditorFor(model => model.CellNum)
                 @Html.ValidationMessageFor(model => model.CellNum)
             </div>
         </div>

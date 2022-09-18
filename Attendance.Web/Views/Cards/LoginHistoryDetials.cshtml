@@ -6,7 +6,7 @@
 }
 
 <form action="/cards/LoginHistory" method="post">
-    @Html.HiddenFor(c=>c.Id)
+    @Html.HiddenFor(c => c.Id)
     <div class="row">
         <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
 
@@ -15,10 +15,24 @@
         <div class="col-md-6">
             <div class="panel panel-primary ">
                 <div class="panel-heading">
-                    <h3 class="panel-title">اطلاعات کارت</h3>
+                    <h3 class="panel-title">اطلاعات سرکارت</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="form-horizontal">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Card.Driver.FirstName, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Card.Driver.FirstName, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Card.Driver.LastName, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Card.Driver.LastName, new { @id = "DriverFullName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Card.Driver.NationalCode, new { @class = "control-label" })
+                            @Html.DisplayFor(model => model.Card.Driver.NationalCode, new { @id = "DriverFullName" })
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Card.DisplayCode, new { @class = "control-label" })
                             @Html.DisplayFor(model => model.Card.DisplayCode, new { @id = "DriverFullName" })
@@ -73,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Driver.LastName, new { @class = "control-label" })
-                            @Html.DisplayFor(model => model.Driver.FirstName, new { @id = "DriverFullName" })
+                            @Html.DisplayFor(model => model.Driver.LastName, new { @id = "DriverFullName" })
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })
@@ -140,15 +154,16 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Car.CarType.Weight, new { @class = "control-label" })
-                            @Html.DisplayFor(model => model.Car.CarType.Weight, new { @class = "form-control  input-lg" })
+                            @ViewBag.Weight کیلوگرم
+                          
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Load, new { @class = "control-label" })
-                            @Html.DisplayFor(model => model.Load, new { @class = "form-control  input-lg" })
+                            @Html.DisplayFor(model => model.Load, new { @class = "form-control  input-lg" }) کیلوگرم
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.TotalLoad, new { @class = "control-label" })
-                            @Html.DisplayFor(model => model.TotalLoad, new { @class = "form-control  input-lg" })
+                            @((int)(((int)ViewBag.Weight)+ Model.Load)) کیلوگرم
                         </div>
                     </div>
                 </div>
@@ -156,28 +171,35 @@
             </div>
         </div>
     </div>
-    <div class="row text-center"> 
-            <div class="col-md-12 text-center">
-                <div class="panel panel-primary ">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">توضیحات</h3>
+    <div class="row text-center">
+        <div class="col-md-12 ">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">توضیحات</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Description)
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Description, new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Description)
-                            </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Devices, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Devices)
                         </div>
                     </div>
                 </div>
-
-                <br />
-                <div class="text-center">
-                    <button type="submit" class="btn btn-lg btn-success">ثبت نهایی</button>
-                </div>
-                <br />
             </div>
+
+
+        </div>
+        <br />
+        <div class="text-center">
+            <button type="submit" class="btn btn-lg btn-success">ثبت نهایی</button>
+        </div>
+        <br />
     </div> 
 </form>
 

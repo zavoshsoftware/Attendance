@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Attendance.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -16,13 +17,19 @@ namespace Attendance.Models.Entities
 
         [Display(Name = "صاحب کارت")]
         public Guid DriverId { get; set; }
-         
+
 
         [Display(Name = "روز هفته")]
         [DisplayName("روز هفته")]
         public Attendance.Core.Enums.WeekDays Day { get; set; }
 
-
+        public string DayStr
+        {
+            get
+            {
+              return  Day.GetDisplayName();
+            }
+        }
         [Display(Name = "کارت مخفی است؟")]
         public bool IsHidden { get; set; }
 
@@ -31,7 +38,7 @@ namespace Attendance.Models.Entities
         public string DisplayCode { get; set; }
 
         [ForeignKey("DriverId")]
-        public virtual Driver Driver { get; set; }  
+        public virtual Driver Driver { get; set; }
         public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
         public virtual ICollection<CardStatusHistory> CardStatusHistories { get; set; }
         public virtual ICollection<CardGroupItemCard> CardGroupItems { get; set; }

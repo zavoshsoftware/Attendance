@@ -39,7 +39,7 @@
 							.Template(@<text>
 									@Html.ActionLink("جزییات", "LoginHistoryDetials", "Cards", new { id = @item.Id }, new { @class = "k-button" })
 
-                                @if (role == "SuperAdmin" || role == "Admin")
+                                @if (role == "SuperAdmin" @*|| role == "Admin"*@)
 		{
 									@Html.ActionLink("حذف", "Delete", new { id = @item.Id }, new { @class = "k-button" })}
 									</text>).Width(200);
@@ -47,6 +47,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Custom()/*.Action("print", "cardloginhistories",new { cardId = ViewBag.CardId, driverId = ViewBag.DriverId })*/.HtmlAttributes(new { @class = "font-medium", @onclick = "PrintElem(this)" }).Text("چاپ");
+            toolbar.Custom().Action("Export", "CardLoginHistories", new { cardId = ViewBag.CardId, driverId = ViewBag.DriverId }).HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

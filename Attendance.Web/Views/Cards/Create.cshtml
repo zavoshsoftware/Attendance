@@ -15,6 +15,22 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverId, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.DropDownList("DriverId", String.Empty)*@
+                    @Html.ValidationMessageFor(model => model.DriverId)
+                    <select id="DriverId" name="DriverId" class="DriverSelect form-control k-select" required></select>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Driver.FullName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 FullName">
+                </div>
+            </div>
+
+            <hr />
             <div class="form-group">
                 @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -23,52 +39,42 @@
                     @Html.ValidationMessageFor(model => model.Code)
                 </div>
             </div>
-	      
-
             <div class="form-group">
-                @Html.LabelFor(model => model.DriverId, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Day, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("DriverId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.DriverId)
+                    @Html.EnumDropDownListFor(model => model.Day)
+
+                    @Html.ValidationMessageFor(model => model.Day)
                 </div>
             </div>
-	   
-	        <div class="form-group">
-		        @Html.LabelFor(model => model.Day, new { @class = "control-label col-md-2" })
-		        <div class="col-md-10">
-			        @Html.EnumDropDownListFor(model => model.Day)
 
-			        @Html.ValidationMessageFor(model => model.Day)
-		        </div>
-	        </div>
-          
-          
-        @if (User.Identity.IsAuthenticated)
-        {
-	        var identity = (System.Security.Claims.ClaimsIdentity) User.Identity;
-	        string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
-	        if (role == "SuperAdmin")
-	        {
-		        <div class="form-group">
-			        <div class="col-md-2">
-			        </div>
-			        <div class="col-md-10">
-				        @Html.EditorFor(model => model.IsHidden)
-				        @Html.ValidationMessageFor(model => model.IsHidden)
-			        </div>
-		        </div>
-	        }
-        }
 
-	        <div class="form-group">
+            @if (User.Identity.IsAuthenticated)
+            {
+                var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+                string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+                if (role == "SuperAdmin")
+                {
+                    <div class="form-group">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.IsHidden)
+                            @Html.ValidationMessageFor(model => model.IsHidden)
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="form-group">
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.IsActive) 
+                    @Html.EditorFor(model => model.IsActive)
                     @Html.ValidationMessageFor(model => model.IsActive)
                 </div>
             </div>
-             
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -78,7 +84,7 @@
                 </div>
             </div>
 
-          
+
             <div class="form-group" id="buttons">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="ایجاد" class="btn btn-primary" />
@@ -90,6 +96,7 @@
 }
 
 @section scripts {
+    <script src="~/Scripts/select2.min.js"></script>
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
     <!--Reference the SignalR library. -->
@@ -125,5 +132,46 @@
             var encodedValue = $('<div />').text(value).html();
             return encodedValue;
         }
+
+
+        var selData = $(".DriverSelect").select2({
+            ajax: {
+                url: '/cards/GetDriverList',
+                data: function (params) {
+                    return {
+                        q: params.term// search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".DriverSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+
+        $('.DriverSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cards/GetDriver",
+                {
+                    q: lastValue
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    console.log(data.DriverFirstName, data.DriverLastName)
+                    $('.FullName').html(data.DriverFirstName + ' '+ data.DriverLastName)
+                });
+        });
     </script>
 }

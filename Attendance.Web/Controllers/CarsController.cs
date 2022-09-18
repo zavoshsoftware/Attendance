@@ -64,14 +64,27 @@ namespace Attendance.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CarTypeId,Title,Number,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] Car car)
         {
+            ViewBag.Alphabet = new SelectList(new List<string>() {
+                "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ",
+                "ر", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ",
+                "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
+                "و", "ه", "ی"});
             if (ModelState.IsValid)
             {
-				car.IsDeleted=false;
-				car.CreationDate= DateTime.Now;  
-                car.Id = Guid.NewGuid();
-                db.Cars.Add(car);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (!db.Cars.Any(c=>c.Number == car.Number.Trim()))
+                {
+                    car.IsDeleted = false;
+                    car.CreationDate = DateTime.Now;
+                    car.Id = Guid.NewGuid();
+                    db.Cars.Add(car);
+                    db.SaveChanges();
+                TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "خودرویی با این پلاک در سیستم موجود است" };
+                }
             }
 
             ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title", car.CarTypeId);
@@ -107,13 +120,28 @@ namespace Attendance.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,CarTypeId,Title,Number,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] Car car)
         {
+            ViewBag.Alphabet = new SelectList(new List<string>() {
+                "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ",
+                "ر", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ",
+                "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
+                "و", "ه", "ی"});
             if (ModelState.IsValid)
             {
-				car.IsDeleted=false;
-					car.LastModifiedDate=DateTime.Now;
-                db.Entry(car).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var pleck = db.Cars.AsNoTracking().FirstOrDefault(x => x.Id == car.Id)?.Number;
+                if (!db.Cars.Any(c => c.Number == car.Number.Trim() && pleck != car.Number))
+                {
+                    car.IsDeleted = false;
+                    car.LastModifiedDate = DateTime.Now;
+                    db.Entry(car).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "خودرویی با این پلاک در سیستم موجود است" };
+                }
+                
             }
             ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title", car.CarTypeId);
             return View(car);
@@ -262,6 +290,54 @@ namespace Attendance.Web.Controllers
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             return RedirectToAction("Index");
         }
+
+
+        public ActionResult Status(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var car = db.Cars.Find(id);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            var status = new CarStatusHistory()
+            {
+                CarId = id,
+                Car = car
+            };
+            return View(status);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Status(CarStatusHistory status)
+        {
+            var car = db.Cars.Find(status.CarId);
+            var current = new CarStatusHistory()
+            {
+                Id = Guid.NewGuid(),
+                Car = car,
+                CarId = status.CarId,
+                Description = status.Description,
+                PreviousStatus = car.IsActive,
+                CurrentStatus = !car.IsActive,
+                IsActive = true,
+                CreationDate = DateTime.Now
+            };
+            car.IsActive = !car.IsActive;
+            car.Description = status.Description;
+            db.Entry(current).State = EntityState.Added;
+            db.Entry(car).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("index");
+        }
+
+
+
+
 
     }
 }

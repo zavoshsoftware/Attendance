@@ -14,7 +14,7 @@ namespace Attendance.Models.Entities
 
         public BaseEntity()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid(); 
         }
 
         [Key]
@@ -39,6 +39,7 @@ namespace Attendance.Models.Entities
         [Display(Name = "یادداشت")]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
+         
 
         [Display(Name = "تاریخ ایجاد")]
         [NotMapped]

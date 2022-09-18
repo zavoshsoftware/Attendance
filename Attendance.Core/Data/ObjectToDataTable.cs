@@ -17,8 +17,9 @@ namespace Attendance.Core.Data
             DataTable table = new DataTable();
             for (int i = 0; i < props.Count; i++)
             {
-                PropertyDescriptor prop = props[i];
-                table.Columns.Add(prop.Name, prop.PropertyType);
+                PropertyDescriptor prop = props[i]; 
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(
+            prop.PropertyType) ?? prop.PropertyType);
             }
             object[] values = new object[props.Count];
             foreach (T item in data)

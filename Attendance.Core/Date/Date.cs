@@ -66,4 +66,14 @@ using System.Threading.Tasks;
         else if (day == 5) return 6;
         else return 0;
     }
+
+    public static int GetAge(this DateTime? birthdate)
+    {
+        if (birthdate.HasValue)
+        {
+            var days = (DateTime.Now - birthdate)?.TotalDays;
+            return Convert.ToInt32(days / 365);
+        }
+        return 0;
+    }
 } 

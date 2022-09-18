@@ -50,6 +50,12 @@ namespace Attendance.Models.Entities
         [Display(Name = "خودرو")]
         public Guid? CarId { get; set; }
 
+
+        [Display(Name = "وسایل همراه ")]
+        [DataType(DataType.MultilineText)]
+        public string Devices { get; set; }
+
+
         [ForeignKey("CarId")]
         public virtual Car Car { get; set; }
 

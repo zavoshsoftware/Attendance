@@ -8,17 +8,21 @@
 
 <h2>@ViewBag.Title</h2>
 
-@(Html.Kendo().Grid(Model)
+@if (Model != null && Model.Any())
+{
+    @(Html.Kendo().Grid(Model)
         .Name("Grid")
         .Columns(columns =>
         {
         columns.Bound(model => model.DisplayCode);
-       	columns.Bound(item => @item.Driver.FirstName).Filterable(false).Groupable(false)
-                      .Template(@<text>	@item.Driver.FullName</text>).Width(200); 
+       	columns.Bound(item => @item.Driver.FirstName).Filterable(true).Groupable(false)
+                      .Template(@<text>	@item.Driver.FirstName</text>);
+       	columns.Bound(item => @item.Driver.LastName).Filterable(true).Groupable(false)
+                      .Template(@<text>	@item.Driver.LastName</text>);
         columns.Bound(model => model.Driver.NationalCode);
         columns.Bound(model => model.Code);
-		columns.Bound(item => @item.Id).Title("روز").Filterable(false).Groupable(false)
-                      .Template(@<text>	@item.Day.GetDisplayName()</text>).Width(200);
+		columns.Bound(item => @item.DayStr).Title("روز").Filterable(true).Groupable(false)
+                      .Template(@<text>	@item.DayStr</text>).Width(200);
         columns.Bound(model => model.IsActive);
 
         columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
@@ -36,7 +40,8 @@
         {
             toolbar.Custom().Action("Create","Cards")
              .HtmlAttributes(new { @class = "font-medium" })
-            .Text("افزودن");
+            .Text("افزودن"); 
+            toolbar.Custom().Action("Export", "cards").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
@@ -48,3 +53,4 @@
                                     .Model(model => model.Id(item => item.Id))
                     )
     )
+}

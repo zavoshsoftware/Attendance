@@ -28,7 +28,7 @@ namespace Attendance.Web.Controllers.api
             List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
             
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
-            if (card!=null)
+            if (card != null)
             {
                 if (!card.Driver.IsActive)
                 {
@@ -44,9 +44,17 @@ namespace Attendance.Web.Controllers.api
                 }
 
                 var logined = card.CardLoginHistories.FirstOrDefault(c => !c.ExitDate.HasValue);
-                if (logined!=null) hubContext.Clients.All.Alarm(logined.Id, $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.");
-
-
+                if (logined != null)
+                {
+                    var message = $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.";
+                    hubContext.Clients.All.Alarm(logined.Id,message);
+                    return Ok(new CustomResponseViewModel()
+                    {
+                        Extra = "",
+                        Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
+                        Ok = false
+                    });
+                }
                 if (card.Day.ToString() == today)
                 {
                     if (card.Driver.BirthDate.HasValue && (DateTime.Now - card.Driver.BirthDate.Value).TotalDays< (365 * 18))

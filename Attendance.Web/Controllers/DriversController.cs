@@ -27,7 +27,7 @@ namespace Attendance.Web.Controllers
         public DriversController()
         {
             _errors = new ErrorService();
-            
+
         }
         // GET: Drivers
         public ActionResult Index()
@@ -67,11 +67,19 @@ namespace Attendance.Web.Controllers
             {
                 driver.IsDeleted = false;
                 driver.CreationDate = DateTime.Now;
-                driver.BirthDate = BirthDateShamsi.ToMiladi();
+                if (!string.IsNullOrEmpty(BirthDateShamsi))
+                {
+                    driver.BirthDate = BirthDateShamsi.ToMiladi();
+                }
                 driver.Id = Guid.NewGuid();
-                db.Drivers.Add(driver);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (!db.Drivers.Any(d => d.NationalCode.Trim() == driver.NationalCode.Trim()))
+                {
+                    db.Drivers.Add(driver);
+                    db.SaveChanges();
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    return RedirectToAction("Index");
+                }
+                TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = $"کاربری با کدملی {driver.NationalCode} وجود دارد" };
             }
 
             return View(driver);
@@ -101,12 +109,17 @@ namespace Attendance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var nationalCode = db.Drivers.AsNoTracking().FirstOrDefault(f => f.Id == driver.Id).NationalCode;
                 driver.IsDeleted = false;
                 driver.LastModifiedDate = DateTime.Now;
-                driver.BirthDate = BirthDateShamsi.ToMiladi(); ;
-                db.Entry(driver).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                driver.BirthDate = BirthDateShamsi.ToMiladi();
+                if (!db.Drivers.Any(d => nationalCode != driver.NationalCode && d.NationalCode.Trim() == driver.NationalCode.Trim()))
+                {
+                    db.Entry(driver).State = EntityState.Modified;
+                    db.SaveChanges(); TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    return RedirectToAction("Index");
+                }
+                TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = $"کاربری با کدملی {driver.NationalCode} وجود دارد" };
             }
             return View(driver);
         }
@@ -130,8 +143,8 @@ namespace Attendance.Web.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
-        { 
-                Driver driver = db.Drivers.Find(id);
+        {
+            Driver driver = db.Drivers.Find(id);
             try
             {
                 driver.IsDeleted = true;
@@ -141,8 +154,8 @@ namespace Attendance.Web.Controllers
                 return RedirectToAction("Index");
             }
             catch (DbEntityValidationException e)
-            { 
-               string errors= _errors.HandleError(e,Debugger.Info());
+            {
+                string errors = _errors.HandleError(e, Debugger.Info());
                 //TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = $"خطایی پیش آمده{errors}" }; 
             }
             finally
@@ -151,7 +164,7 @@ namespace Attendance.Web.Controllers
                 db.SaveChanges();
                 TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             }
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -203,12 +216,12 @@ namespace Attendance.Web.Controllers
                             LastName = excelReader[1].ToString(),
                             CellNumber = excelReader[2].ToString(),
                             NationalCode = excelReader[3].ToString(),
-                            BirthDate = excelReader[4]?.ToString()?.ToMiladi()??null,
+                            BirthDate = excelReader[4]?.ToString()?.ToMiladi() ?? null,
                             CreationDate = DateTime.Now,
                             IsActive = true
                         };
                         var nationalCode = obj.NationalCode.ConvertDigit().Trim();
-                        if (!db.Drivers.Any(d=>d.NationalCode.Trim() == nationalCode))
+                        if (!db.Drivers.Any(d => d.NationalCode.Trim() == nationalCode))
                         {
                             list.Add(obj);
                         }
@@ -235,23 +248,24 @@ namespace Attendance.Web.Controllers
 
         public ActionResult Export()
         {
-            var dt = db.Drivers.Include(d=>d.Cards).Where(c => !c.IsDeleted).ToList().Select(c =>
-                new {
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    FatherName = c.Father, 
-                    Mobile = c.CellNumber,
-                    NationalCode = c.NationalCode,
-                    IsActive = c.IsActive ? "فعال" : "غیرفعال",
-                    CreateDate = c.CreationDate.ToShamsi('s'),  
-                    BirthDate = c.BirthDate.ToShamsi('a'),
-                    Description = c.Description
-                }).ToList().ToDataTable();
+            var dt = db.Drivers.Include(d => d.Cards).Where(c => !c.IsDeleted).ToList().Select(c =>
+                  new
+                  {
+                      FirstName = c.FirstName,
+                      LastName = c.LastName,
+                      FatherName = c.Father,
+                      Mobile = c.CellNumber,
+                      NationalCode = c.NationalCode,
+                      IsActive = c.IsActive ? "فعال" : "غیرفعال",
+                      CreateDate = c.CreationDate.ToShamsi('s'),
+                      BirthDate = c.BirthDate.ToShamsi('a'),
+                      Description = c.Description
+                  }).ToList().ToDataTable();
             dt.TableName = "اکسل رانندگان";
             var grid = new GridView();
             grid.DataSource = dt;
             grid.DataBind();
-             
+
             Response.Clear();
             Response.AddHeader("content-disposition", $"attachment;filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
             Response.ContentType = "application/ms-excel";
@@ -267,8 +281,52 @@ namespace Attendance.Web.Controllers
             Response.Write(sw.ToString());
             Response.End();
 
-          
+
             return RedirectToAction("Index");
+        }
+
+
+        public ActionResult Status(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Driver driver = db.Drivers.Find(id);
+            if (driver == null)
+            {
+                return HttpNotFound();
+            }
+            DriverStatusHistory status = new DriverStatusHistory()
+            {
+                DriverId = id,
+                Driver = driver
+            };
+            return View(status);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Status(DriverStatusHistory status)
+        {
+            var driver = db.Drivers.Find(status.DriverId);
+            var current = new DriverStatusHistory()
+            {
+                Id = Guid.NewGuid(),
+                Driver = driver,
+                DriverId = status.DriverId,
+                Description = status.Description,
+                PreviousStatus = driver.IsActive,
+                CurrentStatus = !driver.IsActive,
+                IsActive = true,
+                CreationDate = DateTime.Now
+            };
+            driver.IsActive = !driver.IsActive;
+            driver.Description = status.Description;
+            db.Entry(current).State = EntityState.Added;
+            db.Entry(driver).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("index");
         }
 
 

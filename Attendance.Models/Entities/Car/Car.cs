@@ -24,5 +24,6 @@ namespace Attendance.Models.Entities
         public CarType CarType { get; set; }
 
         public ICollection<CardLoginHistory> CardLoginHistories { get; set; }
+        public ICollection<CarStatusHistory> CarStatusHistories { get; set; }
     }
 }

@@ -36,8 +36,10 @@ namespace Attendance.Models.Entities
         public DriverType DriverType { get; set; }
 
         public virtual ICollection<Card> Cards { get; set; }
+        public virtual ICollection<DriverStatusHistory> DriverStatusHistories { get; set; }
         public virtual ICollection<CardLoginHistory> CardLoginHistories { get; set; }
         [Display(Name = "نام و نام خانوادگی")]
+        [NotMapped]
         public string FullName
         {
             get

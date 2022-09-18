@@ -13,6 +13,7 @@ using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using ClosedXML.Excel;
 
 namespace Attendance.Web.Controllers
 {
@@ -185,26 +186,17 @@ namespace Attendance.Web.Controllers
                     UpdateDate = c.CreationDate.ToShamsi('s'),
                     Description = c.Description
                 }).ToList().ToDataTable();
-            dt.TableName = "اکسل کاربران";
-            var grid = new GridView();
-            grid.DataSource = dt;
-            grid.DataBind();
-
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", $"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
-            Response.ContentType = "application/ms-excel";
-
-            Response.Charset = "";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
-
-            grid.RenderControl(htw);
-
-            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            Response.Output.Write(sw.ToString());
-            Response.Flush();
-            Response.End();
+            dt.TableName = "اکسل کاربران"; 
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.ColumnWidth = 400;
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{dt.TableName}{DateTime.Now.ToShamsi('e')}.xlsx");
+                }
+            }
             return RedirectToAction("Index");
         }
 

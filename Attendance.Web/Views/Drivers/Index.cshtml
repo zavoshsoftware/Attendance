@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.Driver>
-
+@using Attendance.Core.Enums;
 @{
     ViewBag.Title = "فهرست رانندگان";
 
@@ -17,6 +17,8 @@
         columns.Bound(model => model.NationalCode);
         columns.Bound(model => model.CellNumber);
         columns.Bound(model => model.IsActive);
+        columns.Bound(item => @item.DriverType).Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.DriverType.GetDisplayName()</text>);
         columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
@@ -24,6 +26,7 @@
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("جزئیات", "details", new {id = @item.Id}, new {@class = "k-button"})
+ <a class="k-button" href="/drivers/status?id=@item.Id">@(item.IsActive?"غیرفعالسازی":"فعالسازی")</a>
 									@Html.ActionLink("توقیفات", "index", "Penalties", new {driverId = @item.Id}, new {@class = "k-button"})
 @Html.ActionLink("ورود و خروج", "Index", "CardLoginHistories", new { driverId = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);

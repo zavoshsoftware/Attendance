@@ -8,19 +8,20 @@
 <h2>@ViewBag.Title</h2>
 
 @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                          columns.Bound(model => model.CarType.Title);
-        columns.Bound(model => model.Title);
-        columns.Bound(model => model.Number);
-        columns.Bound(model => model.IsActive);
-        columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
-                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+                    .Name("Grid")
+                    .Columns(columns =>
+                    {
+                    columns.Bound(model => model.CarType.Title);
+              //columns.Bound(model => model.Title);
+              columns.Bound(model => model.Number);
+                    columns.Bound(model => model.IsActive);
+                    columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
+                            .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+<a class="k-button" href="/cars/status?id=@item.Id">@(item.IsActive?"غیرفعالسازی":"فعالسازی")</a>
 									</text>).Width(200);
                   })
         .ToolBar(toolbar =>
