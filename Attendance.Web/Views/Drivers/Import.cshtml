@@ -18,8 +18,24 @@
                             <input class="btn btn-success" value="ثبت" type="submit" />
                             
                             <div class="alert alert-danger">
-                              @TempData["error"]
+	                            @TempData["error"]
                             </div>
+                            
+                            <p class="alert alert-info">
+	                            ستون اول: نام
+                              <br/>
+	                            ستون دوم: نام خانوادگی
+	                            <br/>
+
+	                            ستون سوم: شماره تماس
+	                            <br/>
+
+	                            ستون چهارم: کد ملی (حتما 10 کاراکتر باشد)
+	                            <br/>
+
+                              ستون چهارم: تاریخ تولد: در صورت عدم وجود 0 قرار گیرد.
+
+                            </p>
                         </form>
                     </div>
                 </div>
