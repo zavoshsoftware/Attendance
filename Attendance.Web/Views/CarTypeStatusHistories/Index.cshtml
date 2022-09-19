@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Attendance.Models.Entities.CarTypeStatusHistory>
+
+@{
+    ViewBag.Title = "فهرست وضعیت نوع خودرو";
+
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                          columns.Bound(model => model.CarType.Title);
+        columns.Bound(@item => @item.PreviousStatus).Template(@<text>
+									 @(item.PreviousStatus?"فعال":"غیرفعال")
+									</text>) ;
+        columns.Bound(@item => @item.CurrentStatus).Template(@<text>
+@(item.CurrentStatus?"فعال":"غیرفعال")
+									</text>) ;
+        columns.Bound(model => model.Description);
+        columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>);
+					@*columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									</text>).Width(200);*@
+		})
+		.ToolBar(toolbar =>
+					{ 
+					}
+		)
+		.DataSource(dataSource => dataSource
+									.Server()
+
+									.Model(model => model.Id(item => item.Id))
+					)
+	)

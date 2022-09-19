@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.Car>
-
+@using Attendance.Core.Enums;
 @{
     ViewBag.Title = "فهرست خودروها";
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    string role = ((System.Security.Claims.ClaimsIdentity)User.Identity).FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -12,6 +13,7 @@
                     .Columns(columns =>
                     {
                     columns.Bound(model => model.CarType.Title);
+                    columns.Bound(model => model.CarType.Weight).Title("وزن(کیلوگرم)");
               //columns.Bound(model => model.Title);
               columns.Bound(model => model.Number);
                     columns.Bound(model => model.IsActive);
@@ -29,6 +31,7 @@
             toolbar.Custom().Action("Create","Cars").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
             toolbar.Custom().Action("import","Cars").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن اکسل ماشین ها");
             toolbar.Custom().Action("Export", "Cars").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

@@ -728,8 +728,10 @@
     <Compile Include="Controllers\CardsController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CarTypesController.cs" />
+    <Compile Include="Controllers\CarTypeStatusHistoriesController.cs" />
     <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
+    <Compile Include="Controllers\DriverStatusHistoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PenaltiesController.cs" />
     <Compile Include="Controllers\PenaltyReasonsController.cs" />
@@ -754,6 +756,7 @@
     <Compile Include="ViewModels\DriverInfoViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
+    <Compile Include="Views\CardStatusHistoriesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -1069,6 +1072,21 @@
     <Content Include="Views\Drivers\Status.cshtml" />
     <Content Include="Views\CarTypes\Status.cshtml" />
     <Content Include="Views\Cars\Status.cshtml" />
+    <Content Include="Views\CarTypeStatusHistories\Create.cshtml" />
+    <Content Include="Views\CarTypeStatusHistories\Delete.cshtml" />
+    <Content Include="Views\CarTypeStatusHistories\Details.cshtml" />
+    <Content Include="Views\CarTypeStatusHistories\Edit.cshtml" />
+    <Content Include="Views\CarTypeStatusHistories\Index.cshtml" />
+    <Content Include="Views\DriverStatusHistories\Create.cshtml" />
+    <Content Include="Views\DriverStatusHistories\Delete.cshtml" />
+    <Content Include="Views\DriverStatusHistories\Details.cshtml" />
+    <Content Include="Views\DriverStatusHistories\Edit.cshtml" />
+    <Content Include="Views\DriverStatusHistories\Index.cshtml" />
+    <Content Include="Views\CardStatusHistories\Create.cshtml" />
+    <Content Include="Views\CardStatusHistories\Delete.cshtml" />
+    <Content Include="Views\CardStatusHistories\Details.cshtml" />
+    <Content Include="Views\CardStatusHistories\Edit.cshtml" />
+    <Content Include="Views\CardStatusHistories\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -13,7 +13,7 @@ namespace Attendance.Models.Entities
         [Display(Name="وضعیت قبلی")]
         public bool PreviousStatus { get; set; }
 
-        [Display(Name="وضعیت فعلی")]
+        [Display(Name="وضعیت بعدی")]
         public bool CurrentStatus { get; set; }
          
         public Guid CarId { get; set; }

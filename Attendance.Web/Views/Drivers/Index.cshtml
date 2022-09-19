@@ -4,6 +4,7 @@
     ViewBag.Title = "فهرست رانندگان";
 
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    string role = ((System.Security.Claims.ClaimsIdentity)User.Identity).FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -36,6 +37,10 @@
             toolbar.Custom().Action("Create","Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
             toolbar.Custom().Action("import","Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("بارگذاری اکسل");
             toolbar.Custom().Action("Export", "Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+            if (role == SecurityRole.SuperAdmin)
+            {
+                toolbar.Custom().Action("Index", "DriverStatusHistories").HtmlAttributes(new { @class = "font-medium" }).Text("تاریخچه فعال/غیرفعال");
+            }
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

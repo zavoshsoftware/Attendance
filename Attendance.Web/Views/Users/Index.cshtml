@@ -3,9 +3,8 @@
 @{
     ViewBag.Title = "فهرست کاربران";
 
-    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
-    var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
-    string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml"; 
+    string role = ((System.Security.Claims.ClaimsIdentity)User.Identity).FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
 <h2>@ViewBag.Title</h2>

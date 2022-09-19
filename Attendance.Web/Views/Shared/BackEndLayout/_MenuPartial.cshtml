@@ -13,7 +13,19 @@
                 <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
             </a>
         </li>
-        <li id="sliderLi" class="menuitem">
+        @*<li id="sliderLi"  class="menuitem dropdown-toggle">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+                <li class="divider"></li>
+                <li><a href="#">One more separated link</a></li>
+            </ul>
+        </li>*@
+        <li id="sliderLi" class="dropdown">
             <a href="/Drivers">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
             </a>
@@ -71,16 +83,16 @@
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
             </a>
         </li>
-        @*<li id="sliderLi2" class="menuitem">
-            <a href="/penalties/create">
+        <li id="sliderLi2" class="menuitem">
+            <a href="/penalties/">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>توقیف</span>
             </a>
         </li>
         <li id="sliderLi2" class="menuitem">
-            <a href="/penalties">
+            <a href="/penalties?solved=true">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>رفع توقیف</span>
             </a>
-        </li>*@
+        </li>
     </ul>
         }
         if (role == SecurityRole.Monitoring)

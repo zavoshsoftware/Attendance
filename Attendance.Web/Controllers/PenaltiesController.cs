@@ -22,21 +22,21 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: Penalties
-        public ActionResult Index(Guid? driverId,Guid? cardId)
+        public ActionResult Index(Guid? driverId,Guid? cardId,bool solved = false)
         {
             if (driverId.HasValue)
             { 
-                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && !p.Solved && p.Card.DriverId == driverId).OrderByDescending(p => p.CreationDate);
+                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && p.Solved == solved && p.Card.DriverId == driverId).OrderByDescending(p => p.CreationDate);
                 return View(penalties.ToList());
             }
             else if (cardId.HasValue)
             {
-                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && !p.Solved && p.CardId == cardId).OrderByDescending(p => p.CreationDate);
+                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && p.Solved == solved && p.CardId == cardId).OrderByDescending(p => p.CreationDate);
                 return View(penalties.ToList());
             }
             else
             {
-                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && !p.Solved).OrderByDescending(p => p.CreationDate);
+                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && p.Solved == solved).OrderByDescending(p => p.CreationDate);
                 return View(penalties.ToList());
             }
         }
