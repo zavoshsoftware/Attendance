@@ -13,6 +13,7 @@ using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.Services.Base;
 using ClosedXML.Excel;
 
 namespace Attendance.Web.Controllers
@@ -20,13 +21,19 @@ namespace Attendance.Web.Controllers
     public class UsersController : Controller
     {
         private DatabaseContext db = new DatabaseContext();
-
+        private UnitOfWork unitOfWork;
+        private Repository<User> _userRepository;
+        public UsersController()
+        {
+            unitOfWork = new UnitOfWork();
+            _userRepository = unitOfWork.Repository<User>();
+        }
         // GET: Users
         public ActionResult Index()
-        {
+        { 
             if (IsSuperAdmin())
-                return View(db.Users.Where(a => a.IsDeleted == false).OrderByDescending(a => a.CreationDate).ToList());
-            return View(db.Users.Where(a => a.IsDeleted == false && a.SecurityRole != SecurityRole.SuperAdmin).OrderByDescending(a => a.CreationDate).ToList());
+                return View(_userRepository.GetSorted(u=>u.CreationDate));
+            return View(_userRepository.GetSorted( a=> a.SecurityRole != SecurityRole.SuperAdmin,u => u.CreationDate));
 
         }
         public bool IsSuperAdmin()
@@ -71,11 +78,8 @@ namespace Attendance.Web.Controllers
         }
 
         public ActionResult Create()
-        {
-
-
-            ViewBag.SecurityRoleList = UserSecurityRoleEnums();
-
+        { 
+            ViewBag.SecurityRoleList = UserSecurityRoleEnums(); 
             return View();
         }
 
@@ -87,13 +91,8 @@ namespace Attendance.Web.Controllers
         public ActionResult Create(User user)
         {
             if (ModelState.IsValid)
-            {
-                user.IsDeleted = false;
-                user.CreationDate = DateTime.Now;
-
-                user.Id = Guid.NewGuid();
-                db.Users.Add(user);
-                db.SaveChanges();
+            { 
+                _userRepository.Insert(user);
                 return RedirectToAction("Index");
             }
             ViewBag.SecurityRoleList = UserSecurityRoleEnums();
@@ -123,11 +122,8 @@ namespace Attendance.Web.Controllers
         public ActionResult Edit(User user)
         {
             if (ModelState.IsValid)
-            {
-                user.IsDeleted = false;
-                user.LastModifiedDate = DateTime.Now;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+            { 
+                _userRepository.Update(user);
                 return RedirectToAction("Index");
             }
             ViewBag.SecurityRoleList = UserSecurityRoleEnums();
@@ -142,7 +138,7 @@ namespace Attendance.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+            User user = _userRepository.GetById(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -154,12 +150,8 @@ namespace Attendance.Web.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
-        {
-            User user = db.Users.Find(id);
-            user.IsDeleted = true;
-            user.DeletionDate = DateTime.Now;
-
-            db.SaveChanges();
+        { 
+            _userRepository.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -175,7 +167,7 @@ namespace Attendance.Web.Controllers
 
         public ActionResult Export()
         {
-            var dt = db.Users.Where(c => !c.IsDeleted).ToList().Select(c =>
+            var dt = _userRepository.Get(c => c.SecurityRole != SecurityRole.SuperAdmin).ToList().Select(c =>
                 new {
                     Title = c.FullName,
                     PhoneNumber = c.CellNum,

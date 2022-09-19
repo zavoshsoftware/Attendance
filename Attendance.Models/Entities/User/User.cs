@@ -11,8 +11,7 @@ namespace Attendance.Models.Entities
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     using System.Globalization;
-    using System.Linq;
-
+    using System.Linq; 
     public class User : BaseEntity
     {
         public User()

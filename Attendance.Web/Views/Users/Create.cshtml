@@ -1,11 +1,11 @@
 ﻿@model Attendance.Models.Entities.User
 
 @{
-    ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+    ViewBag.Title = "افزودن کاربر جدید"  ;
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
-<h2>افزودن @Html.DisplayNameFor(model => model)</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Create", "Users",FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
@@ -64,9 +64,7 @@
             </div>
             <div class="col-md-10">
                     @Html.EditorFor(model => model.IsActive)
-
-				@Html.LabelFor(model => model.IsActive)
-                @Html.ValidationMessageFor(model => model.IsActive)
+                 
             </div>
         </div>
 

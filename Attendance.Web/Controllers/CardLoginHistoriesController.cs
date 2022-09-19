@@ -20,24 +20,24 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: CardLoginHistories
-        public ActionResult Index(Guid? cardId,Guid? driverId)
+        public ActionResult Index(Guid? cardId, Guid? driverId)
         {
             ViewBag.CardId = cardId;
             ViewBag.DriverId = driverId;
             if (cardId.HasValue)
             {
-                var cardLoginHistories = db.CardLoginHistories.Where(c=>c.CardId == cardId ).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                var cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
             else if (driverId.HasValue)
             {
-                var cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId ).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                var cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
             else
-            { 
-            var cardLoginHistories = db.CardLoginHistories.Include(c=>c.Driver).Include(c => c.Card).Where(c=>c.IsDeleted==false && !c.Card.IsHidden).OrderByDescending(c=>c.CreationDate);
-            return View(cardLoginHistories.ToList());
+            {
+                var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                return View(cardLoginHistories.ToList());
             }
         }
 
@@ -46,12 +46,13 @@ namespace Attendance.Web.Controllers
             var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
             string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
             if (role == SecurityRole.SuperAdmin)
-            { 
+            {
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
                 return View("Index", cardLoginHistories.ToList());
             }
             TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "هشدار؛ شما به این بخش دسترسی ندارید" };
-            return View();
+
+            return View("Index");
         }
 
         public ActionResult IndexNotExit(Guid? cardId)
@@ -101,9 +102,9 @@ namespace Attendance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-				cardLoginHistory.IsDeleted=false;
-				cardLoginHistory.CreationDate= DateTime.Now; 
-					
+                cardLoginHistory.IsDeleted = false;
+                cardLoginHistory.CreationDate = DateTime.Now;
+
                 cardLoginHistory.Id = Guid.NewGuid();
                 db.CardLoginHistories.Add(cardLoginHistory);
                 db.SaveChanges();
@@ -139,8 +140,8 @@ namespace Attendance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-				cardLoginHistory.IsDeleted=false;
-					cardLoginHistory.LastModifiedDate=DateTime.Now;
+                cardLoginHistory.IsDeleted = false;
+                cardLoginHistory.LastModifiedDate = DateTime.Now;
                 db.Entry(cardLoginHistory).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -170,9 +171,9 @@ namespace Attendance.Web.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             CardLoginHistory cardLoginHistory = db.CardLoginHistories.Find(id);
-			cardLoginHistory.IsDeleted=true;
-			cardLoginHistory.DeletionDate=DateTime.Now;
- 
+            cardLoginHistory.IsDeleted = true;
+            cardLoginHistory.DeletionDate = DateTime.Now;
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -193,21 +194,21 @@ namespace Attendance.Web.Controllers
             if (cardId.HasValue)
             {
                 var cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-            TempData["CardLoginHistory"] = cardLoginHistories?.ToList()??Array.Empty<CardLoginHistory>().ToList();
+                TempData["CardLoginHistory"] = cardLoginHistories?.ToList() ?? Array.Empty<CardLoginHistory>().ToList();
                 return View(cardLoginHistories.ToList());
             }
             else if (driverId.HasValue)
             {
                 var cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-            TempData["CardLoginHistory"] = cardLoginHistories?.ToList()??Array.Empty<CardLoginHistory>().ToList();
+                TempData["CardLoginHistory"] = cardLoginHistories?.ToList() ?? Array.Empty<CardLoginHistory>().ToList();
                 return View(cardLoginHistories.ToList());
             }
             else
             {
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-            TempData["CardLoginHistory"] = cardLoginHistories?.ToList()??Array.Empty<CardLoginHistory>().ToList();
+                TempData["CardLoginHistory"] = cardLoginHistories?.ToList() ?? Array.Empty<CardLoginHistory>().ToList();
                 return View(cardLoginHistories.ToList());
-            } 
+            }
         }
 
         public ActionResult Export(Guid? cardId, Guid? driverId)
@@ -215,23 +216,24 @@ namespace Attendance.Web.Controllers
             IOrderedQueryable<CardLoginHistory> cardLoginHistories;
             if (cardId.HasValue)
             {
-                 cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-             
+                cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+
             }
             else if (driverId.HasValue)
             {
-                 cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-     
+                cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+
             }
             else
             {
-                 cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
-          
+                cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+
             }
             if (cardLoginHistories.Any())
             {
                 var dt = cardLoginHistories?.ToList()?.Select(c =>
-                 new {
+                 new
+                 {
                      OwnerName = c?.Card?.Driver?.FirstName,
                      OwnerLastName = c?.Card?.Driver?.LastName,
                      OwnerNationalCode = c?.Card?.Driver?.NationalCode,
@@ -251,9 +253,9 @@ namespace Attendance.Web.Controllers
                      AssistNationalCode = c?.AssistanceNationalCode,
                      CarNumber = c?.Car?.Number,
                      Type = c?.Car?.CarType?.Title,
-                     Weight =  Convert.ToInt32(db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == c.Car.CarTypeId).Weight),
-                     Load = Convert.ToInt32(c?.Load??0),
-                     Total = Convert.ToInt32(c?.TotalLoad??0),
+                     Weight = Convert.ToInt32(db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == c.Car.CarTypeId).Weight),
+                     Load = Convert.ToInt32(c?.Load ?? 0),
+                     Total = Convert.ToInt32(c?.TotalLoad ?? 0),
                      IsActive = c.IsActive ? "فعال" : "غیرفعال",
                      Date = c?.CreationDate.ToShamsi('s')
                  }).ToList().ToDataTable();

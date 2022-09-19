@@ -4,21 +4,27 @@
     ViewBag.Title = "فهرست کاربران";
 
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+    string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
 <h2>@ViewBag.Title</h2>
 
 @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                              columns.Bound(model => model.CellNum);
-        columns.Bound(model => model.FullName);
-        columns.Bound(model => model.Email);
-        columns.Bound(model => model.SecurityRole);
-        columns.Bound(model => model.IsActive);
-            columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
-                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                columns.Bound(model => model.CellNum);
+                if (role == "SuperAdmin")
+                {
+                    columns.Bound(model => model.Password);
+                }
+                columns.Bound(model => model.FullName);
+                columns.Bound(model => model.Email);
+                columns.Bound(model => model.SecurityRole);
+                columns.Bound(model => model.IsActive);
+                columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
+                        .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})

@@ -10,6 +10,11 @@ namespace Attendance.Models
        System.Data.Entity.Database.SetInitializer(new MigrateDatabaseToLatestVersion<DatabaseContext, Migrations.Configuration>());
         }
 
+        public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
+        {
+            return base.Set<TEntity>();
+        }
+
         public DbSet<User> Users { get; set; }
      
         public DbSet<UserLogin> UserLogins { get; set; }

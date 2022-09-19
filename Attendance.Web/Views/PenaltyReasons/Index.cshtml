@@ -1,34 +1,35 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.PenaltyReason>
 
 @{
-ViewBag.Title = "فهرست ";
-    
+    ViewBag.Title = "فهرست علت های توقیف";
+
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
-        @(Html.Kendo().Grid(Model)
+@(Html.Kendo().Grid(Model)
               .Name("Grid")
               .Columns(columns =>
                   {
                       columns.Bound(model => model.Title);
         columns.Bound(model => model.IsActive);
-        columns.Bound(model => model.CreationDate);
+           columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
-									</text>).Width(200);  
+									</text>).Width(200);
 		})
 		.ToolBar(toolbar =>
-					{				
-						toolbar.Custom().Action("Create","PenaltyReasons").Text("افزودن");                               
+					{
+						toolbar.Custom().Action("Create","PenaltyReasons").Text("افزودن");
 					}
-		)         
+		)
 		.DataSource(dataSource => dataSource
 									.Server()
-							
+
 									.Model(model => model.Id(item => item.Id))
-					)              
+					)
 	)
