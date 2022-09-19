@@ -50,7 +50,7 @@
         }
         )
         .Sortable(/*sortable => sortable.SortMode(GridSortMode.SingleColumn)*/)
-        .Pageable()
+        .Pageable(x=>x)
         .Filterable(filterable => filterable.Extra(false).Operators(o=>o.ForString(fs=>fs.StartsWith("شروع با").Contains("شامل")
         .EndsWith("اتمام با").IsEqualTo("برابر"))))
         .DataSource(dataSource => dataSource

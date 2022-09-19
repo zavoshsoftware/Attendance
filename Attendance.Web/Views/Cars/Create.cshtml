@@ -18,19 +18,21 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("CarTypeId", String.Empty)
+                    <div class="atn_weight"></div>
+                    <select id="carTypeId" name="carTypeId" class="CarTypeSelect form-control k-select" required></select>
                     @Html.ValidationMessageFor(model => model.CarTypeId)
                 </div>
+                
             </div>
 
             @*<div class="form-group">
-                @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Title)
+                    @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title)
 
-                    @Html.ValidationMessageFor(model => model.Title)
-                </div>
-            </div>*@
+                        @Html.ValidationMessageFor(model => model.Title)
+                    </div>
+                </div>*@
 
 
             <div class="form-group">
@@ -41,13 +43,13 @@
                         <div class="row">
                             <div style="width:40px; display:inline-flex">ایران</div>
                             <div style="width:30px; display:inline-flex">
-                                <input type="text" style="width:30px;" id="carNo1" onkeyup="pleckWriter()"  required
-                                       oninvalid="this.setCustomValidity('فیلد ضروری است')"  oninput="this.setCustomValidity('')"/>
+                                <input type="text" style="width:30px;" id="carNo1" onkeyup="pleckWriter()" required
+                                       oninvalid="this.setCustomValidity('فیلد ضروری است')" oninput="this.setCustomValidity('')" />
                             </div>
                             <span style=" width:10px; display:inline-block; text-align:center">-</span>
                             <div style="width:40px; display:inline-flex">
                                 <input type="text" style="width:40px;" id="carNo2" onkeyup="pleckWriter()" required
-                                       oninvalid="this.setCustomValidity('فیلد ضروری است')"  oninput="this.setCustomValidity('')"/>
+                                       oninvalid="this.setCustomValidity('فیلد ضروری است')" oninput="this.setCustomValidity('')" />
                             </div>
                             <div style="width:52px; display:inline-flex">
                                 @Html.DropDownList("Alphabet", (IEnumerable<SelectListItem>)ViewBag.Alphabet, "الف",
@@ -55,14 +57,14 @@
 
                             </div>
                             <div style="width:40px; display:inline-flex">
-                                <input type="text" style="width:40px;" id="carNo3" onkeyup="pleckWriter()"  required
-                                       oninvalid="this.setCustomValidity('فیلد ضروری است')"  oninput="this.setCustomValidity('')"/>
+                                <input type="text" style="width:40px;" id="carNo3" onkeyup="pleckWriter()" required
+                                       oninvalid="this.setCustomValidity('فیلد ضروری است')" oninput="this.setCustomValidity('')" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-             
+
             <div class="form-group">
                 <div class="col-md-2">
                 </div>
@@ -92,6 +94,7 @@
 }
 
 @section scripts{
+    <script src="~/Scripts/select2.min.js"></script>
     <script>
         function pleckWriter() {
             var carNumber = document.getElementById("Number");
@@ -103,7 +106,51 @@
                 + " " + alphabet.options[alphabet.selectedIndex].text + " " + carNo3.value;
 
             carNumber.value = carno
-        } 
+        }
+
+
+
+
+        var selData = $(".CarTypeSelect").select2({
+            ajax: {
+                url: '/cars/GetCarTypeList',
+                data: function (params) {
+                    return {
+                        q: params.term// search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".CarTypeSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+
+        $('.CarTypeSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cars/GetCarType",
+                {
+                    q: lastValue
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    console.log(data.items.Id);
+                    $('.atn_weight').html( " " + data.items.Weight + "کیلوگرم")
+                });
+        });
+
     </script>
 }
 

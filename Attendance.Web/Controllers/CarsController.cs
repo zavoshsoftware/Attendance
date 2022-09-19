@@ -334,10 +334,44 @@ namespace Attendance.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("index");
         }
-
-
-
-
+         
+        public JsonResult GetCarTypeList(string q)
+        {
+            if (q == null)
+            {
+                q = string.Empty;
+            }
+            Guid carTypeId;
+            if (Guid.TryParse(q, out carTypeId))
+            {
+                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Id.Equals(carTypeId)).Select(c => new { Id = c.Id, Text = c.Title + " " + c.Code }).ToList();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Title.Contains(q)).Select(c => new { Id = c.Id, Text = c.Title + " " + c.Code }).ToList();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        public JsonResult GetCarType(string q)
+        {
+            if (q == null)
+            {
+                q = string.Empty;
+            }
+            Guid carTypeId;
+            if (Guid.TryParse(q, out carTypeId))
+            {
+                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Id.Equals(carTypeId)).Select(c => new { Id = c.Id, Text = c.Title + " " + c.Code,Weight = c.Weight }).FirstOrDefault();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Title.Contains(q)).Select(c => new { Id = c.Id, Text = c.Title + " " + c.Code, Weight = c.Weight }).FirstOrDefault();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }
