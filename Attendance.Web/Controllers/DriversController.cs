@@ -184,6 +184,7 @@ namespace Attendance.Web.Controllers
         [HttpPost]
         public ActionResult ImportExcel(HttpPostedFileBase upFile)
         {
+            int row = 0;
             try
             {
                 if (upFile.ContentLength > 0)
@@ -207,24 +208,44 @@ namespace Attendance.Web.Controllers
                         excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
                     }
 
+                  
                     while (excelReader.Read())
                     {
-                        var obj = new Driver
+                        if (row != 0)
                         {
-                            Id = Guid.NewGuid(),
-                            FirstName = excelReader[0].ToString(),
-                            LastName = excelReader[1].ToString(),
-                            CellNumber = excelReader[2].ToString(),
-                            NationalCode = excelReader[3].ToString(),
-                            BirthDate = excelReader[4]?.ToString()?.ToMiladi() ?? null,
-                            CreationDate = DateTime.Now,
-                            IsActive = true
-                        };
-                        var nationalCode = obj.NationalCode.ConvertDigit().Trim();
-                        if (!db.Drivers.Any(d => d.NationalCode.Trim() == nationalCode))
-                        {
-                            list.Add(obj);
+                            DateTime? birthday = null;
+                            var a = excelReader[0].ToString();
+                            var a1 = excelReader[1].ToString();
+                            var a2 = excelReader[2].ToString();
+                            var a3 = excelReader[3].ToString();
+                            var test = excelReader[4];
+                            if ((excelReader[4].ToString()!="0"))
+                                 birthday = excelReader[4].ToString().ToMiladi();
+                            if (a3.Length != 10)
+                            {
+                                row++;
+                                throw new Exception("کد ملی باید حتما 10 کاراکتر باشد. ردیف: " + row );
+                            }
+
+                            var obj = new Driver
+                            {
+                                Id = Guid.NewGuid(),
+                                FirstName = excelReader[0].ToString(),
+                                LastName = excelReader[1].ToString(),
+                                CellNumber = excelReader[2].ToString(),
+                                NationalCode = excelReader[3].ToString(),
+                                BirthDate = birthday ,
+                                CreationDate = DateTime.Now,
+                                IsActive = true
+                            };
+                            var nationalCode = obj.NationalCode.ConvertDigit().Trim();
+                            if (!db.Drivers.Any(d => d.NationalCode.Trim() == nationalCode))
+                            {
+                                list.Add(obj);
+                            }
                         }
+
+                        row++;
                     }
 
                     excelReader.Close();
@@ -237,7 +258,7 @@ namespace Attendance.Web.Controllers
             }
             catch (Exception ex)
             {
-                TempData["error"] = ex.Message;
+                TempData["error"] =row+"----"+ ex.Message;
                 ViewBag.Message = ex;
                 return RedirectToAction("import");
             }
