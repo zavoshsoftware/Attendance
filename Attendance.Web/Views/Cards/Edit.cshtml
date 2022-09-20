@@ -84,7 +84,7 @@
             @Html.HiddenFor(model => model.IsHidden)
         }
     }
-    <div class="form-group">
+    <div class="form-group" hidden>
         @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.IsActive)
@@ -93,7 +93,7 @@
     </div>
 
     @Html.HiddenFor(model => model.CreationDate)
-    <div class="form-group">
+    <div class="form-group" hidden>
         @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Description)

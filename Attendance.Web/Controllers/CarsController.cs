@@ -13,6 +13,7 @@ using ExcelDataReader;
 using Attendance.Core.Data;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using ClosedXML.Excel;
 
 namespace Attendance.Web.Controllers
 {
@@ -269,25 +270,17 @@ namespace Attendance.Web.Controllers
                 Date = c?.CreationDate.ToShamsi('s') 
             }).ToList().ToDataTable();
             dt.TableName = "اکسل خودروها";
-            var grid = new GridView();
-            grid.DataSource = dt;
-            grid.DataBind();
-
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition",$"attachment; filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
-            Response.ContentType = "application/ms-excel";
-
-            Response.Charset = "";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
-
-            grid.RenderControl(htw);
-
-            Response.Output.Write(sw.ToString());
-            Response.Flush();
-            Response.End();
-            TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                wb.Worksheets.FirstOrDefault().ColumnWidth = 20;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{dt.TableName}{DateTime.Now.ToShamsi('e')}.xlsx");
+                }
+            }
             return RedirectToAction("Index");
         }
 

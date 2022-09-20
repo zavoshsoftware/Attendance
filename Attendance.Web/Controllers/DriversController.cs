@@ -15,24 +15,39 @@ using Attendance.Core.Code;
 using Attendance.Core.Data;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.Services.Base;
 using Attendance.Web.Services.Errors;
+using ClosedXML.Excel;
 using ExcelDataReader;
 
 namespace Attendance.Web.Controllers
 {
     public class DriversController : Controller
     {
+        private UnitOfWork unitOfWork;
+        private Repository<Card> _card;
+        private Repository<Driver> _driver;
         private DatabaseContext db = new DatabaseContext();
         private IErrorService _errors;
         public DriversController()
         {
+            unitOfWork = new UnitOfWork(); 
             _errors = new ErrorService();
-
+            _card = unitOfWork.Repository<Card>();
+            _driver= unitOfWork.Repository<Driver>();
         }
         // GET: Drivers
-        public ActionResult Index()
+        public ActionResult Index(bool? penaltyCheck=false)
         {
-            return View(db.Drivers.Where(a => a.IsDeleted == false).OrderByDescending(a => a.CreationDate).ToList());
+            if (penaltyCheck.Value)
+            {
+                var drivers = db.Penalties.Include(x => x.Card).Select(x => x.Card.Driver).Distinct().ToList();
+                return View(drivers);
+            }
+            else
+            {
+                return View(db.Drivers.Where(a => a.IsDeleted == false).OrderByDescending(a => a.CreationDate).ToList());
+            }
         }
 
         // GET: Drivers/Details/5
@@ -145,12 +160,10 @@ namespace Attendance.Web.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Driver driver = db.Drivers.Find(id);
+
             try
-            {
-                driver.IsDeleted = true;
-                driver.DeletionDate = DateTime.Now;
-                db.Entry(driver).State = EntityState.Modified;
-                db.SaveChanges();
+            {    
+                _driver.Delete(id);
                 return RedirectToAction("Index");
             }
             catch (DbEntityValidationException e)
@@ -160,7 +173,10 @@ namespace Attendance.Web.Controllers
             }
             finally
             {
-                db.Drivers.Remove(driver);
+                driver.NationalCode = "0000000000";
+                driver.IsDeleted = true;
+                driver.DeletionDate = DateTime.Now;
+                db.Entry(driver).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             }
@@ -282,25 +298,19 @@ namespace Attendance.Web.Controllers
                       BirthDate = c.BirthDate.ToShamsi('a'),
                       Description = c.Description
                   }).ToList().ToDataTable();
-            dt.TableName = "اکسل رانندگان";
-            var grid = new GridView();
-            grid.DataSource = dt;
-            grid.DataBind();
-
-            Response.Clear();
-            Response.AddHeader("content-disposition", $"attachment;filename={dt.TableName}{DateTime.Now.ToShamsi('e')}.xls");
-            Response.ContentType = "application/ms-excel";
-            Response.ContentEncoding = System.Text.Encoding.Unicode;
-            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
-
-            System.IO.StringWriter sw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new HtmlTextWriter(sw);
-
-            grid.RenderControl(hw);
-
+            dt.TableName = "اکسل رانندگان"; 
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            Response.Write(sw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                wb.Worksheets.FirstOrDefault().ColumnWidth = 20;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{dt.TableName}{DateTime.Now.ToShamsi('e')}.xlsx");
+                }
+            }
 
 
             return RedirectToAction("Index");

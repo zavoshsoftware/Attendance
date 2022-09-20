@@ -7,7 +7,24 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
+<div class="row">
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Card.Day, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select data-val="true" id="Card_Day" name="Card.Day">
+                <option value="0">شنبه</option>
+                <option value="1">یک شنبه</option>
+                <option value="2">دوشنبه</option>
+                <option value="3">سه شنبه</option>
+                <option value="4">چهار شنبه</option>
+                <option value="5">پنج شنبه</option>
+                <option value="6">جمعه</option>
+            </select>
+            @Html.ValidationMessageFor(modelItem => modelItem.FirstOrDefault().Card.Day)
+        </div>
+    </div>  <br />
+</div>
 @(Html.Kendo().Grid(Model)
               .Name("Grid")
               .Columns(columns =>
@@ -15,7 +32,7 @@
                                     columns.Bound(model => model.Card.Code).Width(200);
         columns.Bound(item => @item.Id).Title("تاریخ ورود").Filterable(false).Groupable(false)
 							.Template(@<text>
-									@item.LoginDate.ToShamsi('s')  
+									@item.LoginDate.ToShamsi('s')
 									</text>).Width(200);
                                     columns.Bound(model => model.Driver.FullName).Width(200);
 
@@ -31,7 +48,7 @@
 		})
 		.ToolBar(toolbar =>
 					{
-						 
+
 					}
 		)        .Filterable().Sortable()
 		.DataSource(dataSource => dataSource
@@ -40,3 +57,19 @@
 									.Model(model => model.Id(item => item.Id))
 					)
 	)
+
+
+@section scripts {
+    <script>
+
+
+        $(document).ready(function () {
+              $("#Card_Day").val("@Html.Raw(ViewBag.day)").change();
+        $('#Card_Day').on('change', function (e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            document.location = "/CardLoginHistories/IndexNotExit?day=" + valueSelected;
+        });
+        })
+    </script>
+}

@@ -13,6 +13,7 @@
                   {
                           columns.Bound(model => model.Driver.FullName);
                           columns.Bound(model => model.Driver.NationalCode);
+                          columns.Bound(model => model.Description);
         columns.Bound(@item => @item.PreviousStatus).Template(@<text>
 									 @(item.PreviousStatus?"فعال":"غیرفعال")
 									</text>) ;

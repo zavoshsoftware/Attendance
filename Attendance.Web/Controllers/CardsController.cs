@@ -93,7 +93,7 @@ namespace Attendance.Web.Controllers
                 }
 
                 card.Id = Guid.NewGuid();
-                if (!db.Cards.Any(c => c.Driver.NationalCode.Trim() == driver.NationalCode.Trim() && !c.IsDeleted))
+                if (!db.Cards.Any(c => c.Driver.Id== driver.Id && !c.IsDeleted))
                 {
                     db.Cards.Add(card);
                     db.SaveChanges();
@@ -139,6 +139,7 @@ namespace Attendance.Web.Controllers
             {
                 card.IsDeleted = false;
                 card.LastModifiedDate = DateTime.Now;
+                var lastDriverId = db.Cards.AsNoTracking().FirstOrDefault(c => c.Id == card.Id).DriverId;
 
                 var driver = db.Drivers.Find(card.DriverId);
                 if (driver != null)
@@ -146,9 +147,19 @@ namespace Attendance.Web.Controllers
                     var day = (int)card.Day;
                     card.DisplayCode = $"{day}-{driver.NationalCode.Substring(3)}";
                 }
+                
 
-                db.Entry(card).State = EntityState.Modified;
-                db.SaveChanges();
+
+                if ((lastDriverId != card.DriverId && !db.Cards.Any(c => c.Driver.Id == driver.Id && !c.IsDeleted))||lastDriverId == card.DriverId)
+                {
+                    db.Entry(card).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                }
+                else
+                {
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "یک کارت با مشخصات این راننده در سیستم وجود دارد. " };
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.DriverId = new SelectList(db.Drivers.Where(d=>!d.IsDeleted), "Id", "FullName", card.DriverId);
@@ -275,16 +286,15 @@ namespace Attendance.Web.Controllers
             var car = db.Cars.Include(s=>s.CarType).FirstOrDefault(c => c.Id == carId);
             cardLoginHistory.Car = car;
             cardLoginHistory.CarId = carId;
-
-           
-            var assistId = Guid.Parse(model.DriverNatCode.Trim());
+             
+            var assistId = Guid.Parse(model.AssistanceNationalCode.Trim());
             var assist = db.Drivers.FirstOrDefault(d =>
             d.Id == driverId);
             if (assist !=null)
             {
 
-                cardLoginHistory.AssistanceLastName = assist.FirstName;
-                cardLoginHistory.AssistanceName = assist.LastName;
+                cardLoginHistory.AssistanceLastName = model.AssistanceLastName;
+                cardLoginHistory.AssistanceName = model.AssistanceName;
                 cardLoginHistory.AssistanceNationalCode = assist.NationalCode;
             }
             cardLoginHistory.IsActive = true;
@@ -341,12 +351,12 @@ namespace Attendance.Web.Controllers
             Guid driverId;
             if (Guid.TryParse(q,out driverId))
             {
-                var result = db.Drivers.Where(c => !c.IsDeleted && c.Id.Equals(driverId) && c.DriverType == (DriverType)type).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
+                var result = db.Drivers.Where(c => !c.IsDeleted && c.Id.Equals(driverId)/* && c.DriverType == (DriverType)type*/).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
                 return Json(new { items = result }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var result = db.Drivers.Where(c => !c.IsDeleted && c.NationalCode.Contains(q) && c.DriverType == (DriverType)type).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
+                var result = db.Drivers.Where(c => !c.IsDeleted && c.NationalCode.Contains(q) /*&& c.DriverType == (DriverType)type*/).Select(c => new { Id = c.Id, Text = c.NationalCode }).ToList();
                 return Json(new { items = result }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -357,7 +367,7 @@ namespace Attendance.Web.Controllers
             Guid driverId;
             if (Guid.TryParse(q, out driverId))
             { 
-                var driver = db.Drivers.Where(x=>x.DriverType == (DriverType)type).FirstOrDefault(x => x.Id == driverId) ?? default;
+                var driver = db.Drivers/*.Where(x=>x.DriverType == (DriverType)type)*/.FirstOrDefault(x => x.Id == driverId) ?? default;
                 return Json(new
                 {
                     DriverFirstName = driver.FirstName,
@@ -474,8 +484,9 @@ new
                 PreviousStatus=card.IsActive,
                 CurrentStatus = !card.IsActive,
                 IsActive=true,
-                CreationDate=DateTime.Now
-            };
+                CreationDate=DateTime.Now,
+                Operator =User.Identity.Name
+        };
             card.IsActive = !card.IsActive;
             card.Description = status.Description;
             db.Entry(current).State = EntityState.Added;

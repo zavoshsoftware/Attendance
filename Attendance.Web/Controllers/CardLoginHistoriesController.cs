@@ -55,12 +55,20 @@ namespace Attendance.Web.Controllers
             return View("Index");
         }
 
-        public ActionResult IndexNotExit(Guid? cardId)
+        public ActionResult IndexNotExit(Guid? cardId,int? day)
         {
+            ViewBag.day = 0;
             if (cardId.HasValue)
             {
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
             .Where(c => c.IsDeleted == false && c.ExitDate == null && c.CardId == cardId).OrderByDescending(c => c.CreationDate);
+                return View(cardLoginHistories.ToList());
+            }
+            if (day.HasValue)
+            {
+                ViewBag.day = day;
+                var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
+                          .Where(c => c.IsDeleted == false && c.ExitDate == null && c.Card.Day == (Attendance.Core.Enums.WeekDays)day).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
             else

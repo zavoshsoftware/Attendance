@@ -16,28 +16,40 @@ public class AuthenticateViewModel
     } 
     public class AuthenticateFormViewModel
     {
+
     public Guid LoginId { get; set; }
+
     public Guid cardId { get; set; }
+
     public Card Card { get; set; }
+
     public Driver Driver { get; set; }
+
     [Display(Name = "نام")]
+  [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
       public string DriverFirstName { get; set; }
 
     [Display(Name = "نام خانوادگی")]
+ [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
       public string DriverLastName { get; set; }
     
     [Display(Name = "کدملی")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public string DriverNatCode { get; set; }
+
     [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
     [Display(Name = "بار")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public decimal Load { get; set; }
 
     public Car Car { get; set; }
 
     [Display(Name = "شماره پلاک")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public string Pleck { get; set; }
     
-    [Display(Name = "نوع")]
+    [Display(Name = "خودرو")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public string Type { get; set; }
     
     [Display(Name = "خطا")]
@@ -54,12 +66,15 @@ public class AuthenticateViewModel
 
 
     [Display(Name = "نام")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public string AssistanceName { get; set; }
     
     [Display(Name = "نام خانوادگی")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public string AssistanceLastName { get; set; }
     
     [Display(Name = "کدملی")]
+     [Required(ErrorMessage ="لطفا {0} را وارد کنید.")]
     public string AssistanceNationalCode { get; set; }
 
 } 

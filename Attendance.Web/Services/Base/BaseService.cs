@@ -35,6 +35,16 @@ namespace Attendance.Web.Services.Base
         {
             return this.Entities.Where(e => !e.IsDeleted).Where(expression);
         }
+
+        public IEnumerable<T> Get(Expression<Func<T,bool>> expression,string include)
+        {
+            IQueryable<T> query=this.Entities;
+            foreach (var item in include.Split(','))
+            {
+                query.Include(item);
+            }
+            return query.Where(e => !e.IsDeleted).Where(expression);
+        }
         
         public IEnumerable<T> GetSorted<TKey>(Expression<Func<T, bool>> expression,Expression<Func<T,TKey>> sort,bool desc=true)
         {
@@ -115,7 +125,7 @@ namespace Attendance.Web.Services.Base
                     throw new ArgumentNullException("entity");
                 }
                 entity.DeletionDate = DateTime.Now;
-                entity.IsDeleted = true;
+                entity.IsDeleted = true; 
                 this.context.Entry(entity).State = EntityState.Modified;
                 this.context.SaveChanges();
             }
@@ -128,9 +138,8 @@ namespace Attendance.Web.Services.Base
                     {
                         errorMessage += Environment.NewLine + string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
                     }
-                }
-                throw new Exception(errorMessage, dbEx);
-            }
+                } 
+            } 
         }
         public void Delete(object id)
         {
