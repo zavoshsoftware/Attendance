@@ -3,14 +3,19 @@
 @{
     ViewBag.Title = "فهرست کارت ها";
 
-    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml"; 
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
     string role = ((System.Security.Claims.ClaimsIdentity)User.Identity).FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
 }
 
+
+ 
 <h2>@ViewBag.Title</h2>
 
 @if (Model != null && Model.Any())
 {
+<div class="card">
+
+
     @(Html.Kendo().Grid(Model)
         .Name("Grid")
         .Columns(columns =>
@@ -43,20 +48,24 @@
              .HtmlAttributes(new { @class = "font-medium" })
             .Text("افزودن");
             toolbar.Custom().Action("Export", "cards").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
-            if (role == SecurityRole.SuperAdmin)
+            if (role == SecurityRole.SuperAdmin || role == SecurityRole.Admin)
             {
                 toolbar.Custom().Action("Index", "cardStatusHistories").HtmlAttributes(new { @class = "font-medium" }).Text("تاریخچه فعال/غیرفعال");
             }
         }
         )
-        .Sortable(/*sortable => sortable.SortMode(GridSortMode.SingleColumn)*/)
-        .Pageable()
+
         .Filterable(filterable => filterable.Extra(false).Operators(o=>o.ForString(fs=>fs.StartsWith("شروع با").Contains("شامل")
         .EndsWith("اتمام با").IsEqualTo("برابر"))))
         .DataSource(dataSource => dataSource
                                     .Server()
 
                                     .Model(model => model.Id(item => item.Id))
-                    )
+                    ).Sortable(/*sortable => sortable.SortMode(GridSortMode.SingleColumn)*/)
+        .Pageable()
     )
+</div>
+}
+@section scripts {
+
 }

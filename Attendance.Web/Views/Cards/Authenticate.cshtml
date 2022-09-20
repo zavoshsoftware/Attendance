@@ -5,20 +5,19 @@
 }
 
 @section styles{
-    @*<link href="~/Content/select2.min.css" rel="stylesheet" />*@ 
+    @*<link href="~/Content/select2.min.css" rel="stylesheet" />*@
 }
 <h2>احراز هویت</h2>
 <hr />
 <div class="alert alert-info font-medium">
     لطفا کارت را مقابل دستگاه قرار دهید
 </div>
- <div id="Messages">
+<div id="Messages">
 
- </div>  
-<div class="container"> 
+</div>
+<div class="container">
     <br />
-    <ul id="discussion"> 
-
+    <ul id="discussion">
     </ul>
     <div id="user_content">
 
@@ -27,7 +26,7 @@
 
 
 </div>
-@section scripts {
+@section scripts { 
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
     <!--Reference the SignalR library. -->
@@ -46,7 +45,7 @@
             var resPartial = ""
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (id, name, loginId, message, displayCode) {
-               
+
 
                 $('#discussion').empty();
 
@@ -59,25 +58,35 @@
                         + '<div class="card" /*style="width:40rem"*/>'
                         + '<img class="card-img-top"  src="' + imgProfile + '">'
                         + '<div id = "cardBody" class="card-body">'
-                        +'<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
+                        + '<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
                         + name + ' ' + message + '</p>'
                         + '</div > '
                         + '</div>'
                         + '</li>');
-                     toastr["danger"](message)
+                    toastr["danger"](message)
                 }
                 else {
                     imgProfile = imgSuccess;
                     $.get("/cards/authenticateform?id=" + id, function (data) {
-                        resPartial = data;
+                        alert('ورود به سیستم')
+                        if (!data) {
+                            $.get("/cards/authenticateform?id=" + id, function (data) {
+
+                                resPartial = data;
+                                //console.log(data);
+                            });
+                        }
+                        else {
+                            resPartial = data;
+                        }
                         //console.log(data);
                         toastr["success"](name + ' ' + message)
                         document.getElementById('ding').play();
-                        alert('ورود به سیستم')
+
                     });
 
-                const parser = new DOMParser();
-                //alert(name);
+                    const parser = new DOMParser();
+                    //alert(name);
                     setTimeout(function () {
                         // Add the message to the page.
                         $('#discussion').prepend(
@@ -90,12 +99,12 @@
                             + '<div class="panel panel-primary" >'
                             + '<div class="panel-heading">'
                             + '<div class= "panel-title pull-left" >'
-                            +  displayCode 
+                            + displayCode
                             + '</div >'
                             + '<div class="panel-title pull-right">' + name + ' ' + message + '</div>'
                             + '<div class="clearfix"></div>'
-                            
-                            +'</div >'
+
+                            + '</div >'
                             + ' <div class="panel-body">'
                             + '' + resPartial + ''
                             + '</div > '
@@ -121,8 +130,9 @@
                 //        + '</div>'
                 //    );
                 //})
+                toastr["info"](message)
                 $('#Messages').prepend(
-                      '<div class = "container row">'
+                    '<div class = "container row">'
                     + '<div class="alert alert-danger"'
                     + 'id= "' + id + '"'
                     + '>'
@@ -133,7 +143,7 @@
                     + '</div>');
                 setTimeout(function () {
                     $('#' + id).remove()
-                },10000)
+                }, 10000)
             };
 
             chat.client.Exit = function (id, message) {
@@ -180,6 +190,7 @@
             var encodedValue = $('<div />').text(value).html();
             return encodedValue;
         }
+
     </script>
-     
+
 }

@@ -14,6 +14,7 @@ namespace Attendance.Web
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            BundleConfig.RegisterBundles(new System.Web.Optimization.BundleCollection(){});
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalConfiguration.Configure(WebApiConfig.Register); 
             //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters); 

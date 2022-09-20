@@ -1,5 +1,6 @@
 ﻿using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.Services.Base;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,16 @@ namespace Attendance.Web.Controllers.api
     [RoutePrefix("api/auth")]
     public class AuthController : ApiController
     {
+        private UnitOfWork unitOfWork;
+        private Repository<User> _user;
+        private Repository<Card> _card;
+        private Repository<CardLoginHistory> _cardLoginHistory;
         public AuthController()
         {
-
+            unitOfWork = new UnitOfWork();
+            _user = unitOfWork.Repository<User>();
+            _cardLoginHistory = unitOfWork.Repository<CardLoginHistory>();
+            _card = unitOfWork.Repository<Card>();
         }
         private DatabaseContext db = new DatabaseContext();
         // GET /api/authors/1/books
@@ -23,13 +31,26 @@ namespace Attendance.Web.Controllers.api
         [HttpGet]
         public IHttpActionResult Authenticate(string id)
         {
-            var today= System.DateTime.Now.ToString("dddd"); ;
-            var card = db.Cards.Include(c=>c.Driver).Include(c=>c.CardLoginHistories).FirstOrDefault(s => s.Code == id && s.IsActive);
+            var today= System.DateTime.Now.ToString("dddd");
+
+            var card = _card.Get(x => x.Code == id , "Driver,CardLoginHistories").FirstOrDefault();
+             
             List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
             
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
             if (card != null)
             {
+                if (!card.IsActive)
+                {
+                    var message = $"{card.Driver.FullName} با شماره کارت {card.DisplayCode} به دلیل '{card.Description}' مجاز به تردد نمی باشد. با مدیر سیستم در ارتباط باشید.";
+                    hubContext.Clients.All.Alarm(null, message);
+                    return Ok(new CustomResponseViewModel()
+                    {
+                        Extra = "",
+                        Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
+                        Ok = false
+                    });
+                }
                 if (!card.Driver.IsActive)
                 {
                     // چنانچه فردی را در قسمت رانندگان غیر فعال کردیم علت درج شود و چنانچه کارت در قسمت کنترل ورود و خروج ثبت شد سیستم اخطار دهد که این فرد به دلیلی که قید شده مجاز به تردد نمی باشد و فرد راننده باید تغییر کند یا از حالت غیر فعال خارج شود
@@ -43,7 +64,7 @@ namespace Attendance.Web.Controllers.api
                     });
                 }
 
-                var logined = card.CardLoginHistories.FirstOrDefault(c => !c.ExitDate.HasValue);
+                var logined = _cardLoginHistory.Get(c => !c.ExitDate.HasValue).FirstOrDefault();
                 if (logined != null)
                 {
                     var message = $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.";

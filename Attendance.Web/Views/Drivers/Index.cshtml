@@ -41,6 +41,7 @@
             {
                 toolbar.Custom().Action("Index", "DriverStatusHistories").HtmlAttributes(new { @class = "font-medium" }).Text("تاریخچه فعال/غیرفعال");
             }
+            toolbar.Custom().Action("index", "Drivers",new { @penaltyCheck = true}).HtmlAttributes(new { @class = "font-medium", @title = " تاریخچه افرادی که کارتشان توقیف شده است " }).Text("تاریخچه توقیف");
         }
         )
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

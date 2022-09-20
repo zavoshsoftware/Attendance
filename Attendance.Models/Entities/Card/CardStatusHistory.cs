@@ -19,9 +19,10 @@ namespace Attendance.Models.Entities
         [Display(Name="کد کارت")]
         public Guid CardId { get; set; }
 
-        public virtual Card Card { get; set; } 
+        public virtual Card Card { get; set; }
 
-         
+        [Display(Name = "کاربر")]
+        public string Operator { get; set; }
 
     }
 }

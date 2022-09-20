@@ -45,6 +45,8 @@
     <link href="~/Content/Admin/style.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/toastr.css" rel="stylesheet" type="text/css" />
+
+    
     @RenderSection("head", required: false)
 
 </head>
@@ -109,10 +111,10 @@
         </section>
     </section>
 
-    <audio controls="controls" hidden id="ding"> 
+    <audio controls="controls" hidden id="ding">
         <source src="~/Files/ding.mp3" type="audio/mpeg" />
     </audio>
-     
+
     @*<script src="~/Scripts/jquery-3.4.1.js" type="text/javascript">window.rootUrl = '@Url.Content("~/")';</script>*@
     <script src="~/Scripts/toastr.js"></script>
     @if (TempData["Toastr"] != null)
@@ -183,8 +185,7 @@
 
             $(":input").on("keyup change", function (e) {
                 $(e.target).val(toEnglishNumber(e.target.value))
-            })
-
+            }) 
         });
 
         function toEnglishNumber(strNum) {
@@ -200,8 +201,7 @@
             }
             return cache;
         }
-    </script>
-
+    </script> 
     @RenderSection("scripts", required: false)
 </body>
 </html>
