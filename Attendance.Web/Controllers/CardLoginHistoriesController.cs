@@ -55,26 +55,27 @@ namespace Attendance.Web.Controllers
             return View("Index");
         }
 
-        public ActionResult IndexNotExit(Guid? cardId,int? day)
+        public ActionResult IndexNotExit(Guid? cardId,string date)
         {
-            ViewBag.day = 0;
+            ViewBag.date = DateTime.Now.ToShamsi('a');
             if (cardId.HasValue)
             {
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
-            .Where(c => c.IsDeleted == false && c.ExitDate == null && c.CardId == cardId).OrderByDescending(c => c.CreationDate);
+            .Where(c => c.IsDeleted == false && c.ExitDate == null && c.CardId == cardId && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
-            if (day.HasValue)
+            if (!string.IsNullOrEmpty(date))
             {
-                ViewBag.day = day;
+                ViewBag.date = date;
+                var datetime = date.ToMiladi().Date;
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
-                          .Where(c => c.IsDeleted == false && c.ExitDate == null && c.Card.Day == (Attendance.Core.Enums.WeekDays)day).OrderByDescending(c => c.CreationDate);
+                          .Where(c => c.IsDeleted == false && c.ExitDate == null && !c.Card.IsHidden && c.LoginDate.Year == datetime.Year && c.LoginDate.Month == datetime.Month && c.LoginDate.Day == datetime.Day).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
             else
             {
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
-              .Where(c => c.IsDeleted == false && c.ExitDate == null).OrderByDescending(c => c.CreationDate);
+              .Where(c => c.IsDeleted == false && !c.Card.IsHidden && c.ExitDate == null).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
         }

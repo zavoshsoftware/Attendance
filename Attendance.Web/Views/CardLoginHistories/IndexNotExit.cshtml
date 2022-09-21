@@ -9,22 +9,22 @@
 <h2>@ViewBag.Title</h2>
 <div class="row">
     <br />
-    <div class="form-group">
-        @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Card.Day, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <select data-val="true" id="Card_Day" name="Card.Day">
-                <option value="0">شنبه</option>
-                <option value="1">یک شنبه</option>
-                <option value="2">دوشنبه</option>
-                <option value="3">سه شنبه</option>
-                <option value="4">چهار شنبه</option>
-                <option value="5">پنج شنبه</option>
-                <option value="6">جمعه</option>
-            </select>
-            @Html.ValidationMessageFor(modelItem => modelItem.FirstOrDefault().Card.Day)
+
+    <form method="get" action="indexnotexit">
+        <div class="form-group">
+            @Html.Label("تاریخ", new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <input type="text" id="date" class="k-textbox" name="date" value="@ViewBag.date"
+                       onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi('a')');" />
+            </div>
+            <div class="">
+                <button type="submit">جستجو</button>
+            </div>
         </div>
-    </div>  <br />
+    </form>
+
 </div>
+<br />
 @(Html.Kendo().Grid(Model)
               .Name("Grid")
               .Columns(columns =>
