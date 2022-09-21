@@ -67,8 +67,12 @@ namespace Attendance.Web.Controllers.api
                 var logined = _cardLoginHistory.Get(c => !c.ExitDate.HasValue).FirstOrDefault();
                 if (logined != null)
                 {
-                    var message = $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.";
-                    hubContext.Clients.All.Alarm(logined.Id,message);
+                    //var message = $"این کارت در تاریخ  {logined.LoginDate.ToShamsi('s')} ورودی داشته که تاریخ خروج برای آن ثبت نشده است.";
+                    var message = $"خروج با موفقیت ثبت شد";
+                    logined.ExitDate = DateTime.Now;
+                    db.SaveChanges();
+                    //hubContext.Clients.All.Alarm(logined.Id,message);
+                    hubContext.Clients.All.Exit(null, message);
                     return Ok(new CustomResponseViewModel()
                     {
                         Extra = "",
