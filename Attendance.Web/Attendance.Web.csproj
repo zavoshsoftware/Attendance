@@ -1103,6 +1103,7 @@
     <Content Include="Views\CardStatusHistories\Details.cshtml" />
     <Content Include="Views\CardStatusHistories\Edit.cshtml" />
     <Content Include="Views\CardStatusHistories\Index.cshtml" />
+    <Content Include="Views\CardGroupItems\AddSubGroup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

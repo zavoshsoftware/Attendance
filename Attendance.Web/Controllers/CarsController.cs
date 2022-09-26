@@ -99,7 +99,7 @@ namespace Attendance.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Car car = db.Cars.Find(id);
+            Car car = db.Cars.Include(x=>x.CarType).FirstOrDefault(x=>x.Id == id);
             if (car == null)
             {
                 return HttpNotFound();

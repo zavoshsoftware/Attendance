@@ -18,8 +18,14 @@ namespace Attendance.Models.Entities
 
         public Guid GroupId { get; set; }
 
+        public Guid? ParentGroupId { get; set; }
+
         [ForeignKey("GroupId")]
         public virtual CardGroup Group { get; set; }
+
+        [ForeignKey("ParentGroupId")]
+        public virtual CardGroupItem ParentItem { get; set; }
+        public virtual ICollection<CardGroupItem> CardGroupItems { get; set; }
         public virtual ICollection<CardGroupItemCard> GroupItemCards { get; set; }
     }
 }

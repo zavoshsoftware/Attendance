@@ -7,15 +7,16 @@
 <h2>@ViewBag.Title</h2>
 
         @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                        columns.Bound(model => model.Card.Code);
+        .Name("Grid")
+        .Columns(columns =>
+        {
+        columns.Bound(model => model.Id).Title("ردیف");
+        columns.Bound(model => model.Card.Code);
         columns.Bound(model => model.CardDaysStr);
         columns.Bound(model => model.IsActive);
         columns.Bound(model => model.CreationDate);
-					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
-							.Template(@<text>
+        columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+                      .Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
@@ -26,6 +27,7 @@
             toolbar.Custom().Action("Export","CardDays").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
         }
         )
+        .HtmlAttributes(new { id = "tbl" })
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
         .Filterable(filterable => filterable.Extra(false).Operators(o => o.ForString(fs => fs.StartsWith("شروع با").Contains("شامل")
           .EndsWith("اتمام با").IsEqualTo("برابر"))))
@@ -34,3 +36,14 @@
                                     .Model(model => model.Id(item => item.Id))
                     )
     )
+<script>
+    console.log($('#tbl'))
+    var counter = 1;
+    $('#tbl tr').each(function (index,key) {
+        if (index!= 0) {
+            console.log($(this.cells)[0])
+            $(this.cells)[0].innerText = counter
+            counter = counter + 1;
+        }
+    });
+</script>

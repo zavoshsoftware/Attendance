@@ -17,12 +17,13 @@
 
 
     @(Html.Kendo().Grid(Model)
-        .Name("Grid")
-        .Columns(columns =>
-        {
-        columns.Bound(model => model.DisplayCode);
-       	columns.Bound(item => @item.Driver.FirstName).Filterable(true).Groupable(false)
-                      .Template(@<text>	@item.Driver.FirstName</text>);
+     .Name("Grid")
+     .Columns(columns =>
+     {
+     columns.Bound(model => model.Id).Title("ردیف");
+     columns.Bound(model => model.DisplayCode);
+     columns.Bound(item => @item.Driver.FirstName).Filterable(true).Groupable(false)
+                   .Template(@<text>	@item.Driver.FirstName</text>);
        	columns.Bound(item => @item.Driver.LastName).Filterable(true).Groupable(false)
                       .Template(@<text>	@item.Driver.LastName</text>);
         columns.Bound(model => model.Driver.NationalCode);
@@ -54,7 +55,7 @@
             }
         }
         )
-
+        .HtmlAttributes(new { id = "tbl" })
         .Filterable(filterable => filterable.Extra(false).Operators(o=>o.ForString(fs=>fs.StartsWith("شروع با").Contains("شامل")
         .EndsWith("اتمام با").IsEqualTo("برابر"))))
         .DataSource(dataSource => dataSource
@@ -66,6 +67,14 @@
     )
 </div>
 }
-@section scripts {
-
-}
+<script>
+    console.log($('#tbl'))
+    var counter = 1;
+    $('#tbl tr').each(function (index,key) {
+        if (index!= 0) {
+            console.log($(this.cells)[0])
+            $(this.cells)[0].innerText = counter
+            counter = counter + 1;
+        }
+    });
+</script>

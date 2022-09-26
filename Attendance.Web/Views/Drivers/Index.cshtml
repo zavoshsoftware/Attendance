@@ -10,16 +10,17 @@
 <h2>@ViewBag.Title</h2>
 
 @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-        columns.Bound(model => model.FirstName);
-        columns.Bound(model => model.LastName);
-        columns.Bound(model => model.NationalCode);
-        columns.Bound(model => model.CellNumber);
-        columns.Bound(model => model.IsActive);
-        columns.Bound(item => @item.DriverType).Filterable(false).Groupable(false)
-                      .Template(@<text>	@item.DriverType.GetDisplayName()</text>);
+                    .Name("Grid")
+                    .Columns(columns =>
+                    {
+                    columns.Bound(model => model.Id).Title("ردیف");
+                    columns.Bound(model => model.FirstName);
+                    columns.Bound(model => model.LastName);
+                    columns.Bound(model => model.NationalCode);
+                    columns.Bound(model => model.CellNumber);
+                    columns.Bound(model => model.IsActive);
+                    columns.Bound(item => @item.DriverType).Filterable(false).Groupable(false)
+                            .Template(@<text>	@item.DriverType.GetDisplayName()</text>);
         columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
@@ -31,7 +32,7 @@
 									@Html.ActionLink("توقیفات", "index", "Penalties", new {driverId = @item.Id}, new {@class = "k-button"})
 @Html.ActionLink("ورود و خروج", "Index", "CardLoginHistories", new { driverId = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-                  })
+                    })
         .ToolBar(toolbar =>
         {
             toolbar.Custom().Action("Create","Drivers").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
@@ -43,7 +44,7 @@
             }
             toolbar.Custom().Action("index", "Drivers",new { @penaltyCheck = true}).HtmlAttributes(new { @class = "font-medium", @title = " تاریخچه افرادی که کارتشان توقیف شده است " }).Text("تاریخچه توقیف");
         }
-        )
+        ).HtmlAttributes(new { id = "tbl" })
         .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))
         .Filterable(filterable => filterable.Extra(false).Operators(o => o.ForString(fs => fs.StartsWith("شروع با").Contains("شامل")
           .EndsWith("اتمام با").IsEqualTo("برابر"))))
@@ -53,3 +54,14 @@
                                     .Model(model => model.Id(item => item.Id))
                     )
 	)
+<script>
+    console.log($('#tbl')) 
+    var counter = 1;
+    $('#tbl tr').each(function (index,key) {
+        if (index!= 0) {
+            console.log($(this.cells)[0])
+            $(this.cells)[0].innerText = counter
+            counter = counter + 1;
+        }
+    });
+</script>

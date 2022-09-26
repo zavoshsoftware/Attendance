@@ -20,23 +20,31 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: CardLoginHistories
-        public ActionResult Index(Guid? cardId, Guid? driverId)
+        public ActionResult Index(Guid? cardId, Guid? driverId, string fromdate, string todate)
         {
+            var from = string.IsNullOrEmpty(fromdate) ? DateTime.Now.AddYears(-5).Date : fromdate.ToMiladi();
+            var to = string.IsNullOrEmpty(todate) ? DateTime.Now.Date : todate.ToMiladi();
+            ViewBag.From = fromdate;
+            ViewBag.To = todate;
             ViewBag.CardId = cardId;
             ViewBag.DriverId = driverId;
+            var cardLoginHistoryQuery = db.CardLoginHistories.AsQueryable().Include(c => c.Card).Include(c => c.Driver)
+                .Where(c=>!c.IsDeleted && !c.Card.IsHidden && c.LoginDate>=from && c.LoginDate <= to)
+                .OrderByDescending(c => c.CreationDate);
+            
             if (cardId.HasValue)
             {
-                var cardLoginHistories = db.CardLoginHistories.Where(c => c.CardId == cardId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                var cardLoginHistories = cardLoginHistoryQuery.Where(c => c.CardId == cardId);
                 return View(cardLoginHistories.ToList());
             }
             else if (driverId.HasValue)
             {
-                var cardLoginHistories = db.CardLoginHistories.Where(c => c.DriverId == driverId).Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                var cardLoginHistories = cardLoginHistoryQuery.Where(c => c.DriverId == driverId) ;
                 return View(cardLoginHistories.ToList());
             }
             else
             {
-                var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card).Where(c => c.IsDeleted == false && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+                var cardLoginHistories = cardLoginHistoryQuery;
                 return View(cardLoginHistories.ToList());
             }
         }

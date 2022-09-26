@@ -52,7 +52,7 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Weight,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] CarType carType)
+        public ActionResult Create([Bind(Include = "Id,Title,Weight,Code,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] CarType carType)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Weight,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] CarType carType)
+        public ActionResult Edit([Bind(Include = "Id,Title,Weight,Code,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] CarType carType)
         {
             if (ModelState.IsValid)
             {

@@ -44,20 +44,47 @@ namespace Attendance.Web.Controllers
             return View(cardGroupItem);
         }
 
+
+        public ActionResult SubGroups(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var cardGroupItems = db.GroupItems.Where(x=>x.ParentGroupId == id.Value);
+            var group = db.GroupItems.Find(id);
+            ViewBag.GroupId = id;
+            return View(cardGroupItems);
+        }
+
+        public ActionResult AddSubGroup(Guid parentId)
+        {
+            var group = db.GroupItems.FirstOrDefault(x => x.Id == parentId);
+
+            ViewBag.ParentGroupId = new SelectList(db.GroupItems.Where(g=>g.Id == group.GroupId),
+                "Id", "Title", group);
+            ViewBag.IsParent = true;
+            return View();
+        }
+
         // GET: CardGroupItems/Create
         public ActionResult Create(Guid groupId)
         {
-            var group = db.Groups.Find(groupId);
-            ViewBag.GroupId = new SelectList(db.Groups, "Id", "Title",group);
-            return View();
+            var group = db.Groups.FirstOrDefault(x=>x.Id == groupId);
+            
+                ViewBag.GroupId = new SelectList(db.Groups, "Id", "Title", group);
+                ViewBag.IsParent = true;
+                return View(); 
         }
+
+
 
         // POST: CardGroupItems/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,GroupId,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] CardGroupItem cardGroupItem)
+        public ActionResult Create(CardGroupItem cardGroupItem)
         {
             if (ModelState.IsValid)
             {
@@ -87,6 +114,7 @@ namespace Attendance.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.GroupId = new SelectList(db.Groups, "Id", "Title", cardGroupItem.GroupId);
+
             return View(cardGroupItem);
         }
 

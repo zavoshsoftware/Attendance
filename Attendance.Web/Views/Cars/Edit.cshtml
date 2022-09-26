@@ -7,87 +7,93 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Edit", "Cars",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Edit", "Cars", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("CarTypeId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CarTypeId)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CarTypeId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select id="carTypeId" name="carTypeId" class="CarTypeSelect form-control k-select" required>
+                    <option value="@Model.CarTypeId" selected>@Model.CarType.Title</option>
+                </select>
+
+
+                <div class="atn_weight"></div>
+                @Html.ValidationMessageFor(model => model.CarTypeId)
+            </div>
         </div>
-    </div>
 
-    @*<div class="form-group">
-        @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Title)
-            @Html.ValidationMessageFor(model => model.Title)
-        </div>
-    </div>*@
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+            </div>*@
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Number, htmlAttributes: new { hidden = "hidden" })
-            <div class="form-inline">
-                <div class="row">
-                    <div style="width:40px; display:inline-flex">ایران</div>
-                    <div style="width:50px; display:inline-flex">
-                        <input class="form-control" type="text" id="carNo1" onkeyup="pleckWriter()" />
-                    </div>
-                    <span style=" width:10px; display:inline-block; text-align:center">-</span>
-                    <div style="width:60px; display:inline-flex">
-                        <input class="form-control" type="text" id="carNo2" onkeyup="pleckWriter()" />
-                    </div> 
-                    <div style="width:52px; display:inline-flex">
-                        @Html.DropDownList("Alphabet", (IEnumerable<SelectListItem>)ViewBag.Alphabet, "الف",
-                       htmlAttributes: new { onchange = "pleckWriter()" , @class= "k-select" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Number, htmlAttributes: new { hidden = "hidden" })
+                <div class="form-inline">
+                    <div class="row">
+                        <div style="width:40px; display:inline-flex">ایران</div>
+                        <div style="width:50px; display:inline-flex">
+                            <input class="form-control" type="text" id="carNo1" onkeyup="pleckWriter()" />
+                        </div>
+                        <span style=" width:10px; display:inline-block; text-align:center">-</span>
+                        <div style="width:60px; display:inline-flex">
+                            <input class="form-control" type="text" id="carNo2" onkeyup="pleckWriter()" />
+                        </div>
+                        <div style="width:52px; display:inline-flex">
+                            @Html.DropDownList("Alphabet", (IEnumerable<SelectListItem>)ViewBag.Alphabet, "الف",
+                           htmlAttributes: new { onchange = "pleckWriter()", @class = "k-select" })
 
-                    </div>
-                    <div style="width:50px; display:inline-flex">
-                        <input type="text" class="form-control" id="carNo3" onkeyup="pleckWriter()" />
+                        </div>
+                        <div style="width:50px; display:inline-flex">
+                            <input type="text" class="form-control" id="carNo3" onkeyup="pleckWriter()" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.IsActive)
-            @Html.ValidationMessageFor(model => model.IsActive)
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.CreationDate)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ثبت" class="btn btn-primary font-medium" />
+                @Html.ActionLink("بازگشت به فهرست", "Index")
+            </div>
         </div>
     </div>
-
-    @Html.HiddenFor(model => model.CreationDate)
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-    </div>
-
-    <div class="form-group" id="buttons">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="ثبت" class="btn btn-primary font-medium" />
-            @Html.ActionLink("بازگشت به فهرست", "Index")
-        </div>
-    </div>
-</div>
 }
 
 
 
 @section scripts{
+    <script src="~/Scripts/select2.min.js"></script>
     <script>
         function pleckWriter() {
             var carNumber = document.getElementById("Number");
@@ -119,6 +125,48 @@
                 $("#Alphabet").val(alphabet);
             }
             /* $("#Alphabet").val(alphabet);*/
+
+
+            var selData = $(".CarTypeSelect").select2({
+                ajax: {
+                    url: '/cars/GetCarTypeList',
+                    data: function (params) {
+                        return {
+                            q: params.term// search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            dropdownParent: $(".CarTypeSelect"),
+                            results: $.map(data.items, function (obj) {
+                                return {
+                                    id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                                };
+                            })
+                        };
+                    },
+                    initSelection: function (element, callback) {
+                        var data = { id: element.val(), text: element.val() };
+                        callback(data);
+                    }
+                }
+            });
+
+            $('#CarTypeId').on("change", function (e) {
+
+                var lastValue = e.currentTarget.value;
+                var lastText = e.currentTarget.textContent;
+                $.post("/Cars/GetCarType",
+                    {
+                        q: lastValue
+                    },
+                    function (data, status) {
+                        //alert("Data: " + data + "\nStatus: " + status);
+                        console.log(data.items.Id);
+                        $('.atn_weight').html(" " + data.items.Weight + "کیلوگرم")
+                    });
+            });
+
         });
     </script>
-    }
+}

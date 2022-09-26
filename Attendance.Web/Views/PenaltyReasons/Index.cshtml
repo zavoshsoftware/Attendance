@@ -9,27 +9,48 @@
 <h2>@ViewBag.Title</h2>
 
 @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                      columns.Bound(model => model.Title);
-        columns.Bound(model => model.IsActive);
-           columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
-                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+                 .Name("Grid")
+                 .Columns(columns =>
+                 {
+                 columns.Bound(model => model.Id).Title("ردیف");
+                 columns.Bound(model => model.Title);
+                 columns.Bound(model => model.IsActive);
+                 columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
+                         .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-		})
-		.ToolBar(toolbar =>
-					{
-						toolbar.Custom().Action("Create","PenaltyReasons").Text("افزودن");
-					}
-		)
-		.DataSource(dataSource => dataSource
-									.Server()
+                 }).HtmlAttributes(new { id = "tbl" })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Action("Create","PenaltyReasons").Text("افزودن");
+        }
+        )
+        .DataSource(dataSource => dataSource
+                                    .Server()
 
-									.Model(model => model.Id(item => item.Id))
-					)
+                                    .Model(model => model.Id(item => item.Id))
+                    )
 	)
+<script>
+    console.log($('#tbl'))
+    //    .each(function () {
+    //    console.log(this)
+    //    //productlist.append({ "Id": $(this).find('td').eq(5).text(), "Amount": $(this).find('td').eq(1).text() });
+    //    //$(this).find('td').eq(0).val()
+    //});
+    //$('#tbl > tbody  > tr').each(function (el)
+    //{
+    //    console.log(el)
+    //});
+    var counter = 1;
+    $('#tbl tr').each(function (index,key) {
+        if (index!= 0) {
+            console.log($(this.cells)[0])
+            $(this.cells)[0].innerText = counter
+            counter = counter + 1;
+        }
+    });
+</script>
