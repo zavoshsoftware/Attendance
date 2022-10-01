@@ -17,6 +17,7 @@ namespace Attendance.Web
             BundleConfig.RegisterBundles(new System.Web.Optimization.BundleCollection(){});
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalConfiguration.Configure(WebApiConfig.Register); 
+            InitConfig.RegisterData(); 
             //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters); 
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
         }

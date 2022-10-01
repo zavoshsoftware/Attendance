@@ -730,6 +730,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\InitConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -1104,6 +1105,7 @@
     <Content Include="Views\CardStatusHistories\Edit.cshtml" />
     <Content Include="Views\CardStatusHistories\Index.cshtml" />
     <Content Include="Views\CardGroupItems\AddSubGroup.cshtml" />
+    <Content Include="Views\Cards\DriversHistory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

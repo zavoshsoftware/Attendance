@@ -16,15 +16,26 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: WalkingLoginHistories
-        public ActionResult Index(Guid id)
+        public ActionResult Index(Guid? id)
         {
-            var cardLoginHistory = db.CardLoginHistories.Find(id);
-            if (cardLoginHistory != null)
-                ViewBag.Title = "تاریخچه ورود و خروج کارت شماره " + cardLoginHistory.Card.DisplayCode + " در تاریخ ورود" +
-                                cardLoginHistory.LoginDate.ToShamsi('s');
-            var walkingLoginHistories = db.WalkingLoginHistories.
-               Where(w => w.IsDeleted == false && w.CardLoginHistoryId == id).OrderByDescending(w => w.CreationDate);
-            return View(walkingLoginHistories.ToList());
+            ViewBag.CardLoginHistoryId = id;
+            if (id.HasValue)
+            {
+                var cardLoginHistory = db.CardLoginHistories.Find(id);
+                if (cardLoginHistory != null)
+                    ViewBag.Title = "تاریخچه ورود و خروج کارت شماره " + cardLoginHistory.Card.DisplayCode + " در تاریخ ورود" +
+                                    cardLoginHistory.LoginDate.ToShamsi('s');
+                var walkingLoginHistories = db.WalkingLoginHistories.
+                   Where(w => w.IsDeleted == false && w.CardLoginHistoryId == id).OrderByDescending(w => w.CreationDate);
+                return View(walkingLoginHistories.ToList());
+            }
+            else
+            {
+                ViewBag.Title = "تاریخچه ورود و خروج کارت  ";
+                var walkingLoginHistories = db.WalkingLoginHistories.Include(x=>x.CardLoginHistory).
+                   Where(w => w.IsDeleted == false).OrderByDescending(w => w.CreationDate);
+                return View(walkingLoginHistories.ToList());
+            }
         }
 
 

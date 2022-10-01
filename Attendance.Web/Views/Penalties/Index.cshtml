@@ -13,9 +13,9 @@
               .Columns(columns =>
               {
               columns.Bound(model => model.Id).Title("ردیف");
-              columns.Bound(model => model.Card.Code);
+              columns.Bound(model => model.Card.DisplayCode);
               columns.Bound(model => model.Reason);
-              columns.Bound(item => @item.PenaltyType).Template(@<text>	@item.PenaltyType.GetDisplayName()</text>).Width(200);
+              @*columns.Bound(item => @item.PenaltyType).Template(@<text>	@item.PenaltyType.GetDisplayName()</text>).Width(200);*@
                   columns.Bound(item => @item.Solved).Filterable(false).Groupable(false)
                       .Template(@<text>	@(item.Solved?"رفع توقیق شده است":" توقیف شده است")</text>).Width(200);
         columns.Bound(model => model.IsActive);
@@ -26,10 +26,11 @@
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("رفع توقیف", "Cancel", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-                  })
+              })
         .ToolBar(toolbar =>
         {
             //toolbar.Custom().Action("Export","Penalties").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+            toolbar.Custom().Action("create", "Penalties").HtmlAttributes(new { @class = "font-medium" }).Text("ثبت توقیف");
         }
         )
          .HtmlAttributes(new { id = "tbl" })

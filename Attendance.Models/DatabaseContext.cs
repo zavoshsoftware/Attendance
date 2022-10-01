@@ -37,5 +37,8 @@ namespace Attendance.Models
         public DbSet<DriverStatusHistory>  DriverStatusHistories { get; set; }
         public DbSet<CarTypeStatusHistory>  CarTypeStatusHistories { get; set; }
         public DbSet<CarStatusHistory> CarStatusHistories { get; set; }
+        public DbSet<CardOwnerHistory> CardOwnerHistories { get; set; }
+        public DbSet<PenaltyType> PenaltyTypes { get; set; }
+        public DbSet<Penalty_PenaltyType> Penalty_PenaltyTypes { get; set; }
     }
 }

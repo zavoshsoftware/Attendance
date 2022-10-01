@@ -121,6 +121,8 @@ namespace Attendance.Web.Controllers.api
                 Ok = true
             });
         }
+         
+        
         // GET /api/authors/1/books
         [Route("~/api/Exit/{id}/auth")]
         [HttpGet]

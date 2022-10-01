@@ -34,12 +34,12 @@
             <a href="/cards">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت ها</span>
             </a>
-        </li> 
+        </li>
         <li id="sliderLi1" class="menuitem">
             <a href="/CardGroups">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت دسته ها</span>
             </a>
-        </li> 
+        </li>
         <li id="sliderLi1" class="menuitem">
             <a href="/cartypes">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت نوع ماشین</span>
@@ -61,7 +61,7 @@
             </a>
         </li>
         @if (role == SecurityRole.SuperAdmin)
-        { 
+        {
             <li id="sliderLi2" class="menuitem">
                 <a href="/CardLoginHistories/Hidden">
                     <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود رانندگان(مخفی)</span>
@@ -82,17 +82,56 @@
             <a href="/configs">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
             </a>
-        </li>
-        <li id="sliderLi2" class="menuitem">
-            <a href="/penalties/">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>توقیف</span>
+        </li> 
+       
+        <li class="menuitem">
+            <a href="#">
+                <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                    <i class="fa fa-angle-down text"></i>
+                    <i class="fa fa-angle-up text-active"></i>
+                </span><span>توقیف</span>
             </a>
+            <ul class="nav lt">
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/penaltyreasons/index">
+                        <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
+                    </a>
+                </li>
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/penalties/create">
+                        <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
+                    </a>
+                </li>
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/penalties">
+                        <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li id="sliderLi2" class="menuitem">
-            <a href="/penalties?solved=true">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>رفع توقیف</span>
+        
+        <li class="menuitem">
+            <a href="#">
+                <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                    <i class="fa fa-angle-down text"></i>
+                    <i class="fa fa-angle-up text-active"></i>
+                </span><span>ورود خروج پیاده</span>
             </a>
+            <ul class="nav lt">
+                <li>
+                    <a href="/CardLoginHistories/IndexNotExit">
+                        <i class="fa fa-angle-left"></i><span>ثبت ورود خروج پیاده</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/WalkingLoginHistories/index">
+                        <i class="fa fa-angle-left"></i><span>تاریخچه ورود و خروج پیاده</span>
+                    </a>
+                </li>
+
+            </ul>
         </li>
+
     </ul>
         }
         if (role == SecurityRole.Monitoring)
@@ -123,16 +162,7 @@
             <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>ورود و خروج پیاده</span>
         </a>
     </li> 
-    <li id="sliderLi2" class="menuitem">
-        <a href="/penalties/create">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>توقیف</span>
-        </a>
-    </li>
-    <li id="sliderLi2" class="menuitem">
-        <a href="/penalties">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>رفع توقیف</span>
-        </a>
-    </li>
+    
 </ul>
         }
         if (role == "User")

@@ -51,12 +51,15 @@
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="DatabaseContextInitializer.cs" />
     <Compile Include="DatabaseContextInitializerBeforeTheFirstRelease.cs" />
+    <Compile Include="Entities\Card\CardOwnerHistory.cs" />
     <Compile Include="Entities\Card\CardGroup.cs" />
     <Compile Include="Entities\Card\CardGroupItem.cs" />
     <Compile Include="Entities\Card\CardGroupItemCard.cs" />
     <Compile Include="Entities\CarType\CarTypeStatusHistory.cs" />
     <Compile Include="Entities\Car\CarStatusHistory.cs" />
     <Compile Include="Entities\Driver\DriverStatusHistory.cs" />
+    <Compile Include="Entities\Penalty\Penalty_PenaltyType.cs" />
+    <Compile Include="Entities\Penalty\PenaltyType.cs" />
     <Compile Include="Entities\Penalty\PenaltyReason.cs" />
     <Compile Include="Entities\System\BaseEntity.cs" />
     <Compile Include="Entities\Car\Car.cs" />
@@ -228,6 +231,18 @@
     <Compile Include="Migrations\202209260824043_V40.Designer.cs">
       <DependentUpon>202209260824043_V40.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210010649247_V41.cs" />
+    <Compile Include="Migrations\202210010649247_V41.Designer.cs">
+      <DependentUpon>202210010649247_V41.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210010729517_V42.cs" />
+    <Compile Include="Migrations\202210010729517_V42.Designer.cs">
+      <DependentUpon>202210010729517_V42.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210011109196_V43.cs" />
+    <Compile Include="Migrations\202210011109196_V43.Designer.cs">
+      <DependentUpon>202210011109196_V43.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -358,6 +373,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209260824043_V40.resx">
       <DependentUpon>202209260824043_V40.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210010649247_V41.resx">
+      <DependentUpon>202210010649247_V41.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210010729517_V42.resx">
+      <DependentUpon>202210010729517_V42.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210011109196_V43.resx">
+      <DependentUpon>202210011109196_V43.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

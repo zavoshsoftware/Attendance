@@ -1,32 +1,36 @@
 ﻿@model IEnumerable<Attendance.Models.Entities.WalkingLoginHistory>
 
 @{
-		//ViewBag.Title = "تاریخچه ورود و خروج پیاده ";
+    //ViewBag.Title = "تاریخچه ورود و خروج پیاده ";
 
-		Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
-        @(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                            columns.Bound(model => model.CardLoginHistory.Card.DisplayCode);
-        columns.Bound(model => model.WalkingLoginHistoryTypeStr);
-        columns.Bound(model => model.IsDriver);
-        columns.Bound(model => model.IsDriverHelper);
-        columns.Bound(model => model.IsActive);
-        columns.Bound(model => model.CreationDate);
+@(Html.Kendo().Grid(Model)
+                    .Name("Grid")
+                    .Columns(columns =>
+                    {
+                    columns.Bound(model => model.CardLoginHistory.Card.DisplayCode);
+                    columns.Bound(model => model.WalkingLoginHistoryTypeStr);
+                    columns.Bound(model => model.IsDriver);
+                    columns.Bound(model => model.IsDriverHelper);
+              //columns.Bound(model => model.IsActive);
+              columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
+                                  .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 									</text>).Width(200);
-                  })
+                    })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Action("Create","WalkingLoginHistories").Text("افزودن"); 
+            if (ViewBag.CardLoginHistoryId != null)
+            {
+                toolbar.Custom().Action("Create", "WalkingLoginHistories").Text("افزودن");
+            }
         }
         )
                 .Sortable(sortable => sortable.SortMode(GridSortMode.SingleColumn))

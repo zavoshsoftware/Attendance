@@ -47,8 +47,7 @@
             chat.client.addNewMessageToPage = function (id, name, loginId, message, displayCode) {
 
 
-                $('#discussion').empty();
-
+                $('#discussion').empty(); 
                 var imgProfile = '';
                 if (id == null) {
                     imgProfile = imgCross;
@@ -115,6 +114,15 @@
                     }, 1500);
 
                 }
+
+                $.get("/cards/GetLastCardLoginHistory?id=" + id, function (data) {
+                    console.log(data.CarId)
+
+                    if (!jQuery.isEmptyObject(data)) {
+                        $('#pleck option[value=' + data.CarId + ']').prop('selected', 'selected').change(); 
+                    }
+                });
+
             };
 
             //Send Alarm if current user had a login thats have not exit date
