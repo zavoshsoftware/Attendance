@@ -105,12 +105,12 @@
                 }
             }
         }
+
         var penaltyTypeList =[]
       
-
         $(document).ready(function () {
-            penaltyTypeList = JSON.parse($('#penaltyTypeId'))
-            console.log(penaltyTypeList)
+            penaltyTypeList = JSON.parse($('#penaltyTypeId').val())
+            //console.log(penaltyTypeList, $('#penaltyTypeId').val())
         });
 
         function checkstatus(id) {

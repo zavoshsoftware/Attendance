@@ -14,6 +14,7 @@ using Attendance.Core.Entity;
 using Attendance.Models;
 using Attendance.Models.Entities;
 using Helpers;
+using RestSharp;
 
 namespace Attendance.Web.Controllers
 {
@@ -23,7 +24,7 @@ namespace Attendance.Web.Controllers
 
         // GET: Penalties
         public ActionResult Index(Guid? driverId,Guid? cardId,bool solved = false)
-        {
+        {  
             if (driverId.HasValue)
             { 
                 var penalties = db.Penalties.Include(p => p.Card).Include(x=>x.Penalty_PenaltyTypes).Where(p => p.IsDeleted == false && p.Solved == solved && p.Card.DriverId == driverId).OrderByDescending(p => p.CreationDate);
@@ -71,7 +72,7 @@ namespace Attendance.Web.Controllers
             ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted), "Id", "Code");
             ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c=>!c.IsDeleted), "Id", "Title");
             }
-            ViewBag.PenaltyTypes = db.PenaltyTypes.ToList();
+            ViewBag.PenaltyTypes = db.PenaltyTypes.Where(x=>!x.IsDeleted && x.IsActive).ToList();
             return View(new Penalty() { });
         }
 
@@ -95,7 +96,7 @@ namespace Attendance.Web.Controllers
                 db.SaveChanges();
                 foreach (var item in penaltyTypeIds)
                 {
-                    var penaltyType = db.PenaltyTypes.Find(item);
+                    var penaltyType = db.PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).FirstOrDefault(x=>x.Id==item);
                     db.Penalty_PenaltyTypes.Add(new Penalty_PenaltyType()
                     {
                         CreationDate=DateTime.Now,
@@ -132,8 +133,8 @@ namespace Attendance.Web.Controllers
             }
             ViewBag.CardId = new SelectList(db.Cards, "Id", "Code", penalty.CardId);
             ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title",penalty.ReasonId);
-            ViewBag.SelectedPenaltyTypes = penalty.Penalty_PenaltyTypes.Select(x=>x.PenaltyType).Distinct().ToList();
-            ViewBag.PenaltyTypes = db.PenaltyTypes.ToList();
+            ViewBag.SelectedPenaltyTypes = penalty.Penalty_PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).Select(x=>x.PenaltyType).Distinct().ToList();
+            ViewBag.PenaltyTypes = db.PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).ToList();
             return View(penalty);
         }
 

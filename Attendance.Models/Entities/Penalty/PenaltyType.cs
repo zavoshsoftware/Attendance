@@ -10,7 +10,7 @@ namespace Attendance.Models.Entities
 {
     public class PenaltyType : BaseEntity
     {
-        [Display(Name = "علت")] 
+        [Display(Name = "عنوان")] 
         public string Title { get; set; }
 
         public virtual ICollection<Penalty_PenaltyType> Penalty_PenaltyTypes { get; set; }

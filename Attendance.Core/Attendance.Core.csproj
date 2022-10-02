@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Debugger.cs" />
+    <Compile Include="Code\DigitToWord.cs" />
     <Compile Include="Code\EngToPers.cs" />
     <Compile Include="Code\PersToEng.cs" />
     <Compile Include="Data\ObjectToDataTable.cs" />

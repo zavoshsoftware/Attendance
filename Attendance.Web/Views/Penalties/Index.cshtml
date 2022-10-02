@@ -16,9 +16,16 @@
               columns.Bound(model => model.Card.DisplayCode);
               columns.Bound(model => model.Reason);
               @*columns.Bound(item => @item.PenaltyType).Template(@<text>	@item.PenaltyType.GetDisplayName()</text>).Width(200);*@
-                  columns.Bound(item => @item.Solved).Filterable(false).Groupable(false)
+              columns.Bound(item => @item.Solved).Filterable(false).Groupable(false)
                       .Template(@<text>	@(item.Solved?"رفع توقیق شده است":" توقیف شده است")</text>).Width(200);
         columns.Bound(model => model.IsActive);
+         columns.Bound(item => @item.Penalty_PenaltyTypes).Filterable(false).Groupable(false)
+                      .Template(@<text>
+                        @(
+                       String.Join(" , ", item.Penalty_PenaltyTypes.Select(x => x.PenaltyType.Title).ToList())
+
+                            )
+                        </text>).Width(200);
         columns.Bound(item => @item.CreationDate).Title("تاریخ").Filterable(false).Groupable(false)
                       .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
@@ -52,8 +59,8 @@
     //    console.log(el)
     //});
     var counter = 1;
-    $('#tbl tr').each(function (index,key) {
-        if (index!= 0) {
+    $('#tbl tr').each(function (index, key) {
+        if (index != 0) {
             console.log($(this.cells)[0])
             $(this.cells)[0].innerText = counter
             counter = counter + 1;
