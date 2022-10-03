@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Attendance.Models.Entities.CardOwnerHistory>
+
+@{
+    ViewBag.Title = "فهرست ";
+
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                          columns.Bound(model => model.Card.Code);
+		columns.Bound(item => @item.PreviousDriver).Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.Action("GetDriverFullName","Cards", new { driverId = item.PreviousDriver})
+									</text>);
+		columns.Bound(item => @item.CurrentDriver).Filterable(false).Groupable(false)
+							.Template(@<text>
+	@Html.Action("GetDriverFullName","Cards", new { driverId = item.CurrentDriver})
+									</text>) ;
+        columns.Bound(model => model.IsActive);
+         columns.Bound(item => @item.CreationDate).Filterable(false).Groupable(false)
+                      .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>);
+					 
+		})
+		.ToolBar(toolbar =>
+					{
+					}
+		)
+		.DataSource(dataSource => dataSource
+									.Server()
+
+									.Model(model => model.Id(item => item.Id))
+					).Pageable()
+	)

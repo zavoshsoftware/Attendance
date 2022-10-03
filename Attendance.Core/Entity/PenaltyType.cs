@@ -16,4 +16,5 @@ namespace Attendance.Core.Entity
         [Display(Name = "کارت ورود")]
         LoginCard = 2
     }
+     
 }

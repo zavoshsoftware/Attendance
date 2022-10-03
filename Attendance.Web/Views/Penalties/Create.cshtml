@@ -1,5 +1,5 @@
 ﻿@model Attendance.Models.Entities.Penalty
-
+@using Attendance.Core.Enums
 @{
     ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
@@ -33,22 +33,46 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.Penalty_PenaltyTypes, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@foreach (var item in Model)
+                        {
+                            <a>@(item?.PenaltyType?.Title)</a>
+                        }*@
+                    @foreach (var item in (List<Attendance.Models.Entities.PenaltyType>)ViewBag.PenaltyTypes)
+                    {
+                        @*<a>@(item?.Title)</a>*@
+                        <label for="#@item.Id">@item.Title</label>
+                        <input type="checkbox" id="@item.Id" onclick="checkstatus('@item.Id')" />
+                    }
+                    @Html.ValidationMessageFor(model => model.ReasonId)
+                </div>
+                <input id="penaltyTypeId" hidden name="penaltyTypeId"/>
+            </div>
+
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.PenaltyType, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EnumDropDownListFor(model => model.PenaltyType)
 
+                    @foreach (var name in Enum.(typeof(Attendance.Core.Entity.PenaltyType)).Cast<Attendance.Core.Entity.PenaltyType>().Select(v => v.ToString()).ToList())
+                    {
+                        <a>@(name)
+                            </a>
+                    }
                     @Html.ValidationMessageFor(model => model.PenaltyType)
+
                 </div>
-            </div>
+                </div>*@
 
             @*<div class="form-group">
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Solved)
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Solved)
 
-            </div>
-        </div>*@
+                    </div>
+                </div>*@
 
             <div class="form-group" hidden>
                 <div class="col-md-2">
@@ -76,4 +100,33 @@
             </div>
         </div>
     </div>
+}
+
+@section Scripts{
+
+    <script>
+        Array.prototype.remove = function (x) {
+            var i;
+            for (i in this) {
+                if (this[i].toString() == x.toString()) {
+                    this.splice(i, 1)
+                }
+            }
+        }
+        var penaltyTypeList = [];
+        function checkstatus(id) {
+            console.log(id)
+            let isChecked = $('#' + id).is(":checked")
+            console.log(isChecked)
+            if (isChecked) {
+                penaltyTypeList.push(id);
+            }
+            else {
+                penaltyTypeList.remove(id);
+            }
+
+            $('#penaltyTypeId').val(JSON.stringify(penaltyTypeList))
+            console.log(JSON.stringify(penaltyTypeList));
+        }
+    </script>
 }

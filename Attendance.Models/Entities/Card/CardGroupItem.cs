@@ -10,11 +10,14 @@ using System.Threading.Tasks;
 namespace Attendance.Models.Entities
 {
    public class CardGroupItem : BaseEntity
-    {
+    { 
+        [Display(Name = "عنوان")]
+        [MaxLength(20, ErrorMessage = "مقدار {0} نباید بیشتر از {1} باشد")]
+        public string Title { get; set; } 
 
         [Display(Name = "عنوان")]
         [MaxLength(20, ErrorMessage = "مقدار {0} نباید بیشتر از {1} باشد")]
-        public string Title { get; set; }
+        public string SubTitle { get; set; }
 
         public Guid GroupId { get; set; }
 

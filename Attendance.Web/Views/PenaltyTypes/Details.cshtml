@@ -1,4 +1,4 @@
-﻿@model Attendance.Models.Entities.Penalty
+﻿@model Attendance.Models.Entities.PenaltyType
 
 @{
     ViewBag.Title = "Details";
@@ -8,39 +8,15 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Penalty</h4>
+    <h4>PenaltyType</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Card.Code)
+            @Html.DisplayNameFor(model => model.Title)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Card.Code)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Reason)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Reason)
-        </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.PenaltyType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PenaltyType)
-        </dd>*@
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Solved)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Solved)
+            @Html.DisplayFor(model => model.Title)
         </dd>
 
         <dt>

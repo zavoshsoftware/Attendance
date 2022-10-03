@@ -72,6 +72,7 @@ namespace Attendance.Web.Services.Base
                 }
                 entity.Id = Guid.NewGuid();
                 entity.CreationDate = DateTime.Now;
+                entity.LastModifiedDate = DateTime.Now;
                 entity.IsDeleted = false;
                 this.Entities.Add(entity);
                 this.context.SaveChanges();

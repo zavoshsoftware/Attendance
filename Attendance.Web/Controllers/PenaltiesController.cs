@@ -14,6 +14,7 @@ using Attendance.Core.Entity;
 using Attendance.Models;
 using Attendance.Models.Entities;
 using Helpers;
+using RestSharp;
 
 namespace Attendance.Web.Controllers
 {
@@ -23,20 +24,20 @@ namespace Attendance.Web.Controllers
 
         // GET: Penalties
         public ActionResult Index(Guid? driverId,Guid? cardId,bool solved = false)
-        {
+        {  
             if (driverId.HasValue)
             { 
-                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && p.Solved == solved && p.Card.DriverId == driverId).OrderByDescending(p => p.CreationDate);
+                var penalties = db.Penalties.Include(p => p.Card).Include(x=>x.Penalty_PenaltyTypes).Where(p => p.IsDeleted == false && p.Solved == solved && p.Card.DriverId == driverId).OrderByDescending(p => p.CreationDate);
                 return View(penalties.ToList());
             }
             else if (cardId.HasValue)
             {
-                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && p.Solved == solved && p.CardId == cardId).OrderByDescending(p => p.CreationDate);
+                var penalties = db.Penalties.Include(p => p.Card).Include(x => x.Penalty_PenaltyTypes).Where(p => p.IsDeleted == false && p.Solved == solved && p.CardId == cardId).OrderByDescending(p => p.CreationDate);
                 return View(penalties.ToList());
             }
             else
             {
-                var penalties = db.Penalties.Include(p => p.Card).Where(p => p.IsDeleted == false && p.Solved == solved).OrderByDescending(p => p.CreationDate);
+                var penalties = db.Penalties.Include(p => p.Card).Include(x => x.Penalty_PenaltyTypes).Where(p => p.IsDeleted == false && p.Solved == solved).OrderByDescending(p => p.CreationDate);
                 return View(penalties.ToList());
             }
         }
@@ -71,6 +72,7 @@ namespace Attendance.Web.Controllers
             ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted), "Id", "Code");
             ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c=>!c.IsDeleted), "Id", "Title");
             }
+            ViewBag.PenaltyTypes = db.PenaltyTypes.Where(x=>!x.IsDeleted && x.IsActive).ToList();
             return View(new Penalty() { });
         }
 
@@ -79,15 +81,34 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Reason,PenaltyType,CardId,Solved,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] Penalty penalty)
+        public ActionResult Create([Bind(Include = "Id,Reason,PenaltyType,CardId,Solved,IsActive,CreationDate," +
+            "LastModifiedDate,IsDeleted,DeletionDate,Description")] Penalty penalty,string penaltyTypeId)
         {
+            var penaltyTypeIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Guid>>(penaltyTypeId);
+
             if (ModelState.IsValid)
-            {
+            { 
 				penalty.IsDeleted=false;
 				penalty.CreationDate= DateTime.Now; 
 					
                 penalty.Id = Guid.NewGuid();
                 db.Penalties.Add(penalty);
+                db.SaveChanges();
+                foreach (var item in penaltyTypeIds)
+                {
+                    var penaltyType = db.PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).FirstOrDefault(x=>x.Id==item);
+                    db.Penalty_PenaltyTypes.Add(new Penalty_PenaltyType()
+                    {
+                        CreationDate=DateTime.Now,
+                        Id =Guid.NewGuid(),
+                        IsActive = true,
+                        PenaltyId = penalty.Id,
+                        Penalty = penalty,
+                        IsDeleted = false,
+                        PenaltyType = penaltyType,
+                        PenaltyTypeId = item
+                    });
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -104,13 +125,16 @@ namespace Attendance.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Penalty penalty = db.Penalties.Find(id);
+            Penalty penalty = db.Penalties.Include(x=>x.Penalty_PenaltyTypes).Include(x=>x.Card)
+                .FirstOrDefault(x=>x.Id==id);
             if (penalty == null)
             {
                 return HttpNotFound();
             }
             ViewBag.CardId = new SelectList(db.Cards, "Id", "Code", penalty.CardId);
             ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title",penalty.ReasonId);
+            ViewBag.SelectedPenaltyTypes = penalty.Penalty_PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).Select(x=>x.PenaltyType).Distinct().ToList();
+            ViewBag.PenaltyTypes = db.PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).ToList();
             return View(penalty);
         }
 
@@ -119,13 +143,33 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Reason,PenaltyType,CardId,Solved,IsActive,CreationDate,LastModifiedDate,IsDeleted,DeletionDate,Description")] Penalty penalty)
+        public ActionResult Edit( Penalty penalty, string penaltyTypeId)
         {
+            var penaltyTypeIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Guid>>(penaltyTypeId);
+
             if (ModelState.IsValid)
             {
 				penalty.IsDeleted=false;
 					penalty.LastModifiedDate=DateTime.Now;
                 db.Entry(penalty).State = EntityState.Modified;
+                db.SaveChanges();
+                foreach (var item in penaltyTypeIds)
+                {
+                    var lastPenalties = db.Penalty_PenaltyTypes.Where(x => x.PenaltyId == penalty.Id).ToList();
+                    db.Penalty_PenaltyTypes.RemoveRange(lastPenalties);
+                    var penaltyType = db.PenaltyTypes.Find(item);
+                    db.Penalty_PenaltyTypes.Add(new Penalty_PenaltyType()
+                    {
+                        CreationDate = DateTime.Now,
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        PenaltyId = penalty.Id,
+                        Penalty = penalty,
+                        IsDeleted = false,
+                        PenaltyType = penaltyType,
+                        PenaltyTypeId = item
+                    });
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -188,7 +232,6 @@ namespace Attendance.Web.Controllers
                 new {
                     CardCode = c.Card.Code,
                     CardDisplayCode = c.Card.DisplayCode,
-                    document = ((PenaltyType)c.PenaltyType).GetDisplayName(),
                     Reason = c.Reason, 
                     Solved = c.Solved?"رفع توقیق شده":"رفع توقیف نشده",
                     IsActive = c.IsActive ? "فعال" : "غیرفعال",

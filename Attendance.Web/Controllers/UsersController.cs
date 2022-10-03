@@ -64,13 +64,15 @@ namespace Attendance.Web.Controllers
                     {
                         new SelectListItem {Text = SecurityRole.Admin, Value = SecurityRole.Admin},
                         new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User},
-                        new SelectListItem {Text = SecurityRole.SuperAdmin, Value = SecurityRole.SuperAdmin}
+                        new SelectListItem {Text = SecurityRole.SuperAdmin, Value = SecurityRole.SuperAdmin},
+                        new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring},
                     };
                 else
                     return new List<SelectListItem>()
                     {
                         new SelectListItem {Text = SecurityRole.Admin, Value = SecurityRole.Admin},
-                        new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User}
+                        new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User},
+                        new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring},
                     };
             }
             else
@@ -91,7 +93,8 @@ namespace Attendance.Web.Controllers
         public ActionResult Create(User user)
         {
             if (ModelState.IsValid)
-            { 
+            {
+                user.BirthDate = DateTime.Now;
                 _userRepository.Insert(user);
                 return RedirectToAction("Index");
             }

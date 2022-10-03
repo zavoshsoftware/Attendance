@@ -14,9 +14,7 @@ namespace Attendance.Models.Entities
         [Display(Name = "علت")]
         [DataType(DataType.MultilineText)]
         public string Reason { get; set; }
-
-        [Display(Name = "مدرک توقیف شده")]
-        public PenaltyType PenaltyType { get; set; }
+         
          
         [Display(Name = "کارت")]
         public Guid CardId { get; set; }
@@ -25,7 +23,7 @@ namespace Attendance.Models.Entities
         public Guid? ReasonId { get; set; }
 
         [Display(Name = "رفع توقیف شده/نشده")]
-        public bool Solved { get; set; }
+        public bool Solved { get; set; } 
 
         [ForeignKey("CardId")]
         public virtual Card Card { get; set; }
@@ -33,6 +31,8 @@ namespace Attendance.Models.Entities
         [ForeignKey("ReasonId")]
         public virtual PenaltyReason PenaltyReason { get; set; }
 
+        [Display(Name = "مدارک توقیف شده")]
+        public virtual ICollection<Penalty_PenaltyType> Penalty_PenaltyTypes { get; set; }
     }
 
 }
