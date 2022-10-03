@@ -93,10 +93,23 @@ namespace Attendance.Web.Controllers
                 }
 
                 card.Id = Guid.NewGuid();
-                card.IsActive = true;
+                card.IsActive = true; 
                 if (!db.Cards.Any(c => c.Driver.Id == driver.Id && !c.IsDeleted))
                 {
                     db.Cards.Add(card);
+                    db.SaveChanges();
+                    db.CardStatusHistories.Add(new CardStatusHistory() { 
+                    Card=card,
+                    CardId = card.Id,
+                    Id=Guid.NewGuid(),
+                    CreationDate = DateTime.Now,
+                    IsActive=true,
+                    IsDeleted =false,
+                    PreviousStatus = false,
+                    CurrentStatus = true,
+                    Description="کارت با موفقیت ایجاد شد",
+                    Operator = User.Identity.Name
+                    });
                     db.SaveChanges();
                     TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
                 }
@@ -358,7 +371,7 @@ namespace Attendance.Web.Controllers
         {
             CardLoginHistory login = db.CardLoginHistories.Where(x => !x.IsDeleted).Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
-            ViewBag.Weight = (int)db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId).Weight;
+            ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
             return View(login);
         }
@@ -598,6 +611,7 @@ new
                 {
                     Id = lastCardLoginHistory?.Id,
                     CreationDate = lastCardLoginHistory?.CreationDate,
+                    AssistanceId = db.Drivers.AsNoTracking().FirstOrDefault(x=>x.NationalCode == lastCardLoginHistory.AssistanceNationalCode).Id,
                     AssistanceName = lastCardLoginHistory?.AssistanceName,
                     AssistanceLastName = lastCardLoginHistory?.AssistanceLastName,
                     AssistanceNationalCode = lastCardLoginHistory?.AssistanceNationalCode,

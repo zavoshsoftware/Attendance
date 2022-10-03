@@ -16,11 +16,18 @@ namespace Attendance.Web.Views
         private DatabaseContext db = new DatabaseContext();
 
         // GET: CardStatusHistories
-        public ActionResult Index()
+        public ActionResult Index(Guid? cardId)
         {
-            var cardStatusHistories = db.CardStatusHistories.Include(c => c.Card)
-                .Where(c=>c.IsDeleted==false && !c.Card.IsHidden).OrderByDescending(c=>c.CreationDate);
-            return View(cardStatusHistories.ToList());
+            var cardStatusHistories = db.CardStatusHistories.Include(x => x.Card).Where(c => !c.IsDeleted && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
+            
+            if (cardId.HasValue)
+            {
+                return View(cardStatusHistories.Where(x=>x.CardId == cardId.Value).ToList());
+            }
+            else
+            {
+                  return View(cardStatusHistories.ToList());
+            }
         }
 
         // GET: CardStatusHistories/Details/5

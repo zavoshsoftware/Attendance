@@ -202,10 +202,7 @@
 </div>
 <script src="~/Scripts/select2.min.js"></script>
 <script>
-    $(document).ready(function () {
-
-
-
+    $(document).ready(function () { 
         var selData = $(".accountSelect").select2({
             ajax: {
                 url: '/cards/GetPleckList',
@@ -305,12 +302,13 @@
                     };
                 },
                 initSelection: function (element, callback) {
+                    console.log(element, callback);
                     var data = { id: element.val(), text: element.val() };
                     callback(data);
                 }
             }
         });
-
+         
         $('.DriverSelect').on("change", function (e) {
 
             var lastValue = e.currentTarget.value;

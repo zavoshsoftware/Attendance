@@ -41,6 +41,7 @@
 									@Html.ActionLink("ورود و خروج", "Index", "CardLoginHistories", new { cardId = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("توقیفات", "Index", "penalties", new { cardId = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("تاریخچه رانندگان", "DriversHistory", "cards", new { cardId = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("تاریخچه فعال/غیرفعال", "index", "cardstatushistories", new { cardId = @item.Id}, new {@class = "k-button"})
 									@*@Html.ActionLink("تعیین روزهای مجاز", "Index","CardDays", new {id = @item.Id}, new {@class = "k-button"})*@
 							           </text>).Width(200);
         })
