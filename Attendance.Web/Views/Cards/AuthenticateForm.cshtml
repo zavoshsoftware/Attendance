@@ -124,6 +124,7 @@
                                 @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label" })
                                 @*@Html.EditorFor(model => model.AssistanceName)*@
                                 <select id="AssistanceNationalCode" name="AssistanceNationalCode" class="AsistSelect form-control k-select">
+                                    <option selected value="@Model.AssistanceId">@Model.AssistanceNationalCode</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -152,17 +153,16 @@
                         <div class="form-horizontal">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Pleck, new { @class = "control-label" })
-                                <select id="pleck" name="pleck" class="accountSelect form-control input-group  input-lg"></select>
-
-                                @Html.ValidationMessageFor(model => model.Pleck)
+                                <select id="pleck" name="pleck" class="accountSelect form-control input-group  input-lg">
+                                    <option selected value="@Model.carId">@Model.Pleck</option>
+                                </select> 
                             </div>
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Load, new { @class = "control-label" })
                                 <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)"
-                                       type="text" value="0.00" class="k-textbox input-group  input-lg">
 
-                                @Html.ValidationMessageFor(model => model.Load)
+                                       type="text" value="@Model.Load" class="k-textbox input-group  input-lg">
                             </div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                                 @Html.LabelFor(model => model.Weight, new { @class = "control-label" })
 
                                 <input data-val="true" id="Weight" name="Weight"
-                                       type="text" value="0.00" class="k-textbox input-group  input-lg">
+                                       type="text" value="@Model.Weight" class="k-textbox input-group  input-lg">
                                 @Html.ValidationMessageFor(model => model.Weight)
                             </div>
                         </div>
@@ -302,7 +302,7 @@
                     };
                 },
                 initSelection: function (element, callback) {
-                    console.log(element, callback);
+                    console.log(element);
                     var data = { id: element.val(), text: element.val() };
                     callback(data);
                 }
@@ -319,7 +319,6 @@
                 },
                 function (data, status) {
                     //alert("Data: " + data + "\nStatus: " + status);
-                    console.log(data.DriverFirstName, data.DriverLastName)
                     document.getElementById("DriverFirstName").value = data.DriverFirstName;
                     document.getElementById("DriverLastName").value = data.DriverLastName;
                 });

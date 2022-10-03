@@ -61,7 +61,7 @@
                         + '</div > '
                         + '</div>'
                         + '</li>');
-                    toastr["danger"](message)
+                    toastr["warning"](message)
                 }
                 else {
                     imgProfile = imgSuccess;
@@ -158,8 +158,7 @@
                 document.getElementById('ding').play();
                 alert('خروج از سیستم')
                 toastr["warning"](name + ' ' + message)
-                if (id != null) {
-
+                if (id != null) { 
                     var url = '/cards/LoginHistoryDetials/' + id;
                     var link = document.createElement('a');
                     link.href = url;
