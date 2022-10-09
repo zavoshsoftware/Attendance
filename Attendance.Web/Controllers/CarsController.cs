@@ -52,7 +52,7 @@ namespace Attendance.Web.Controllers
                 "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
                 "و", "ه", "ی"}); 
 
-            ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title");
+            ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Code");
             return View();
         }
 
@@ -108,7 +108,7 @@ namespace Attendance.Web.Controllers
                 "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
                 "و", "ه", "ی"});
 
-            ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title", car.CarTypeId);
+            ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Code", car.CarTypeId);
             return View(car);
         }
 
@@ -335,12 +335,12 @@ namespace Attendance.Web.Controllers
             Guid carTypeId;
             if (Guid.TryParse(q, out carTypeId))
             {
-                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Id.Equals(carTypeId)).Select(c => new { Id = c.Id, Text = c.Title + " " + c.Code }).ToList();
+                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Id.Equals(carTypeId)).Select(c => new { Id = c.Id, Text = c.Title + " - " + c.Code }).ToList();
                 return Json(new { items = result }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Title.Contains(q)).Select(c => new { Id = c.Id, Text = c.Title + " " + c.Code }).ToList();
+                var result = db.CarTypes.Where(c => !c.IsDeleted && c.Title.Contains(q)).Select(c => new { Id = c.Id, Text = c.Title + " - " + c.Code }).ToList();
                 return Json(new { items = result }, JsonRequestBehavior.AllowGet);
             }
         }

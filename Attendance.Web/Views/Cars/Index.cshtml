@@ -22,6 +22,7 @@
                             .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
 					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
 							.Template(@<text>
+									@Html.ActionLink("تاریخچه فعال/غیرفعال","index" ,"CarStatusHistories", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 <a class="k-button" href="/cars/status?id=@item.Id">@(item.IsActive?"غیرفعالسازی":"فعالسازی")</a>
@@ -32,6 +33,7 @@
             toolbar.Custom().Action("Create","Cars").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن");
             toolbar.Custom().Action("import","Cars").HtmlAttributes(new { @class = "font-medium" }).Text("افزودن اکسل ماشین ها");
             toolbar.Custom().Action("Export", "Cars").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+            toolbar.Custom().Action("index", "CarStatusHistories").HtmlAttributes(new { @class = "font-medium" }).Text("تاریخچه فعال/غیرفعال");
 
         }
         ).HtmlAttributes(new { id = "tbl" })

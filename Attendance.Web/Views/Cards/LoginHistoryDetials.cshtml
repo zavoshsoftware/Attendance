@@ -163,7 +163,7 @@
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.TotalLoad, new { @class = "control-label" })
-                            @((int)(((int)ViewBag.Weight)+ Model.Load)) کیلوگرم
+                            @((int)(Model.Load - ((int)ViewBag.Weight))) کیلوگرم
                         </div>
                     </div>
                 </div>

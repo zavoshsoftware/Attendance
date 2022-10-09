@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Attendance.Models.Entities.CarStatusHistory>
+
+@{
+    ViewBag.Title = "فهرست ";
+
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  { 
+         columns.Bound(@item => @item.PreviousStatus).Template(@<text>
+									 @(item.PreviousStatus?"فعال":"غیرفعال")
+									</text>) ;
+        columns.Bound(@item => @item.CurrentStatus).Template(@<text>
+@(item.CurrentStatus?"فعال":"غیرفعال")
+									</text>) ;
+       columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
+                            .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+              columns.Bound(model => model.Description);
+              
+		})
+		 
+		.DataSource(dataSource => dataSource
+									.Server()
+
+									.Model(model => model.Id(item => item.Id))
+					)
+	)

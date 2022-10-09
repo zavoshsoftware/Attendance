@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Attendance.Models.Entities.CardLoginHistory>
+﻿
+@model IEnumerable<Attendance.Models.Entities.CardLoginHistory>
 
 @{
     ViewBag.Title = "فهرست ورودهای خارج نشده";
@@ -12,64 +13,83 @@
 
     <form method="get" action="indexnotexit">
         <div class="form-group">
-            @Html.Label("تاریخ", new { @class = "control-label col-md-2" })
+            @Html.Label("کارت", new { @class = "control-label col-md-2" })
             <div class="col-md-4">
-                <input type="text" id="date" class="k-textbox" name="date" value="@ViewBag.date"
-                       onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi('a')');" />
-            </div>
-            <div class="">
-                <button type="submit">جستجو</button>
-            </div>
+                @*<input type="text" id="date" class="k-textbox" name="date" value="@ViewBag.date"
+        onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi('a')');" />*@
+                <select id="DriverId" name="DriverId" class="DriverSelect form-control k-select" required></select>
+            </div>  
+        </div>
+        <div class="form-group">
+            <div class="result"></div>
+            @*<a class="k-button"
+                   href="/CarStatusHistories/index/7c3eee6f-812e-447f-a402-95b81f04b94f"
+                   >تاریخچه فعال/غیرفعال</a>
+                @Html.ActionLink("جزییات", "LoginHistoryDetials", "Cards", new { id = @item.Id }, new { @class = "k-button" })
+                @Html.ActionLink("ثبت ورود و خروج پیاده", "index", "WalkingLoginHistories", new { id = @item.Id }, new { @class = "k-button" })*@
         </div>
     </form>
-
 </div>
 <br />
-@(Html.Kendo().Grid(Model)
-              .Name("Grid")
-              .Columns(columns =>
-                  {
-                                    columns.Bound(model => model.Card.Code).Width(200);
-        columns.Bound(item => @item.Id).Title("تاریخ ورود").Filterable(false).Groupable(false)
-							.Template(@<text>
-									@item.LoginDate.ToShamsi('s')
-									</text>).Width(200);
-                                    columns.Bound(model => model.Driver.FullName).Width(200);
-
-	                  columns.Bound(item => @item.Id).Title("تاریخ خروج").Filterable(false).Groupable(false)
-							.Template(@<text>
-									@(item.ExitDate.ToShamsi().Equals("")?"خارج نشده":item.ExitDate.ToShamsi('s'))
-									</text>).Width(200);
-	    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
-							.Template(@<text>
-									@Html.ActionLink("جزییات", "LoginHistoryDetials","Cards", new {id = @item.Id}, new {@class = "k-button"})
-									@Html.ActionLink("ثبت ورود و خروج پیاده", "index","WalkingLoginHistories", new {id = @item.Id}, new {@class = "k-button"})
-							           </text>).Width(200);
-		})
-		.ToolBar(toolbar =>
-					{
-
-					}
-		)        .Filterable().Sortable()
-		.DataSource(dataSource => dataSource
-									.Server()
-
-									.Model(model => model.Id(item => item.Id))
-					)
-	)
-
 
 @section scripts {
-    <script>
-
-
+    <script src="~/Scripts/select2.min.js"></script>
+    <script> 
         $(document).ready(function () {
-              $("#Card_Day").val("@Html.Raw(ViewBag.day)").change();
+              @*$("#Card_Day").val("@Html.Raw(ViewBag.day)").change();
         $('#Card_Day').on('change', function (e) {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
             document.location = "/CardLoginHistories/IndexNotExit?day=" + valueSelected;
-        });
+        });*@
+
+
+
+
+            var selData = $(".DriverSelect").select2({
+                ajax: {
+                    url: '/cards/GetCardList',
+                    data: function (params) {
+                        return {
+                            q: params.term// search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            dropdownParent: $(".DriverSelect"),
+                            results: $.map(data.items, function (obj) {
+                                return {
+                                    id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                                };
+                            })
+                        };
+                    },
+                    initSelection: function (element, callback) {
+                        var data = { id: element.val(), text: element.val() };
+                        callback(data);
+                    }
+                }
+            });
+
+            $('.DriverSelect').on("change", function (e) {
+
+                var lastValue = e.currentTarget.value;
+                var lastText = e.currentTarget.textContent;
+                $.post("/Cards/GetCardList",
+                    {
+                        q: lastValue
+                    },
+                    function (data, status) {
+                        //alert("Data: " + data + "\nStatus: " + status);
+                        console.log(data.items[0])
+                        var btn1 = '<a class="k-button" href =' +
+                            '"/Cards/LoginHistoryDetials?id=' + data.items[0].Id + '" target="_blank"> جزییات</a >';
+                        var btn2 = '<a class="k-button" href =' +
+                            '"/WalkingLoginHistories/index?id=' + data.items[0].Id + '" target="_blank"> ثبت ورود و خروج پیاده</a >';
+                        $('.result').html(btn2)
+                    });
+            });
+
         })
     </script>
 }

@@ -35,7 +35,7 @@ namespace Attendance.Models.Entities
         [Display(Name="بار")]
         public decimal Load { get; set; }
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        [Display(Name = "مجموع بار")]
+        [Display(Name = "مقدار واقعی")]
         public decimal? TotalLoad { get; set; }
 
         [Display(Name = "نام کمک راننده")]
