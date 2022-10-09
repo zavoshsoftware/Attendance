@@ -775,6 +775,7 @@
     <Compile Include="Controllers\CardLoginHistoriesController.cs" />
     <Compile Include="Controllers\CardsController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
+    <Compile Include="Controllers\CarStatusHistoriesController.cs" />
     <Compile Include="Controllers\CarTypesController.cs" />
     <Compile Include="Controllers\CarTypeStatusHistoriesController.cs" />
     <Compile Include="Controllers\ConfigsController.cs" />
@@ -1143,6 +1144,11 @@
     <Content Include="Views\PenaltyTypes\Details.cshtml" />
     <Content Include="Views\PenaltyTypes\Edit.cshtml" />
     <Content Include="Views\PenaltyTypes\Index.cshtml" />
+    <Content Include="Views\CarStatusHistories\Create.cshtml" />
+    <Content Include="Views\CarStatusHistories\Delete.cshtml" />
+    <Content Include="Views\CarStatusHistories\Details.cshtml" />
+    <Content Include="Views\CarStatusHistories\Edit.cshtml" />
+    <Content Include="Views\CarStatusHistories\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

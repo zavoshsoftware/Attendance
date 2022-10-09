@@ -93,7 +93,7 @@ namespace Attendance.Web.Controllers
                 }
 
                 card.Id = Guid.NewGuid();
-                card.IsActive = true; 
+                card.IsActive = true;
                 if (!db.Cards.Any(c => c.Driver.Id == driver.Id && !c.IsDeleted))
                 {
                     db.Cards.Add(card);
@@ -432,6 +432,25 @@ namespace Attendance.Web.Controllers
                 return Json(new { items = result }, JsonRequestBehavior.AllowGet);
             }
         }
+        public JsonResult GetCardList(string q)
+        {
+            if (q == null)
+            {
+                q = string.Empty;
+            }
+            Guid cardId;
+            if (Guid.TryParse(q, out cardId))
+            {
+                var result = db.Cards.Where(c => !c.IsDeleted && c.Id.Equals(cardId)/* && c.DriverType == (DriverType)type*/).Select(c => new { Id = c.Id, Text = c.DisplayCode }).ToList();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = db.Cards.Where(c => !c.IsDeleted && c.DisplayCode.Contains(q) /*&& c.DriverType == (DriverType)type*/)
+                    .Select(c => new { Id = c.Id, Text = c.DisplayCode /*, LoginHistoryId = c.CardLoginHistories.LastOrDefault().Id*/ }).ToList();
+                return Json(new { items = result }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpPost]
         public JsonResult GetDriver(string q, int type = 0)
@@ -559,10 +578,8 @@ new
                 CreationDate = DateTime.Now,
                 Operator = User.Identity.Name
             };
-            card.IsActive = !card.IsActive;
-            card.Description = status.Description;
-            db.Entry(current).State = EntityState.Added;
-            db.Entry(card).State = EntityState.Modified;
+            card.IsActive = !card.IsActive; 
+            db.Entry(current).State = EntityState.Added; 
             db.SaveChanges();
             return RedirectToAction("index");
         }

@@ -14,7 +14,7 @@
                   {
                           columns.Bound(model => model.Card.Code).Filterable(true).Sortable(true);
                           columns.Bound(model => model.Card.DisplayCode).Filterable(true).Sortable(true);
-                          columns.Bound(model => model.Card.Description).Filterable(true).Sortable(true);
+                          columns.Bound(model => model.Description).Filterable(true).Sortable(true);
                           columns.Bound(model => model.Card.Driver.FullName).Filterable(true).Sortable(true);
          columns.Bound(@item => @item.PreviousStatus).Template(@<text>
 									 @(item.PreviousStatus?"فعال":"غیرفعال")

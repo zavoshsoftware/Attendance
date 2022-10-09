@@ -123,19 +123,28 @@
     <!--SignalR script to update the chat page and send messages.-->
     <script>
         $(document).ready(function () {
-           
-
-            @*var id = '@Html.Raw(Model.DriverId)'
-            console.log(id)
-            $.post("/Cards/GetDriver",
-                {
-                    q: id
-                },
-                function (data, status) {
-                    //alert("Data: " + data + "\nStatus: " + status);
-                    $('.DriverSelect option[value="' + data.Id + '"]')
-                    console.log(data.DriverFirstName, data.Id)
-                });*@
+            $(function () {
+                // Reference the auto-generated proxy for the hub.
+                var chat = $.connection.atnHub;
+                // Create a function that the hub can call back to display messages.
+                chat.client.Generate = function (code) {
+                    // Add the message to the page.
+                    $('#Code').val(code)
+                };
+                // Get the user name and store it to prepend to messages.
+                //$('#displayname').val(prompt('Enter your name:', ''));
+                // Set initial focus to message input box.
+                $('#message').focus();
+                // Start the connection.
+                $.connection.hub.start().done(function () {
+                    $('#sendmessage').click(function () {
+                        // Call the Send method on the hub.
+                        chat.server.CodeGenerator();
+                        // Clear text box and reset focus for next comment.
+                        $('#message').val('').focus();
+                    });
+                });
+            });
         });
  
         var selData = $(".DriverSelect").select2({

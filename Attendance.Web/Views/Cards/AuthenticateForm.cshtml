@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <div class="panel panel-primary ">
                     <div class="panel-heading">
-                        <h3 class="panel-title">اطلاعات </h3>
+                        <h3 class="panel-title">اطلاعات</h3>
                     </div>
                     <div class="panel-body">
                         <div class="form-horizontal">
@@ -160,9 +160,9 @@
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Load, new { @class = "control-label" })
-                                <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)"
-
+                                <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)" 
                                        type="text" value="@Model.Load" class="k-textbox input-group  input-lg">
+                                <span id="realLoad"></span>
                             </div>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
 </div>
 <script src="~/Scripts/select2.min.js"></script>
 <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {
         var selData = $(".accountSelect").select2({
             ajax: {
                 url: '/cards/GetPleckList',
@@ -308,7 +308,7 @@
                 }
             }
         });
-         
+
         $('.DriverSelect').on("change", function (e) {
 
             var lastValue = e.currentTarget.value;
@@ -337,7 +337,7 @@
                     document.getElementById("AssistanceName").value = data.DriverFirstName;
                     document.getElementById("AssistanceLastName").value = data.DriverLastName;
                 });
-        }); 
+        });
     });
 
 
@@ -345,7 +345,7 @@
         var Allowed = @Html.Raw(Configurations.MaxLoadAmount);
         var load = parseInt(document.getElementById("Load").value);
         var weight = parseInt(document.getElementById("Weight").value);
-
+        if ((load - weight) > 0) $('#realLoad').html((load - weight) + " کیلوگرم حداکثر مقدار مجاز ("+ @Html.Raw(Configurations.MaxLoadAmount)+")");
         if ((load - weight)>Allowed) {
             toastr["warning"]('مقدار ورودی بیشتر از حد مجاز ('+ @Html.Raw(Configurations.MaxLoadAmount)+' کیلوگرم) است')
         }

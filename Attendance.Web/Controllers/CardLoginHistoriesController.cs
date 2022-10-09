@@ -88,6 +88,14 @@ namespace Attendance.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetCardList(string q="")
+        {   
+                var cards = db.Cards.Where(x => x.DisplayCode.Contains(q)).Select(c => new { Id = c.Id, Text = c.DisplayCode }).ToList();
+                return Json(new { items = cards }, JsonRequestBehavior.AllowGet);
+           
+        }
+
         // GET: CardLoginHistories/Details/5
         public ActionResult Details(Guid? id)
         {

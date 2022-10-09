@@ -69,7 +69,7 @@ namespace Attendance.Web.Controllers
             else
             {
 
-            ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted), "Id", "Code");
+            ViewBag.CardId = new SelectList(db.Cards.Where(c=>!c.IsDeleted), "Id", "DisplayCode");
             ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c=>!c.IsDeleted), "Id", "Title");
             }
             ViewBag.PenaltyTypes = db.PenaltyTypes.Where(x=>!x.IsDeleted && x.IsActive).ToList();
@@ -131,7 +131,7 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CardId = new SelectList(db.Cards, "Id", "Code", penalty.CardId);
+            ViewBag.CardId = new SelectList(db.Cards, "Id", "DisplayCode", penalty.CardId);
             ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title",penalty.ReasonId);
             ViewBag.SelectedPenaltyTypes = penalty.Penalty_PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).Select(x=>x.PenaltyType).Distinct().ToList();
             ViewBag.PenaltyTypes = db.PenaltyTypes.Where(x => !x.IsDeleted && x.IsActive).ToList();

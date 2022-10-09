@@ -156,7 +156,7 @@
 
             chat.client.Exit = function (id, message) {
                 document.getElementById('ding').play();
-                alert('خروج از سیستم')
+                //alert('خروج از سیستم')
                 toastr["warning"](name + ' ' + message)
                 if (id != null) { 
                     var url = '/cards/LoginHistoryDetials/' + id;
