@@ -63,6 +63,7 @@
                         + '</li>');
                     toastr["warning"](message)
                     document.getElementById("dingSrc").src = "/Files/NotAllowed.mp3";
+                    document.getElementById('ding').load();
                     document.getElementById('ding').play();
 
                 }
@@ -83,6 +84,7 @@
                         //console.log(data);
                         toastr["success"](name + ' ' + message)
                         document.getElementById("dingSrc").src = "/Files/Login.mp3";
+                        document.getElementById('ding').load();
                         document.getElementById('ding').play();
 
                     });
@@ -160,6 +162,7 @@
 
             chat.client.Exit = function (id, message) {
                 document.getElementById("dingSrc").src = "/Files/Exit.mp3";
+                document.getElementById('ding').load();
                 document.getElementById('ding').play();
 
                 //alert('خروج از سیستم')
