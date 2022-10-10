@@ -40,5 +40,8 @@ namespace Attendance.Models
         public DbSet<CardOwnerHistory> CardOwnerHistories { get; set; }
         public DbSet<PenaltyType> PenaltyTypes { get; set; }
         public DbSet<Penalty_PenaltyType> Penalty_PenaltyTypes { get; set; }
+        public DbSet<Tools> Tools { get; set; }
+        public DbSet<Units> Units { get; set; }
+        public DbSet<LoginHistoryTool> LoginHistoryTools { get; set; }
     }
 }

@@ -7,21 +7,27 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Status", "Cards",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Status", "Cards", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">        
+
+    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.CardId)
-         <div class="alert alert-danger">
-             لطفا علت @(Model.Card.IsActive ? "غیرفعالسازی" : "فعالسازی") را در بخش یادداشت درج کنید.
-         </div>
+        <div class="alert alert-danger">
+            لطفا علت @(Model.Card.IsActive ? "غیرفعالسازی" : "فعالسازی") را در بخش یادداشت درج کنید.
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                                  @Html.TextAreaFor(model => model.Description,new { @required = "required"})
+                @Html.TextAreaFor(model => model.Description, new
+                {
+                    @required = "required",
+               @oninvalid = "this.setCustomValidity('لطفا مقدار را وارد کنید')",
+               @oninput = "this.setCustomValidity('')"
+           })
+
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
@@ -29,7 +35,7 @@
         <div class="form-group" id="buttons">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="ثبت" class="btn btn-primary" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
+                @Html.ActionLink("بازگشت به فهرست", "Index")
             </div>
         </div>
     </div>

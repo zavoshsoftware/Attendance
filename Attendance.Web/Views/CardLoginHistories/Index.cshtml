@@ -14,8 +14,12 @@
 
     <form method="get" action="/CardLoginHistories/index" >
         <div class="form-group">
+            <div class="col-md-1">
+            تاریخ ورود:
+
+            </div>
             <div class="col-md-4">
-                @Html.Label("از تاریخ", new { @class = "control-label col-md-2" })
+                @Html.Label("از تاریخ", new { @class = "control-label col-md-3" })
                 <div class="col-md-4">
                     <input type="text" id="fromdate" class="k-textbox" name="fromdate" value="@ViewBag.From"
                            onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi('a')');" />
@@ -23,7 +27,7 @@
             </div>
             <div class="col-md-4">
 
-            @Html.Label("تا تاریخ", new { @class = "control-label col-md-2" })
+            @Html.Label("تا تاریخ", new { @class = "control-label col-md-3" })
             <div class="col-md-4">
                 <input type="text" id="todate" class="k-textbox" name="todate" value="@ViewBag.To"
                        onclick="PersianDatePicker.Show(this,'@DateTime.Now.ToShamsi('a')');" />

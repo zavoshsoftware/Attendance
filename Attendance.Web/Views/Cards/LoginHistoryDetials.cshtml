@@ -1,4 +1,4 @@
-﻿@model Attendance.Models.Entities.CardLoginHistory
+﻿@model Attendance.Models.Entities.CardLoginHistory 
 @using Attendance.Core.Enums;
 @{
     ViewBag.Title = ViewBag.PageTitle;
@@ -185,10 +185,7 @@
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Devices, new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Devices)
-                        </div>
+                        @Html.Action("create", "loginhistorytools",new { id = Model.Id})
                     </div>
                 </div>
             </div>
