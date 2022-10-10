@@ -814,7 +814,7 @@
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\LoginToolViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
-    <Compile Include="Views\CardStatusHistoriesController.cs" />
+    <Compile Include="Controllers\CardStatusHistoriesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
