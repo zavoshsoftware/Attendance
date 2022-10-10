@@ -23,6 +23,7 @@ namespace Attendance.Models.Entities
         [DisplayName("روز هفته")]
         public Attendance.Core.Enums.WeekDays Day { get; set; }
 
+        [Display(Name = "روز هفته")]
         public string DayStr
         {
             get

@@ -558,6 +558,9 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Files\ding.mp3" />
+    <Content Include="Files\Exit.mp3" />
+    <Content Include="Files\Login.mp3" />
+    <Content Include="Files\NotAllowed.mp3" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\AdminJS\app.v2.js" />
     <Content Include="Scripts\AdminJS\app.v2.min.js" />
@@ -781,10 +784,13 @@
     <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\DriverStatusHistoriesController.cs" />
+    <Compile Include="Controllers\ExitToolsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginHistoryToolsController.cs" />
     <Compile Include="Controllers\PenaltiesController.cs" />
     <Compile Include="Controllers\PenaltyReasonsController.cs" />
     <Compile Include="Controllers\PenaltyTypesController.cs" />
+    <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WalkingLoginHistoriesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -804,6 +810,7 @@
     <Compile Include="ViewModels\CardGroupViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
     <Compile Include="ViewModels\DriverInfoViewModel.cs" />
+    <Compile Include="ViewModels\LoginHistoryDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="Views\CardStatusHistoriesController.cs" />
@@ -1149,6 +1156,23 @@
     <Content Include="Views\CarStatusHistories\Details.cshtml" />
     <Content Include="Views\CarStatusHistories\Edit.cshtml" />
     <Content Include="Views\CarStatusHistories\Index.cshtml" />
+    <Content Include="Views\Units\Create.cshtml" />
+    <Content Include="Views\Units\Delete.cshtml" />
+    <Content Include="Views\Units\Details.cshtml" />
+    <Content Include="Views\Units\Edit.cshtml" />
+    <Content Include="Views\Units\Index.cshtml" />
+    <Content Include="Views\ExitTools\Create.cshtml" />
+    <Content Include="Views\ExitTools\Delete.cshtml" />
+    <Content Include="Views\ExitTools\Details.cshtml" />
+    <Content Include="Views\ExitTools\Edit.cshtml" />
+    <Content Include="Views\ExitTools\Index.cshtml" />
+    <Content Include="Views\LoginHistoryTools\Create.cshtml" />
+    <Content Include="Views\LoginHistoryTools\Delete.cshtml" />
+    <Content Include="Views\LoginHistoryTools\Details.cshtml" />
+    <Content Include="Views\LoginHistoryTools\Edit.cshtml" />
+    <Content Include="Views\LoginHistoryTools\Index.cshtml" />
+    <Content Include="Views\Cards\Inquiry.cshtml" />
+    <Content Include="Views\Cards\InquiryForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

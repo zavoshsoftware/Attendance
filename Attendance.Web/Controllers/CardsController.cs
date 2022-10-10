@@ -13,6 +13,7 @@ using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.ViewModels;
 using ClosedXML.Excel;
 
 namespace Attendance.Web.Controllers
@@ -400,15 +401,26 @@ namespace Attendance.Web.Controllers
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
+         
             return View(login);
         }
 
         [HttpPost]
-        public ActionResult LoginHistory(CardLoginHistory cardLoginHistory)
+        public ActionResult LoginHistory(CardLoginHistory cardLoginHistory,LoginHistoryTool loginHistoryTool)
         {
             var loginHistory = db.CardLoginHistories.Find(cardLoginHistory.Id);
             loginHistory.Description = cardLoginHistory.Description;
             loginHistory.Devices = cardLoginHistory.Devices;
+            db.LoginHistoryTools.Add(new LoginHistoryTool() {
+            Amount = loginHistoryTool.Amount,
+            ToolId = loginHistoryTool.ToolId,
+            UnitId = loginHistoryTool.UnitId,
+            CardLoginHistoryId = loginHistoryTool.CardLoginHistoryId,
+            CreationDate = DateTime.Now,
+            IsActive = true,
+            Id = Guid.NewGuid(),
+            IsDeleted=false 
+            });
             db.SaveChanges();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             return RedirectToAction("LoginHistoryDetials", new { id = loginHistory.Id });
@@ -578,15 +590,14 @@ new
                 CreationDate = DateTime.Now,
                 Operator = User.Identity.Name
             };
-            card.IsActive = !card.IsActive; 
+            card.IsActive = !card.IsActive;
+            card.Description = status.Description;
             db.Entry(current).State = EntityState.Added; 
+            db.Entry(card).State = EntityState.Modified; 
             db.SaveChanges();
             return RedirectToAction("index");
         }
-
-
-
-
+          
         public ActionResult Group(Guid id)
         {
             if (id == null)
@@ -674,5 +685,61 @@ new
                 return Json(new { }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public ActionResult Inquiry()
+        {
+            return View();
+        }
+
+        public ActionResult InquiryForm(Guid id)
+        {
+            var cardId = id;
+            ViewBag.plecks = db.Cars.Where(c => !c.IsDeleted).Select(c => new Select2Model { id = c.Id.ToString(), text = c.Number }).ToList();
+            //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
+            var card = db.Cards.Include(x => x.Driver).Include(x => x.CardLoginHistories).FirstOrDefault(x => x.Id == id);
+            CardLoginHistory login = card.CardLoginHistories.OrderByDescending(x => x.CreationDate).FirstOrDefault();
+            if (login != null)
+            {
+                return PartialView(
+                new AuthenticateFormViewModel()
+                {
+                    LoginId = Guid.NewGuid(),
+                    Driver = card?.Driver ?? default,
+                    carId = login?.CarId ?? null,
+                    Car = login?.Car,
+                    Card = card,
+                    cardId = card.Id,
+                    DriverFirstName = card.Driver.FirstName,
+                    DriverLastName = card.Driver.LastName,
+                    DriverNatCode = card.Driver.NationalCode,
+                    AssistanceId = db.Drivers.AsNoTracking().FirstOrDefault(x => x.NationalCode == login.AssistanceNationalCode).Id,
+                    AssistanceName = login?.AssistanceName ?? "",
+                    AssistanceLastName = login?.AssistanceLastName ?? "",
+                    AssistanceNationalCode = login?.AssistanceNationalCode ?? "",
+                    Type = db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Title ?? "",
+                    Load = login.Load,
+                    Pleck = login?.Car?.Number ?? "",
+                    Weight = db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight ?? decimal.Zero,
+                }
+                );
+            }
+            else
+            {
+                return PartialView(
+                new AuthenticateFormViewModel()
+                {
+                    LoginId = Guid.NewGuid(),
+                    Driver = card?.Driver ?? default,
+                    Card = card,
+                    cardId = card.Id,
+                    DriverFirstName = card.Driver.FirstName,
+                    DriverLastName = card.Driver.LastName,
+                    DriverNatCode = card.Driver.NationalCode,
+                }
+                );
+            }
+        }
+
     }
 }

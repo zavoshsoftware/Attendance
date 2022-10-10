@@ -1,13 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "اعتبارسنجی";
+    ViewBag.Title = "استعلام";
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
-@section styles{
-    @*<link href="~/Content/select2.min.css" rel="stylesheet" />*@
-}
-<h2>احراز هویت</h2>
+
+<h2>استعلام</h2>
 <hr />
 <div class="alert alert-info font-medium">
     لطفا کارت را مقابل دستگاه قرار دهید
@@ -68,10 +66,10 @@
                 }
                 else {
                     imgProfile = imgSuccess;
-                    $.get("/cards/authenticateform?id=" + id, function (data) {
+                    $.get("/cards/inquiryform?id=" + id, function (data) {
                         alert('ورود به سیستم')
                         if (!data) {
-                            $.get("/cards/authenticateform?id=" + id, function (data) {
+                            $.get("/cards/inquiryform?id=" + id, function (data) {
 
                                 resPartial = data;
                                 //console.log(data);
@@ -119,7 +117,7 @@
                 }
 
                 $.get("/cards/GetLastCardLoginHistory?id=" + id, function (data) {
-                    console.log(data) 
+                    console.log(data)
                     if (!jQuery.isEmptyObject(data)) {
                         //$('#AssistanceNationalCode option[value=' + data.AssistanceId + ']').prop('selected', 'selected').change();
 
@@ -164,7 +162,7 @@
 
                 //alert('خروج از سیستم')
                 toastr["warning"](name + ' ' + message)
-                if (id != null) { 
+                if (id != null) {
                     var url = '/cards/LoginHistoryDetials/' + id;
                     var link = document.createElement('a');
                     link.href = url;

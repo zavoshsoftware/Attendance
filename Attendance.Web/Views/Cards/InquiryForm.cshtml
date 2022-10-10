@@ -1,0 +1,219 @@
+﻿@model AuthenticateFormViewModel
+@{
+    double date = 0;
+}
+@section styles{
+    @*<link href="~/Content/select2.min.css" rel="stylesheet" />*@
+}
+<div class="animate__animated animate__fadeIn animate__slow">
+    <form action="/cards/submitform" method="post">
+        @Html.HiddenFor(x => x.cardId)
+        @Html.HiddenFor(x => x.Car)
+        @Html.HiddenFor(x => x.Driver)
+        @Html.HiddenFor(x => x.LoginId)
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">اطلاعات کارت</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Card.DisplayCode)
+                                @Html.DisplayFor(model => model.Card.DisplayCode)
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Card.DayStr)
+                                @Html.DisplayFor(model => model.Card.DayStr)
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Card.Code)
+                                @Html.DisplayFor(model => model.Card.Code)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">اطلاعات راننده</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" }) 
+                                @Html.DisplayFor(model => model.Driver.NationalCode)
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Driver.FirstName, new { @class = "control-label" })
+                                @Html.DisplayFor(model => model.Driver.FirstName) 
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Driver.LastName, new { @class = "control-label" })
+                                @Html.DisplayFor(model => model.Driver.LastName) 
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </form>
+
+</div>
+<script src="~/Scripts/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var selData = $(".accountSelect").select2({
+            ajax: {
+                url: '/cards/GetPleckList',
+                data: function (params) {
+                    return {
+                        q: params.term// search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".accountSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+
+        $('.accountSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cards/GetCarType",
+                {
+                    q: lastValue
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    //console.log(data.Type, data.Weight)
+                      console.log(data.Err)
+                    if (data.Err === true) {
+                        $('.resType').html(data.ErrMessage)
+                        $('.resType').css('color', 'red')
+                        $('#btnSave').prop('disabled', true)
+                        toastr["warning"](data.ErrMessage)
+                    }
+                    else {
+                        $('.resType').html('')
+                        $('#btnSave').prop('disabled', false)
+                    }
+                        document.getElementById("Type").value = data.Type;
+                    document.getElementById("Weight").value = parseFloat(data.Weight);
+
+                });
+        });;
+
+
+
+        var selData = $(".DriverSelect").select2({
+            ajax: {
+                url: '/cards/GetDriverList',
+                data: function (params) {
+                    return {
+                        q: params.term// search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".DriverSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+        $(".AsistSelect").select2({
+            ajax: {
+                url: '/cards/GetDriverList',
+                data: function (params) {
+                    return {
+                        q: params.term,  type:1
+
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        dropdownParent: $(".AsistSelect"),
+                        results: $.map(data.items, function (obj) {
+                            return {
+                                id: obj.Id, text: obj.Text // <- this is what was done to fix the issue
+                            };
+                        })
+                    };
+                },
+                initSelection: function (element, callback) {
+                    console.log(element);
+                    var data = { id: element.val(), text: element.val() };
+                    callback(data);
+                }
+            }
+        });
+
+        $('.DriverSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cards/GetDriver",
+                {
+                    q: lastValue
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    document.getElementById("DriverFirstName").value = data.DriverFirstName;
+                    document.getElementById("DriverLastName").value = data.DriverLastName;
+                });
+        });
+        $('.AsistSelect').on("change", function (e) {
+
+            var lastValue = e.currentTarget.value;
+            var lastText = e.currentTarget.textContent;
+            $.post("/Cards/GetDriver",
+                {
+                    q: lastValue,type:1
+                },
+                function (data, status) {
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    console.log(data.DriverFirstName, data.DriverLastName)
+                    document.getElementById("AssistanceName").value = data.DriverFirstName;
+                    document.getElementById("AssistanceLastName").value = data.DriverLastName;
+                });
+        });
+    });
+
+
+    function loadControl(inp) {
+        var Allowed = @Html.Raw(Configurations.MaxLoadAmount);
+        var load = parseInt(document.getElementById("Load").value);
+        var weight = parseInt(document.getElementById("Weight").value);
+        if ((load - weight) > 0) $('#realLoad').html((load - weight) + " کیلوگرم حداکثر مقدار مجاز ("+ @Html.Raw(Configurations.MaxLoadAmount)+")");
+        if ((load - weight)>Allowed) {
+            toastr["warning"]('مقدار ورودی بیشتر از حد مجاز ('+ @Html.Raw(Configurations.MaxLoadAmount)+' کیلوگرم) است')
+        }
+    }
+
+</script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

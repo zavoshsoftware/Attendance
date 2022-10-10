@@ -1,38 +1,40 @@
-﻿using System;
+﻿using Attendance.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Attendance.Models.Entities
+namespace Attendance.Web.ViewModels
 {
-    public class CardLoginHistory : BaseEntity
+    public class LoginHistoryDetailsViewModel
     {
-        [Display(Name="تاریخ ورود")]
+        [Display(Name = "تاریخ ورود")]
         public DateTime LoginDate { get; set; }
 
-        [Display(Name="موفق؟")]
+        [Display(Name = "موفق؟")]
         public bool IsSuccess { get; set; }
 
-        [Display(Name="کد کارت")]
+        [Display(Name = "کد کارت")]
         public Guid? CardId { get; set; }
 
-        public virtual Card Card { get; set; }
+        public Guid Id { get; set; }
+         
 
         [Display(Name = "تاریخ خروج")]
         public DateTime? ExitDate { get; set; }
 
-        [Display(Name="نام راننده")]
+        [Display(Name = "نام راننده")]
         public string DriverName { get; set; }
-         
 
-        [Display(Name="شماره کارت")]
+        public string Description { get; set; }
+
+
+        [Display(Name = "شماره کارت")]
         public string CarNumber { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        [Display(Name="بار")]
+        [Display(Name = "بار")]
         public decimal Load { get; set; }
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         [Display(Name = "مقدار واقعی")]
@@ -54,19 +56,28 @@ namespace Attendance.Models.Entities
         [Display(Name = "وسایل همراه ")]
         [DataType(DataType.MultilineText)]
         public string Devices { get; set; }
-
-
-        [ForeignKey("CarId")]
-        public virtual Car Car { get; set; }
-
-
-
+          
         [Display(Name = "راننده")]
         public Guid? DriverId { get; set; }
+         
 
-        [ForeignKey("DriverId")]
+        [Display(Name = "ورود")]
+        public Guid CardLoginHistoryId { get; set; }
+
+        [Display(Name = "وسایل")]
+        public Guid ToolId { get; set; }
+
+        [Display(Name = "واحد")]
+        public Guid UnitId { get; set; }
+
+        [Display(Name = "مقدار")]
+        public double Amount { get; set; }
+         
         public Driver Driver { get; set; }
 
-        public virtual ICollection<LoginHistoryTool> LoginHistoryTools { get; set; }
+         
+        public virtual Car Car { get; set; }
+
+        public virtual Card Card { get; set; }
     }
 }

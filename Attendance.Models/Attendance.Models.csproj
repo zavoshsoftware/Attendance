@@ -58,6 +58,8 @@
     <Compile Include="Entities\CarType\CarTypeStatusHistory.cs" />
     <Compile Include="Entities\Car\CarStatusHistory.cs" />
     <Compile Include="Entities\Driver\DriverStatusHistory.cs" />
+    <Compile Include="Entities\LoginHistoryTool.cs" />
+    <Compile Include="Entities\Units.cs" />
     <Compile Include="Entities\Penalty\Penalty_PenaltyType.cs" />
     <Compile Include="Entities\Penalty\PenaltyType.cs" />
     <Compile Include="Entities\Penalty\PenaltyReason.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Entities\Penalty\Penalty.cs" />
     <Compile Include="Entities\User\User.cs" />
     <Compile Include="Entities\User\UserLogin.cs" />
+    <Compile Include="Entities\Tools.cs" />
     <Compile Include="Entities\WalkingLoginHistory.cs" />
     <Compile Include="Migrations\202207300443162_V01.cs" />
     <Compile Include="Migrations\202207300443162_V01.Designer.cs">
@@ -243,6 +246,14 @@
     <Compile Include="Migrations\202210011109196_V43.Designer.cs">
       <DependentUpon>202210011109196_V43.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210100629450_V44.cs" />
+    <Compile Include="Migrations\202210100629450_V44.Designer.cs">
+      <DependentUpon>202210100629450_V44.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210100707083_V45.cs" />
+    <Compile Include="Migrations\202210100707083_V45.Designer.cs">
+      <DependentUpon>202210100707083_V45.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -382,6 +393,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202210011109196_V43.resx">
       <DependentUpon>202210011109196_V43.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210100629450_V44.resx">
+      <DependentUpon>202210100629450_V44.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210100707083_V45.resx">
+      <DependentUpon>202210100707083_V45.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
