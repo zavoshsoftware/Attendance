@@ -7,6 +7,20 @@
 
 <form action="/cards/LoginHistory" method="post">
     @Html.HiddenFor(c => c.Id)
+    @if ((bool)ViewBag.IsExit)
+    {
+	<div class="card text-center">
+	 
+
+		<img src="~/Files/exit.png" style="width:100px"  class="card-img-top"/>  <div id="cardBody" class="card-body text-center">
+
+			خروج انجام شد
+
+
+		</div>
+	</div>
+    }
+
     <div class="row">
         <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
 
@@ -155,7 +169,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Car.CarType.Weight, new { @class = "control-label" })
                             @ViewBag.Weight کیلوگرم
-                          
+
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Load, new { @class = "control-label" })
@@ -185,7 +199,7 @@
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
-                        @Html.Action("create", "loginhistorytools",new { id = Model.Id})
+                        @Html.Action("create", "loginhistorytools", new { id = Model.Id })
                     </div>
                 </div>
             </div>
@@ -197,7 +211,7 @@
             <button type="submit" class="btn btn-lg btn-success">ثبت نهایی</button>
         </div>
         <br />
-    </div> 
+    </div>
 </form>
 
 

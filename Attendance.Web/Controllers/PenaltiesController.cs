@@ -63,7 +63,7 @@ namespace Attendance.Web.Controllers
             if (cardId.HasValue)
             {
                 var card = db.Cards.Find(cardId);
-                ViewBag.CardId = new SelectList(db.Cards.Where(c => !c.IsDeleted), "Id", "Code",card); 
+                ViewBag.CardId = new SelectList(db.Cards.Where(c => !c.IsDeleted), "Id", "DisplayCode", card); 
                 ViewBag.ReasonId = new SelectList(db.PenaltyReason.Where(c => !c.IsDeleted), "Id", "Title");
             }
             else

@@ -8,7 +8,7 @@
 }
 
 
- 
+
 <h2>@ViewBag.Title</h2>
 
 @if (Model != null && Model.Any())
@@ -34,6 +34,13 @@
 
         columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
                       .Template(@<text>
+                                    @if ((bool)ViewBag.IsDeleted)
+                                    {
+                                      @Html.ActionLink("فعال کن", "UseCard", new {id = @item.Id}, new {@class = "k-button"})
+                                    }
+                          else
+                          {
+
 									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("دسته بندی", "Group", new {id = @item.Id}, new {@class = "k-button"})
@@ -42,6 +49,8 @@
 									@Html.ActionLink("توقیفات", "Index", "penalties", new { cardId = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("تاریخچه رانندگان", "DriversHistory", "cards", new { cardId = @item.Id}, new {@class = "k-button"})
 									@Html.ActionLink("تاریخچه فعال/غیرفعال", "index", "cardstatushistories", new { cardId = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("تردد پیاده", "index", "WalkingLoginHistories", new { cardId = @item.Id}, new {@class = "k-button"})
+                          }
 									@*@Html.ActionLink("تعیین روزهای مجاز", "Index","CardDays", new {id = @item.Id}, new {@class = "k-button"})*@
 							           </text>).Width(200);
         })
@@ -72,8 +81,8 @@
 <script>
     console.log($('#tbl'))
     var counter = 1;
-    $('#tbl tr').each(function (index,key) {
-        if (index!= 0) {
+    $('#tbl tr').each(function (index, key) {
+        if (index != 0) {
             console.log($(this.cells)[0])
             $(this.cells)[0].innerText = counter
             counter = counter + 1;

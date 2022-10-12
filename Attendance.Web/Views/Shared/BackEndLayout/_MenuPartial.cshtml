@@ -56,6 +56,14 @@
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت ها</span>
             </a>
         </li>
+        @if (role == SecurityRole.Admin)
+        {
+            <li id="sliderLi2" class="menuitem">
+                <a href="/Cards/index?isdeleted=true">
+                    <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت های حذف شده</span>
+                </a>
+            </li>
+        }
         <li id="sliderLi1" class="menuitem">
             <a href="/CardGroups">
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت دسته ها</span>
@@ -185,6 +193,11 @@
         </a>
     </li>
 
+    <li id="sliderLi3" class="menuitem">
+        <a href="/Cards/inquiry">
+            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
+        </a>
+    </li>
     <li id="sliderLi3" class="menuitem">
         <a href="/Cards/Authenticate">
             <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
