@@ -7,6 +7,19 @@
 
 <form action="/cards/LoginHistory" method="post">
     @Html.HiddenFor(c => c.Id)
+    @if ((bool)ViewBag.IsExit)
+    {
+        <div class="card text-center">
+            <img class="card-img-top" src="data:image/png;base64,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">
+            <div id="cardBody" class="card-body text-center">
+                 
+                    خروج انجام شد
+              
+
+            </div>
+        </div>
+    }
+
     <div class="row">
         <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
 
@@ -155,7 +168,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Car.CarType.Weight, new { @class = "control-label" })
                             @ViewBag.Weight کیلوگرم
-                          
+
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Load, new { @class = "control-label" })
@@ -185,7 +198,7 @@
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
-                        @Html.Action("create", "loginhistorytools",new { id = Model.Id})
+                        @Html.Action("create", "loginhistorytools", new { id = Model.Id })
                     </div>
                 </div>
             </div>
@@ -197,7 +210,7 @@
             <button type="submit" class="btn btn-lg btn-success">ثبت نهایی</button>
         </div>
         <br />
-    </div> 
+    </div>
 </form>
 
 

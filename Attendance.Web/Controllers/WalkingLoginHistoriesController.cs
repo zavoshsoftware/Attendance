@@ -16,7 +16,7 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: WalkingLoginHistories
-        public ActionResult Index(Guid? id)
+        public ActionResult Index(Guid? id,Guid? cardId)
         {
             ViewBag.CardLoginHistoryId = id;
             if (id.HasValue)
@@ -28,6 +28,17 @@ namespace Attendance.Web.Controllers
                 var walkingLoginHistories = db.WalkingLoginHistories.
                    Where(w => w.IsDeleted == false && w.CardLoginHistoryId == id).OrderByDescending(w => w.CreationDate);
                 return View(walkingLoginHistories.ToList());
+            }
+            else if (cardId.HasValue)
+            {
+                var result = new List<WalkingLoginHistory>();
+                foreach (var item in db.Cards.AsNoTracking().Include(x=>x.CardLoginHistories)?.FirstOrDefault(x=>x.Id==cardId)?.CardLoginHistories??default)
+                { 
+                    IOrderedQueryable<WalkingLoginHistory> walkingLoginHistories = db.WalkingLoginHistories.Include(a=>a.CardLoginHistory).
+                       Where(w => w.IsDeleted == false && w.CardLoginHistoryId == item.Id).OrderByDescending(w => w.CreationDate);
+                    result.AddRange(walkingLoginHistories.ToList().Distinct());
+                }
+                return View(result.Distinct().ToList());
             }
             else
             {

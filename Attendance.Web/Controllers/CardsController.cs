@@ -23,17 +23,18 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: Cards
-        public ActionResult Index()
+        public ActionResult Index(bool isDeleted=false)
         {
+            ViewBag.IsDeleted = isDeleted;
             List<Card> cards;
+            var result = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == isDeleted && !c.Driver.IsDeleted).OrderByDescending(c => c.CreationDate);
             if (IsSuperAdmin())
-                cards = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == false)
-                    .OrderByDescending(c => c.CreationDate).ToList();
+                cards = result.ToList();
             else
-                cards = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == false && c.IsHidden == false)
-                    .OrderByDescending(c => c.CreationDate).ToList();
+                cards = result.Where(c => c.IsHidden == false)
+                    .ToList();
 
-            return View(cards.ToList());
+            return View(cards.ToList().Distinct());
         }
 
         public bool IsSuperAdmin()
@@ -260,45 +261,63 @@ namespace Attendance.Web.Controllers
             //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
             var card = db.Cards.Include(x => x.Driver).Include(x=>x.CardLoginHistories).FirstOrDefault(x => x.Id == id);
             CardLoginHistory login = card.CardLoginHistories.OrderByDescending(x=>x.CreationDate).FirstOrDefault();
-            if (login != null)
+            try
             {
-                return PartialView(
-                new AuthenticateFormViewModel()
+                if (login != null)
                 {
-                    LoginId = Guid.NewGuid(),
-                    Driver = card?.Driver ?? default,
-                    carId = login?.CarId??null,
-                    Car = login?.Car,
-                    Card = card,
-                    cardId = card.Id,
-                    DriverFirstName = card.Driver.FirstName,
-                    DriverLastName = card.Driver.LastName,
-                    DriverNatCode = card.Driver.NationalCode,
-                    AssistanceId = db.Drivers.AsNoTracking().FirstOrDefault(x => x.NationalCode == login.AssistanceNationalCode).Id,
-                    AssistanceName = login?.AssistanceName ?? "",
-                    AssistanceLastName = login?.AssistanceLastName ?? "",
-                    AssistanceNationalCode = login?.AssistanceNationalCode ?? "",
-                    Type = db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Title ?? "",
-                    Load = login.Load,
-                    Pleck = login?.Car?.Number??"",
-                    Weight = db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight ?? decimal.Zero,
+                    return PartialView(
+                    new AuthenticateFormViewModel()
+                    {
+                        LoginId = Guid.NewGuid(),
+                        Driver = card?.Driver ?? default,
+                        carId = login?.CarId ?? null,
+                        Car = login?.Car,
+                        Card = card,
+                        cardId = card?.Id ?? null,
+                        DriverFirstName = card.Driver.FirstName,
+                        DriverLastName = card.Driver.LastName,
+                        DriverNatCode = card.Driver.NationalCode,
+                        AssistanceId = db.Drivers.AsNoTracking().FirstOrDefault(x => x.NationalCode == login.AssistanceNationalCode)?.Id ?? null,
+                        AssistanceName = login?.AssistanceName ?? "",
+                        AssistanceLastName = login?.AssistanceLastName ?? "",
+                        AssistanceNationalCode = login?.AssistanceNationalCode ?? "",
+                        Type = db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Title ?? "",
+                        Load = login.Load,
+                        Pleck = login?.Car?.Number ?? "",
+                        Weight = db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight ?? decimal.Zero,
+                    }
+                    );
                 }
-                );
+                else
+                {
+                    return PartialView(
+                    new AuthenticateFormViewModel()
+                    {
+                        LoginId = Guid.NewGuid(),
+                        Driver = card?.Driver ?? default,
+                        Card = card,
+                        cardId = card.Id,
+                        DriverFirstName = card.Driver.FirstName,
+                        DriverLastName = card.Driver.LastName,
+                        DriverNatCode = card.Driver.NationalCode,
+                    }
+                    );
+                }
             }
-            else
+            catch (Exception)
             {
                 return PartialView(
-                new AuthenticateFormViewModel()
-                {
-                    LoginId = Guid.NewGuid(),
-                    Driver = card?.Driver ?? default,
-                    Card = card,
-                    cardId = card.Id,
-                    DriverFirstName = card.Driver.FirstName,
-                    DriverLastName = card.Driver.LastName,
-                    DriverNatCode = card.Driver.NationalCode, 
-                      }
-                );
+                    new AuthenticateFormViewModel()
+                    {
+                        LoginId = Guid.NewGuid(),
+                        Driver = card?.Driver ?? default,
+                        Card = card,
+                        cardId = card.Id,
+                        DriverFirstName = card.Driver.FirstName,
+                        DriverLastName = card.Driver.LastName,
+                        DriverNatCode = card.Driver.NationalCode,
+                    }
+                    );
             }
         }
 
@@ -395,8 +414,9 @@ namespace Attendance.Web.Controllers
 
         }
 
-        public ActionResult LoginHistoryDetials(Guid id)
+        public ActionResult LoginHistoryDetials(Guid id,bool isExit=false)
         {
+            ViewBag.IsExit = isExit;
             CardLoginHistory login = db.CardLoginHistories.Where(x => !x.IsDeleted).Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
@@ -659,14 +679,14 @@ new
         public JsonResult GetLastCardLoginHistory(Guid id)
         {
             var lastCardLoginHistory = db.Cards.Include(x => x.CardLoginHistories).Include(x => x.Driver).Include(x => x.Penalties).FirstOrDefault(x => x.Id == id)
-                .CardLoginHistories.OrderByDescending(x=>x.CreationDate).FirstOrDefault();
+                .CardLoginHistories.OrderByDescending(x=>x.CreationDate)?.FirstOrDefault()??null;
             if(lastCardLoginHistory!=null)
             {
                 return Json(new
                 {
                     Id = lastCardLoginHistory?.Id,
                     CreationDate = lastCardLoginHistory?.CreationDate,
-                    AssistanceId = db.Drivers.AsNoTracking().FirstOrDefault(x=>x.NationalCode == lastCardLoginHistory.AssistanceNationalCode).Id,
+                    AssistanceId = db.Drivers.AsNoTracking()?.FirstOrDefault(x=>x.NationalCode == lastCardLoginHistory.AssistanceNationalCode)?.Id??null,
                     AssistanceName = lastCardLoginHistory?.AssistanceName,
                     AssistanceLastName = lastCardLoginHistory?.AssistanceLastName,
                     AssistanceNationalCode = lastCardLoginHistory?.AssistanceNationalCode,
@@ -739,6 +759,20 @@ new
                 }
                 );
             }
+        }
+
+        public ActionResult UseCard(Guid id)
+        {
+            var card = db.Cards.Find(id);
+            if (card!=null)
+            {
+                card.IsDeleted = false;
+                db.SaveChanges(); 
+                TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                return RedirectToAction("Index");
+            }
+            TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "کارت یافت نشد" };
+            return RedirectToAction("Index");
         }
 
     }

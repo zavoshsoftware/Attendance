@@ -22,9 +22,6 @@
     <div id="user_content">
 
     </div>
-
-
-
 </div>
 @section scripts {
     <!--Script references. -->
@@ -70,7 +67,7 @@
                 else {
                     imgProfile = imgSuccess;
                     $.get("/cards/authenticateform?id=" + id, function (data) {
-                        alert('ورود به سیستم')
+                        //alert('ورود به سیستم')
                         if (!data) {
                             $.get("/cards/authenticateform?id=" + id, function (data) {
 
@@ -168,7 +165,7 @@
                 //alert('خروج از سیستم')
                 toastr["warning"](name + ' ' + message)
                 if (id != null) { 
-                    var url = '/cards/LoginHistoryDetials/' + id;
+                    var url = '/cards/LoginHistoryDetials?id=' + id + '&isexit=true';
                     var link = document.createElement('a');
                     link.href = url;
                     link.target = "_blank"

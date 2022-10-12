@@ -19,9 +19,9 @@ public class AuthenticateViewModel
 
     public string CarType { get; set; }
     public Guid LoginId { get; set; } 
-    public Guid cardId { get; set; }
+    public Guid? cardId { get; set; }
     public Guid? carId { get; set; }
-    public Guid AssistanceId { get; set; }
+    public Guid? AssistanceId { get; set; }
 
     public Card Card { get; set; }
 

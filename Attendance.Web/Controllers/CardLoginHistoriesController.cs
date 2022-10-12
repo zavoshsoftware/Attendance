@@ -23,7 +23,7 @@ namespace Attendance.Web.Controllers
         public ActionResult Index(Guid? cardId, Guid? driverId, string fromdate, string todate)
         {
             var from = string.IsNullOrEmpty(fromdate) ? DateTime.Now.AddYears(-5).Date : fromdate.ToMiladi();
-            var to = string.IsNullOrEmpty(todate) ? DateTime.Now.Date : todate.ToMiladi();
+            var to = string.IsNullOrEmpty(todate) ? DateTime.Now.Date.AddDays(1) : todate.ToMiladi();
             ViewBag.From = fromdate;
             ViewBag.To = todate;
             ViewBag.CardId = cardId;
@@ -262,7 +262,7 @@ namespace Attendance.Web.Controllers
                      OwnerName = c?.Card?.Driver?.FirstName,
                      OwnerLastName = c?.Card?.Driver?.LastName,
                      OwnerNationalCode = c?.Card?.Driver?.NationalCode,
-                     OwnerBirthDate = c?.Card?.Driver?.BirthDate,
+                     OwnerBirthDate = c?.Card?.Driver?.BirthDate.ToShamsi(),
                      OwnerAge = c?.Card?.Driver?.BirthDate.GetAge(),
                      Enter = c.LoginDate.ToShamsi('s'),
                      Exit = c.ExitDate.ToShamsi('s'),
@@ -271,16 +271,17 @@ namespace Attendance.Web.Controllers
                      DriverName = c?.Driver?.FirstName,
                      DriverLastName = c?.Driver?.LastName,
                      DriverNationalCode = c?.Driver?.NationalCode,
-                     DriverBirthDate = c?.Driver?.BirthDate,
+                     DriverBirthDate = c?.Driver?.BirthDate.ToShamsi(),
                      DriverAge = c?.Driver?.BirthDate.GetAge(),
                      AssistName = c?.AssistanceName,
                      AssistLastName = c?.AssistanceLastName,
                      AssistNationalCode = c?.AssistanceNationalCode,
+                     AssistBirthDate = db.Drivers.AsNoTracking().FirstOrDefault(x=>x.NationalCode == c.AssistanceNationalCode)?.BirthDate.ToShamsi(),
                      CarNumber = c?.Car?.Number,
-                     Type = c?.Car?.CarType?.Title,
+                     Type = db.Cars.Include(x=>x.CarType).FirstOrDefault(x=>x.Id == c.CarId)?.CarType?.Title??"",
                      Weight = Convert.ToInt32(db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == c.Car.CarTypeId).Weight),
                      Load = Convert.ToInt32(c?.Load ?? 0),
-                     Total = Convert.ToInt32(c?.TotalLoad ?? 0),
+                     MainWeight = ((Convert.ToInt32(c?.Load ?? 0)) -(Convert.ToInt32(db.CarTypes.AsNoTracking().FirstOrDefault(x => x.Id == c.Car.CarTypeId).Weight))),
                      IsActive = c.IsActive ? "فعال" : "غیرفعال",
                      Date = c?.CreationDate.ToShamsi('s')
                  }).ToList().ToDataTable();

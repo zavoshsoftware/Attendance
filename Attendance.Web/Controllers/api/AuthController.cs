@@ -33,7 +33,8 @@ namespace Attendance.Web.Controllers.api
         {
             var today= System.DateTime.Now.ToString("dddd");
 
-            var card = _card.Get(x => x.Code == id , "Driver,CardLoginHistories").FirstOrDefault();
+            //یافتن کارت براساس کد و وجود راننده
+            var card = _card.Get(x => x.Code == id && !x.Driver.IsDeleted , "Driver,CardLoginHistories").FirstOrDefault();
              
             List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
             
@@ -95,7 +96,18 @@ namespace Attendance.Web.Controllers.api
                         });
                     }
 
-                     
+                    if (card.CardLoginHistories.Any(x=>x.LoginDate.Date == DateTime.Now.Date))
+                    {
+                        var message = $"این کارت در امروز یکبار تردد داشته است";
+                        hubContext.Clients.All.Alarm(null, message);
+                        return Ok(new CustomResponseViewModel()
+                        {
+                            Extra = "",
+                            Messages = new List<MessageViewModel>() { new MessageViewModel() { Description = message } },
+                            Ok = false
+                        });
+                    }
+
                     hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
                         null, $"با کد {card.DisplayCode} اجازه ورود دارد",card.Code);
                     return Ok(new CustomResponseViewModel()
