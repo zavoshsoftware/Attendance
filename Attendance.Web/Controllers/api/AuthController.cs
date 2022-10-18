@@ -39,6 +39,7 @@ namespace Attendance.Web.Controllers.api
             List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
             
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<AtnHub>();
+            hubContext.Clients.All.Generate(id);
             if (card != null)
             {
                 if (!card.IsActive)
@@ -99,6 +100,7 @@ namespace Attendance.Web.Controllers.api
                     if (card.CardLoginHistories.Any(x=>x.LoginDate.Date == DateTime.Now.Date))
                     {
                         var message = $"این کارت در امروز یکبار تردد داشته است";
+                       
                         hubContext.Clients.All.Alarm(null, message);
                         return Ok(new CustomResponseViewModel()
                         {
@@ -108,7 +110,7 @@ namespace Attendance.Web.Controllers.api
                         });
                     }
 
-                    hubContext.Clients.All.Generate(id);
+                    
                     hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
                         null, $"با کد {card.DisplayCode} اجازه ورود دارد",card.Code);
                     return Ok(new CustomResponseViewModel()
@@ -126,8 +128,7 @@ namespace Attendance.Web.Controllers.api
                     Messages = new List<MessageViewModel>() { new MessageViewModel(){ Description= $"کارت اجازه ورود ندارد" } },
                     Ok = true
                 });
-            }
-            hubContext.Clients.All.Generate(id);
+            } 
             hubContext.Clients.All.addNewMessageToPage(null,null,null, $"کارت معتبر نیست");
             return Ok(new CustomResponseViewModel()
             {
