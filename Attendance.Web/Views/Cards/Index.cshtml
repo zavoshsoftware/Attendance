@@ -27,7 +27,7 @@
        	columns.Bound(item => @item.Driver.LastName).Filterable(true).Groupable(false)
                       .Template(@<text>	@item.Driver.LastName</text>);
         columns.Bound(model => model.Driver.NationalCode);
-        columns.Bound(model => model.Code);
+        columns.Bound(model => model.Code).Width(100);
 		columns.Bound(item => @item.DayStr).Title("روز").Filterable(true).Groupable(false)
                       .Template(@<text>	@item.DayStr</text>).Width(200);
         columns.Bound(model => model.IsActive);

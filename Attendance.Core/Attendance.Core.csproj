@@ -47,6 +47,7 @@
     <Compile Include="Code\DigitToWord.cs" />
     <Compile Include="Code\EngToPers.cs" />
     <Compile Include="Code\PersToEng.cs" />
+    <Compile Include="Code\RemoveZeroBytes.cs" />
     <Compile Include="Data\ObjectToDataTable.cs" />
     <Compile Include="Date\Date.cs" />
     <Compile Include="Entity\PenaltyType.cs" />

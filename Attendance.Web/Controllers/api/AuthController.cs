@@ -32,7 +32,7 @@ namespace Attendance.Web.Controllers.api
         public IHttpActionResult Authenticate(string id)
         {
             var today= System.DateTime.Now.ToString("dddd");
-
+           
             //یافتن کارت براساس کد و وجود راننده
             var card = _card.Get(x => x.Code == id && !x.Driver.IsDeleted , "Driver,CardLoginHistories").FirstOrDefault();
              
@@ -108,6 +108,7 @@ namespace Attendance.Web.Controllers.api
                         });
                     }
 
+                    hubContext.Clients.All.Generate(id);
                     hubContext.Clients.All.addNewMessageToPage(card.Id,card.Driver.FirstName + " "+card.Driver.LastName,
                         null, $"با کد {card.DisplayCode} اجازه ورود دارد",card.Code);
                     return Ok(new CustomResponseViewModel()
@@ -125,7 +126,8 @@ namespace Attendance.Web.Controllers.api
                     Messages = new List<MessageViewModel>() { new MessageViewModel(){ Description= $"کارت اجازه ورود ندارد" } },
                     Ok = true
                 });
-            } 
+            }
+            hubContext.Clients.All.Generate(id);
             hubContext.Clients.All.addNewMessageToPage(null,null,null, $"کارت معتبر نیست");
             return Ok(new CustomResponseViewModel()
             {

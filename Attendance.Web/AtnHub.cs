@@ -13,6 +13,11 @@ namespace Attendance.Web
             // Call the addNewMessageToPage method to update clients.
             Clients.All.addNewMessageToPage(name, message);
         }
+        
+        public void CreateCard(string id)
+        { 
+            Clients.All.CreateCard(id);
+        }
 
         public void Exit(Guid id,string message)
         {

@@ -36,4 +36,21 @@ using System.Web;
                 return Setting<decimal>("MaxLoadAmount");
             }
         }
+    
+        public static string BaseUrl
+        {
+            get
+            {
+                using (DatabaseContext db = new DatabaseContext())
+                {
+                    var _value = db.Configs.FirstOrDefault(c => c.Key == "BaseUrl");
+                    if (_value !=null)
+                    {
+                    return _value.Value;
+                    }      
+                }
+                //api base url
+                return Setting<string>("BaseUrl");
+            }
+        }
     } 

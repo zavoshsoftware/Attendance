@@ -19,7 +19,7 @@ namespace Attendance.Web.Controllers.api
 
         // GET: api/Cards
         public IQueryable<Card> GetCards()
-        {
+        { 
             return db.Cards;
         }
 
