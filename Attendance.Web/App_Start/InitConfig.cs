@@ -62,13 +62,13 @@ namespace Attendance.Web
             }
 
             //Run card reader 
-            string domain = Configurations.BaseUrl;
-            var path = System.IO.Path.GetDirectoryName(
-      System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-            Process p = new Process();
-            p.StartInfo.FileName = path.Replace("bin", $"ReaderAttrib\\GetReaderAttrib.exe");
-            p.StartInfo.Arguments = domain;
-            p.Start();
+      //      string domain = Configurations.BaseUrl;
+      //      var path = System.IO.Path.GetDirectoryName(
+      //System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+      //      Process p = new Process();
+            //p.StartInfo.FileName = path.Replace("bin", $"ReaderAttrib\\GetReaderAttrib.exe");
+            //p.StartInfo.Arguments = domain;
+            //p.Start();
         }
     }
 }
