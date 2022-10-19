@@ -42,6 +42,10 @@ namespace Attendance.Web.Controllers.api
             hubContext.Clients.All.Generate(id);
             if (card != null)
             {
+                //Inquiry 
+                    hubContext.Clients.All.Inquiry(card.Id,card.Driver.FirstName + " "+card.Driver.LastName, null, $"با کد {card.DisplayCode} اجازه ورود دارد", card.Code);
+              
+                
                 if (!card.IsActive)
                 {
                     var message = $"{card.Driver.FullName} با شماره کارت {card.DisplayCode} به دلیل '{card.Description}' مجاز به تردد نمی باشد. با مدیر سیستم در ارتباط باشید.";

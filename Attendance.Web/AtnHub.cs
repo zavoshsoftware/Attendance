@@ -14,6 +14,12 @@ namespace Attendance.Web
             Clients.All.addNewMessageToPage(name, message);
         }
         
+        public void Inquiry(Guid id,string name, string message,Guid LoginId)
+        {
+            // Call the Inquiry method to update clients.
+            Clients.All.Inquiry(name, message);
+        }
+        
         public void CreateCard(string id)
         { 
             Clients.All.CreateCard(id);

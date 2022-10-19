@@ -89,18 +89,21 @@
                 <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
             </a>
         </li>
-        <li id="sliderLi2" class="menuitem">
-            <a href="/CardLoginHistories">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود رانندگان</span>
-            </a>
-        </li>
-        @if (role == SecurityRole.SuperAdmin)
+        @if (role == SecurityRole.SuperAdmin || role == SecurityRole.Admin)
         {
             <li id="sliderLi2" class="menuitem">
-                <a href="/CardLoginHistories/Hidden">
-                    <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود رانندگان(مخفی)</span>
+                <a href="/CardLoginHistories">
+                    <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود رانندگان</span>
                 </a>
             </li>
+            if (role == SecurityRole.SuperAdmin)
+            {
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/CardLoginHistories/Hidden">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود سایر رانندگان</span>
+                    </a>
+                </li>
+            }
         }
         <li id="sliderLi2" class="menuitem">
             <a href="/users">

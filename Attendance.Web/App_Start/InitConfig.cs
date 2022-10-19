@@ -68,7 +68,7 @@ namespace Attendance.Web
             Process p = new Process();
             p.StartInfo.FileName = path.Replace("bin", $"ReaderAttrib\\GetReaderAttrib.exe");
             p.StartInfo.Arguments = domain;
-            p.Start();
+            //p.Start();
         }
     }
 }
