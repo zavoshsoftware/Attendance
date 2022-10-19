@@ -63,16 +63,18 @@ namespace Attendance.Web.Controllers
                     return new List<SelectListItem>()
                     {
                         new SelectListItem {Text = SecurityRole.Admin, Value = SecurityRole.Admin},
+                        new SelectListItem {Text = SecurityRole.Admin2, Value = SecurityRole.Admin2},
                         new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User},
                         new SelectListItem {Text = SecurityRole.SuperAdmin, Value = SecurityRole.SuperAdmin},
-                        new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring},
+                        new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring}
                     };
                 else
                     return new List<SelectListItem>()
                     {
                         new SelectListItem {Text = SecurityRole.Admin, Value = SecurityRole.Admin},
+                                 new SelectListItem {Text = SecurityRole.Admin2, Value = SecurityRole.Admin2},
                         new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User},
-                        new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring},
+                        new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring}
                     };
             }
             else

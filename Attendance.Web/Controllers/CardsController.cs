@@ -488,13 +488,26 @@ namespace Attendance.Web.Controllers
         public JsonResult GetDriver(string q, int type = 0)
         {
             Guid driverId;
+            bool IsAllow = true;
+            string message = string.Empty;
             if (Guid.TryParse(q, out driverId))
             {
                 var driver = db.Drivers/*.Where(x=>x.DriverType == (DriverType)type)*/.FirstOrDefault(x => x.Id == driverId) ?? default;
+
+                if (driver.BirthDate.HasValue && (DateTime.Now - driver.BirthDate.Value).TotalDays < (365 * 18))
+                {
+                    IsAllow = false;
+                    message = $"سن غیرمجاز، سن راننده زیر 18 سال است. سن سن راننده ({Convert.ToInt32((DateTime.Now - driver.BirthDate.Value).TotalDays / 365)})";
+                }
+                
                 return Json(new
                 {
                     DriverFirstName = driver.FirstName,
                     DriverLastName = driver.LastName,
+                    DriverBirthDate = driver.BirthDate,
+                    //بررسی وضعیت راننده برای ورود به سیستم
+                    IsAllow = IsAllow,
+                    Message = message,
                     Id = driverId
                 });
             }
@@ -535,7 +548,7 @@ new
             }
             else
             {
-                dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
+                dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted && !c.IsHidden).ToList().Select(c =>
             new
             {
                 Code = c?.Code,

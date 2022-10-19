@@ -98,6 +98,7 @@
                                 <select id="DriverNatCode" name="DriverNatCode" class="DriverSelect form-control k-select">
                                     <option selected value="@Model.Driver.Id">@Model.Driver.NationalCode</option>
                                 </select>
+                                <span id="driverMessage"></span>
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.DriverFirstName, new { @class = "control-label" })
@@ -125,7 +126,7 @@
                                 @*@Html.EditorFor(model => model.AssistanceName)*@
                                 <select id="AssistanceNationalCode" name="AssistanceNationalCode" class="AsistSelect form-control k-select">
                                     <option selected value="@Model.AssistanceId">@Model.AssistanceNationalCode</option>
-                                </select>
+                                </select> <span id="assistMessage"></span>
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.AssistanceName, new { @class = "control-label" })
@@ -321,8 +322,18 @@
                     //alert("Data: " + data + "\nStatus: " + status);
                     document.getElementById("DriverFirstName").value = data.DriverFirstName;
                     document.getElementById("DriverLastName").value = data.DriverLastName;
+                    if (!(data.IsAllow)) {
+                        $('#btnSave').prop('disabled', true)
+                        toastr["warning"](data.Message)
+                        $('#driverMessage').html(data.Message)
+                    }
+                    else {
+                        $('#btnSave').prop('disabled', false)
+                        $('#driverMessage').html('')
+                    }
                 });
         });
+
         $('.AsistSelect').on("change", function (e) {
 
             var lastValue = e.currentTarget.value;
@@ -336,6 +347,14 @@
                     console.log(data.DriverFirstName, data.DriverLastName)
                     document.getElementById("AssistanceName").value = data.DriverFirstName;
                     document.getElementById("AssistanceLastName").value = data.DriverLastName;
+                    if (!(data.IsAllow)) {
+                        $('#btnSave').prop('disabled', true)
+                        toastr["warning"](data.Message);
+                        $('#assistMessage').html(data.Message)
+                    } else { 
+                        $('#btnSave').prop('disabled', false)
+                        $('#assistMessage').html('')
+                    }
                 });
         });
     });
