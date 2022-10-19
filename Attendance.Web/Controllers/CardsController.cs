@@ -535,7 +535,7 @@ new
             }
             else
             {
-                dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted).ToList().Select(c =>
+                dt = db.Cards.Include(c => c.Driver).Where(c => !c.IsDeleted && !c.IsHidden).ToList().Select(c =>
             new
             {
                 Code = c?.Code,
