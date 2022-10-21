@@ -34,6 +34,12 @@ namespace Attendance.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                if (Request.Cookies["OperatorId"] != null)
+                {
+                    var c = new HttpCookie("OperatorId");
+                    c.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(c);
+                }
                 HttpContext.GetOwinContext().Authentication.SignOut();
             }
             return Redirect("/");
@@ -85,6 +91,12 @@ namespace Attendance.Web.Controllers
 
                     HttpContext.GetOwinContext().Authentication.SignIn(
                        new AuthenticationProperties { IsPersistent = true }, ident);
+
+                    HttpCookie operatorCookies = new HttpCookie("OperatorId");
+                    operatorCookies.Value = oUser.Id.ToString();
+                    operatorCookies.Expires = DateTime.Now.AddDays(1);
+                    Response.SetCookie(operatorCookies); 
+
                     return RedirectToLocal(returnUrl, oUser.SecurityRole); // auth succeed 
 
                 }
