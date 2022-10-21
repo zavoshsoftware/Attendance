@@ -38,119 +38,122 @@
             var imgCross = "data:image/png;base64,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";
             var resPartial = ""
             // Create a function that the hub can call back to display messages.
-            chat.client.Inquiry = function (id, name, loginId, message, displayCode) {
+            chat.client.Inquiry = function (id, name, loginId, message, displayCode, opId) {
+                if (getCookie("OperatorId").trim() === opId.trim()) {
+                    console.log(getCookie("OperatorId"), opId)
 
-
-                $('#discussion').empty();
-                var imgProfile = '';
-                if (id == null) {
-                    imgProfile = imgCross;
-                    name = '';
-                    $('#discussion').prepend(
-                        '<li /*style="display: inline-block;margin-bottom:30px"*/>'
-                        + '<div class="card" /*style="width:40rem"*/>'
-                        + '<img class="card-img-top"  src="' + imgProfile + '">'
-                        + '<div id = "cardBody" class="card-body">'
-                        + '<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
-                        + name + ' ' + message + '</p>'
-                        + '</div > '
-                        + '</div>'
-                        + '</li>');
-                    toastr["warning"](message)
-                    document.getElementById("dingSrc").src = "/Files/NotAllowed.mp3";
-                    document.getElementById('ding').play();
-
-                }
-                else {
-                    imgProfile = imgSuccess;
-                    $.get("/cards/inquiryform?id=" + id, function (data) {
-                        //alert('ورود به سیستم')
-                        if (!data) {
-                            $.get("/cards/inquiryform?id=" + id, function (data) {
-
-                                resPartial = data;
-                                //console.log(data);
-                            });
-                        }
-                        else {
-                            resPartial = data;
-                        }
-                        //console.log(data);
-                        //toastr["success"](name + ' ' + message)
-                        //document.getElementById("dingSrc").src = "/Files/Login.mp3";
-                        //document.getElementById('ding').play();
-
-                    });
-
-                    const parser = new DOMParser();
-                    //alert(name);
-                    setTimeout(function () {
-                        // Add the message to the page.
+                    $('#discussion').empty();
+                    var imgProfile = '';
+                    if (id == null) {
+                        imgProfile = imgCross;
+                        name = '';
                         $('#discussion').prepend(
                             '<li /*style="display: inline-block;margin-bottom:30px"*/>'
                             + '<div class="card" /*style="width:40rem"*/>'
-                            //+ '<img class="card-img-top"  src="' + imgProfile + '">'
+                            + '<img class="card-img-top"  src="' + imgProfile + '">'
                             + '<div id = "cardBody" class="card-body">'
-                            //+'<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
-                            //+ name + ' ' + message + '</p>'
-                            + '<div class="panel panel-primary" >'
-                            + '<div class="panel-heading">'
-                            + '<div class= "panel-title pull-left" >'
-                            + displayCode
-                            + '</div >'
-                            + '<div class="panel-title pull-right">' + name + ' ' + message + '</div>'
-                            + '<div class="clearfix"></div>'
-
-                            + '</div >'
-                            + ' <div class="panel-body">'
-                            + '' + resPartial + ''
-                            + '</div > '
-                            + '</div > '
+                            + '<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
+                            + name + ' ' + message + '</p>'
                             + '</div > '
                             + '</div>'
                             + '</li>');
-                    }, 1500);
+                        toastr["warning"](message)
+                        document.getElementById("dingSrc").src = "/Files/NotAllowed.mp3";
+                        document.getElementById('ding').play();
 
-                }
-
-                $.get("/cards/GetLastCardLoginHistory?id=" + id, function (data) {
-                    console.log(data)
-                    if (!jQuery.isEmptyObject(data)) {
-                        //$('#AssistanceNationalCode option[value=' + data.AssistanceId + ']').prop('selected', 'selected').change();
-
-                        //document.getElementById('AssistanceNationalCode').value = data.AssistanceId;
                     }
-                });
+                    else {
+                        imgProfile = imgSuccess;
+                        $.get("/cards/inquiryform?id=" + id, function (data) {
+                            //alert('ورود به سیستم')
+                            if (!data) {
+                                $.get("/cards/inquiryform?id=" + id, function (data) {
 
+                                    resPartial = data;
+                                    //console.log(data);
+                                });
+                            }
+                            else {
+                                resPartial = data;
+                            }
+                            //console.log(data);
+                            //toastr["success"](name + ' ' + message)
+                            //document.getElementById("dingSrc").src = "/Files/Login.mp3";
+                            //document.getElementById('ding').play();
+
+                        });
+
+                        const parser = new DOMParser();
+                        //alert(name);
+                        setTimeout(function () {
+                            // Add the message to the page.
+                            $('#discussion').prepend(
+                                '<li /*style="display: inline-block;margin-bottom:30px"*/>'
+                                + '<div class="card" /*style="width:40rem"*/>'
+                                //+ '<img class="card-img-top"  src="' + imgProfile + '">'
+                                + '<div id = "cardBody" class="card-body">'
+                                //+'<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
+                                //+ name + ' ' + message + '</p>'
+                                + '<div class="panel panel-primary" >'
+                                + '<div class="panel-heading">'
+                                + '<div class= "panel-title pull-left" >'
+                                + displayCode
+                                + '</div >'
+                                + '<div class="panel-title pull-right">' + name + ' ' + message + '</div>'
+                                + '<div class="clearfix"></div>'
+
+                                + '</div >'
+                                + ' <div class="panel-body">'
+                                + '' + resPartial + ''
+                                + '</div > '
+                                + '</div > '
+                                + '</div > '
+                                + '</div>'
+                                + '</li>');
+                        }, 1500);
+
+                    }
+
+                    $.get("/cards/GetLastCardLoginHistory?id=" + id, function (data) {
+                        console.log(data)
+                        if (!jQuery.isEmptyObject(data)) {
+                            //$('#AssistanceNationalCode option[value=' + data.AssistanceId + ']').prop('selected', 'selected').change();
+
+                            //document.getElementById('AssistanceNationalCode').value = data.AssistanceId;
+                        }
+                    });
+                }
             };
 
             //Send Alarm if current user had a login thats have not exit date
-            chat.client.Alarm = function (id, message) {
-                console.log(id, message);
-                //setInterval(10, function () {
-                //    $('#Message').append(
-                //        '<div id="'
-                //        +
-                //          id
-                //        +'" class = "alert alert-danger">'
-                //        + message
-                //        + '</div>'
-                //    );
-                //})
-                toastr["info"](message)
-                $('#Messages').prepend(
-                    '<div class = "container row">'
-                    + '<div class="alert alert-danger"'
-                    + 'id= "' + id + '"'
-                    + '>'
-                    + '<p>'
-                    + message
-                    + '</p>'
-                    + '</div>'
-                    + '</div>');
-                setTimeout(function () {
-                    $('#' + id).remove()
-                }, 10000)
+            chat.client.Alarm = function (id, message, opId) {
+                if (getCookie("OperatorId").trim() === opId.trim()) {
+                   
+                    //setInterval(10, function () {
+                    //    $('#Message').append(
+                    //        '<div id="'
+                    //        +
+                    //          id
+                    //        +'" class = "alert alert-danger">'
+                    //        + message
+                    //        + '</div>'
+                    //    );
+                    //})
+                    toastr["info"](message)
+                    $('#Messages').prepend(
+                        '<div class = "container row">'
+                        + '<div class="alert alert-danger"'
+                        + 'id= "' + id + '"'
+                        + '>'
+                        + '<p>'
+                        + message
+                        + '</p>'
+                        + '</div>'
+                        + '</div>');
+                    setTimeout(function () {
+                        $('#' + id).remove()
+                    }, 10000)
+                }
             };
 
             

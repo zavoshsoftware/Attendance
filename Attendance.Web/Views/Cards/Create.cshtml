@@ -111,9 +111,12 @@
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.atnHub;
             // Create a function that the hub can call back to display messages.
-            chat.client.Generate = function (code) {
-                // Add the message to the page.
-                $('#Code').val(code)
+            chat.client.Generate = function (code, opId) {
+                console.log(code,opId)
+                if (getCookie("OperatorId") === opId) {
+                    // Add the message to the page.
+                    $('#Code').val(code)
+                }
             };
             // Get the user name and store it to prepend to messages.
             //$('#displayname').val(prompt('Enter your name:', ''));
