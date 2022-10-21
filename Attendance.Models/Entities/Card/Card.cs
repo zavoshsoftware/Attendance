@@ -31,7 +31,7 @@ namespace Attendance.Models.Entities
               return  Day.GetDisplayName();
             }
         }
-        [Display(Name = "کارت مخفی است؟")]
+        [Display(Name = "سایر کارت است؟")]
         public bool IsHidden { get; set; }
 
         [Display(Name = "کد نمایشی")]

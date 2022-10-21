@@ -1,267 +1,565 @@
 ﻿@using Attendance.Core.Enums
 <nav class="nav-primary hidden-xs">
 
-	@if (User.Identity.IsAuthenticated)
-	{
-		var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
-		string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
-		if (role == "SuperAdmin" || role == "Admin")
-		{
-    <ul class="nav">
-        <li id="sliderLi" class="menuitem">
-            <a href="" onclick="window.history.go(-1); return false;">
-                <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
-            </a>
-        </li>
-        @*<li id="sliderLi"  class="menuitem dropdown-toggle">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
-            </ul>
-        </li>*@
-
-        <li class="menuitem">
-            <a href="#">
-                <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
-                    <i class="fa fa-angle-down text"></i>
-                    <i class="fa fa-angle-up text-active"></i>
-                </span><span>موجودیت</span>
-            </a>
-            <ul class="nav lt">
-                <li id="sliderLi2" class="menuitem">
-                    <a href="/units/index">
-                        <i class="fa fa-angle-left"></i><span>واحد ها</span>
-                    </a>
-                </li>
-                <li id="sliderLi2" class="menuitem">
-                    <a href="/exittools/index">
-                        <i class="fa fa-angle-left"></i><span>وسایل و ابزار</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li id="sliderLi" class="dropdown">
-            <a href="/Drivers">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
-            </a>
-        </li>
-        <li id="sliderLi1" class="menuitem">
-            <a href="/cards">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت ها</span>
-            </a>
-        </li>
-        @if (role == SecurityRole.Admin)
+    @if (User.Identity.IsAuthenticated)
+    {
+        var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+        string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+        if (role == "SuperAdmin" || role == "Admin")
         {
-            <li id="sliderLi2" class="menuitem">
-                <a href="/Cards/index?isdeleted=true">
-                    <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت های حذف شده</span>
-                </a>
-            </li>
+            <ul class="nav">
+                <li id="sliderLi" class="menuitem">
+                    <a href="" onclick="window.history.go(-1); return false;">
+                        <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
+                    </a>
+                </li>
+                @*<li id="sliderLi"  class="menuitem dropdown-toggle">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>*@
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>موجودیت</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/units/index">
+                                <i class="fa fa-angle-left"></i><span>واحد ها</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/exittools/index">
+                                <i class="fa fa-angle-left"></i><span>وسایل و ابزار</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="sliderLi" class="dropdown">
+                    <a href="/Drivers">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cards">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت ها</span>
+                    </a>
+                </li>
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/Cards/index?isdeleted=true">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت های حذف شده</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/CardGroups">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت دسته ها</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cartypes">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت نوع ماشین</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cars">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/inquiry">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/Authenticate">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
+                    </a>
+                </li>
+                @if (role == SecurityRole.SuperAdmin || role == SecurityRole.Admin)
+                {
+                    <li id="sliderLi2" class="menuitem">
+                        <a href="/CardLoginHistories">
+                            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود رانندگان</span>
+                        </a>
+                    </li>
+                    if (role == SecurityRole.SuperAdmin)
+                    {
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/CardLoginHistories/Hidden">
+                                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود سایر رانندگان</span>
+                            </a>
+                        </li>
+                    }
+                }
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/users">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کاربران</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/LoginHistoryTools">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت خارج شده ها</span>
+                    </a>
+                </li>
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/configs">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>توقیف</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyreasons/index">
+                                <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties/create">
+                                <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties">
+                                <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyTypes">
+                                <i class="fa fa-angle-left"></i><span>مدارک قابل توقیف</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>ورود خروج پیاده</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li>
+                            <a href="/CardLoginHistories/IndexNotExit">
+                                <i class="fa fa-angle-left"></i><span>ثبت ورود خروج پیاده</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/WalkingLoginHistories/index">
+                                <i class="fa fa-angle-left"></i><span>تاریخچه ورود و خروج پیاده</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+            </ul>
         }
-        <li id="sliderLi1" class="menuitem">
-            <a href="/CardGroups">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت دسته ها</span>
-            </a>
-        </li>
-        <li id="sliderLi1" class="menuitem">
-            <a href="/cartypes">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت نوع ماشین</span>
-            </a>
-        </li>
-        <li id="sliderLi1" class="menuitem">
-            <a href="/cars">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
-            </a>
-        </li>
-        <li id="sliderLi3" class="menuitem">
-            <a href="/Cards/inquiry">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
-            </a>
-        </li>
-        <li id="sliderLi3" class="menuitem">
-            <a href="/Cards/Authenticate">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
-            </a>
-        </li>
-        @if (role == SecurityRole.SuperAdmin || role == SecurityRole.Admin)
+        if (role == SecurityRole.Admin2)
         {
-            <li id="sliderLi2" class="menuitem">
-                <a href="/CardLoginHistories">
-                    <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود رانندگان</span>
-                </a>
-            </li>
-            if (role == SecurityRole.SuperAdmin)
-            {
-                <li id="sliderLi2" class="menuitem">
-                    <a href="/CardLoginHistories/Hidden">
-                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تاریخچه ورود سایر رانندگان</span>
+            <ul class="nav">
+                <li id="sliderLi" class="menuitem">
+                    <a href="" onclick="window.history.go(-1); return false;">
+                        <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
                     </a>
                 </li>
-            }
+                @*<li id="sliderLi"  class="menuitem dropdown-toggle">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>*@
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>موجودیت</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/units/index">
+                                <i class="fa fa-angle-left"></i><span>واحد ها</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/exittools/index">
+                                <i class="fa fa-angle-left"></i><span>وسایل و ابزار</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="sliderLi" class="dropdown">
+                    <a href="/Drivers">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cards">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت ها</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/Cards/index?isdeleted=true">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت های حذف شده</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/CardGroups">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت دسته ها</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cartypes">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت نوع ماشین</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cars">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/inquiry">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/Authenticate">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/LoginHistoryTools">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت خارج شده ها</span>
+                    </a>
+                </li>
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/configs">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>توقیف</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyreasons/index">
+                                <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties/create">
+                                <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties">
+                                <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyTypes">
+                                <i class="fa fa-angle-left"></i><span>مدارک قابل توقیف</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>ورود خروج پیاده</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li>
+                            <a href="/CardLoginHistories/IndexNotExit">
+                                <i class="fa fa-angle-left"></i><span>ثبت ورود خروج پیاده</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/WalkingLoginHistories/index">
+                                <i class="fa fa-angle-left"></i><span>تاریخچه ورود و خروج پیاده</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+            </ul>
         }
-        <li id="sliderLi2" class="menuitem">
-            <a href="/users">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کاربران</span>
-            </a>
-        </li>
+        if (role == SecurityRole.Admin3)
+        {
+            <ul class="nav">
+                <li id="sliderLi" class="menuitem">
+                    <a href="" onclick="window.history.go(-1); return false;">
+                        <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
+                    </a>
+                </li>
+                @*<li id="sliderLi"  class="menuitem dropdown-toggle">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>*@
 
-        <li id="sliderLi1" class="menuitem">
-            <a href="/LoginHistoryTools">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت خارج شده ها</span>
-            </a>
-        </li>
-        <li id="sliderLi2" class="menuitem">
-            <a href="/configs">
-                <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
-            </a>
-        </li>
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>موجودیت</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/units/index">
+                                <i class="fa fa-angle-left"></i><span>واحد ها</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/exittools/index">
+                                <i class="fa fa-angle-left"></i><span>وسایل و ابزار</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="sliderLi" class="dropdown">
+                    <a href="/Drivers">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
+                    </a>
+                </li>
+                @*<li id="sliderLi1" class="menuitem">
+                    <a href="/cards">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت ها</span>
+                    </a>
+                </li>
 
-        <li class="menuitem">
-            <a href="#">
-                <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
-                    <i class="fa fa-angle-down text"></i>
-                    <i class="fa fa-angle-up text-active"></i>
-                </span><span>توقیف</span>
-            </a>
-            <ul class="nav lt">
                 <li id="sliderLi2" class="menuitem">
-                    <a href="/penaltyreasons/index">
-                        <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
+                    <a href="/Cards/index?isdeleted=true">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کارت های حذف شده</span>
+                    </a>
+                </li>*@
+
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/CardGroups">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت دسته ها</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cartypes">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت نوع ماشین</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cars">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/inquiry">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/Authenticate">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/LoginHistoryTools">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت خارج شده ها</span>
                     </a>
                 </li>
                 <li id="sliderLi2" class="menuitem">
-                    <a href="/penalties/create">
-                        <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
+                    <a href="/configs">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>تنظیمات کلی سیستم</span>
                     </a>
                 </li>
-                <li id="sliderLi2" class="menuitem">
-                    <a href="/penalties">
-                        <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>توقیف</span>
                     </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyreasons/index">
+                                <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties/create">
+                                <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties">
+                                <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyTypes">
+                                <i class="fa fa-angle-left"></i><span>مدارک قابل توقیف</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li id="sliderLi2" class="menuitem">
-                    <a href="/penaltyTypes">
-                        <i class="fa fa-angle-left"></i><span>مدارک قابل توقیف</span>
+
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>ورود خروج پیاده</span>
                     </a>
+                    <ul class="nav lt">
+                        <li>
+                            <a href="/CardLoginHistories/IndexNotExit">
+                                <i class="fa fa-angle-left"></i><span>ثبت ورود خروج پیاده</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/WalkingLoginHistories/index">
+                                <i class="fa fa-angle-left"></i><span>تاریخچه ورود و خروج پیاده</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
+
             </ul>
-        </li>
-
-        <li class="menuitem">
-            <a href="#">
-                <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
-                    <i class="fa fa-angle-down text"></i>
-                    <i class="fa fa-angle-up text-active"></i>
-                </span><span>ورود خروج پیاده</span>
-            </a>
-            <ul class="nav lt">
-                <li>
-                    <a href="/CardLoginHistories/IndexNotExit">
-                        <i class="fa fa-angle-left"></i><span>ثبت ورود خروج پیاده</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/WalkingLoginHistories/index">
-                        <i class="fa fa-angle-left"></i><span>تاریخچه ورود و خروج پیاده</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-
-    </ul>
         }
         if (role == SecurityRole.Monitoring)
         {
-<ul class="nav">
-    <li id="sliderLi" class="menuitem">
-        <a href="" onclick="window.history.go(-1); return false;">
-            <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
-        </a>
-    </li>
-    <li id="sliderLi" class="menuitem">
-        <a href="/Drivers">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
-        </a>
-    </li>
-    <li id="sliderLi1" class="menuitem">
-        <a href="/cars">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
-        </a>
-    </li>
+            <ul class="nav">
+                <li id="sliderLi" class="menuitem">
+                    <a href="" onclick="window.history.go(-1); return false;">
+                        <i class="fa fa-2x fa-arrow-circle-o-right icon"><b class="bg-info"></b></i><span>بازگشت</span>
+                    </a>
+                </li>
+                <li id="sliderLi" class="menuitem">
+                    <a href="/Drivers">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت رانندگان</span>
+                    </a>
+                </li>
+                <li id="sliderLi1" class="menuitem">
+                    <a href="/cars">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت ماشین</span>
+                    </a>
+                </li>
 
-    <li id="sliderLi3" class="menuitem">
-        <a href="/Cards/inquiry">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
-        </a>
-    </li>
-    <li id="sliderLi3" class="menuitem">
-        <a href="/Cards/Authenticate">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
-        </a>
-    </li>
-    <li id="sliderLi2" class="menuitem">
-        <a href="/CardLoginHistories/IndexNotExit">
-            <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>ورود و خروج پیاده</span>
-        </a>
-    </li>
-    <li class="menuitem">
-        <a href="#">
-            <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
-                <i class="fa fa-angle-down text"></i>
-                <i class="fa fa-angle-up text-active"></i>
-            </span><span>توقیف</span>
-        </a>
-        <ul class="nav lt">
-            <li id="sliderLi2" class="menuitem">
-                <a href="/penaltyreasons/index">
-                    <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
-                </a>
-            </li>
-            <li id="sliderLi2" class="menuitem">
-                <a href="/penalties/create">
-                    <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
-                </a>
-            </li>
-            <li id="sliderLi2" class="menuitem">
-                <a href="/penalties">
-                    <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
-                </a>
-            </li>
-            <li id="sliderLi2" class="menuitem">
-                <a href="/penaltyTypes">
-                    <i class="fa fa-angle-left"></i><span>مدارک قابل توقیف</span>
-                </a>
-            </li>
-        </ul>
-    </li>
-</ul>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/inquiry">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>استعلام</span>
+                    </a>
+                </li>
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/Authenticate">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
+                    </a>
+                </li>
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/CardLoginHistories/IndexNotExit">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>ورود و خروج پیاده</span>
+                    </a>
+                </li>
+                <li class="menuitem">
+                    <a href="#">
+                        <i class="fa fa-bars"><b class="bg-primary"></b></i><span class="pull-right">
+                            <i class="fa fa-angle-down text"></i>
+                            <i class="fa fa-angle-up text-active"></i>
+                        </span><span>توقیف</span>
+                    </a>
+                    <ul class="nav lt">
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyreasons/index">
+                                <i class="fa fa-angle-left"></i><span>ثبت علت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties/create">
+                                <i class="fa fa-angle-left"></i><span>ثبت توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penalties">
+                                <i class="fa fa-angle-left"></i><span>رفع توقیف</span>
+                            </a>
+                        </li>
+                        <li id="sliderLi2" class="menuitem">
+                            <a href="/penaltyTypes">
+                                <i class="fa fa-angle-left"></i><span>مدارک قابل توقیف</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         }
         if (role == "User")
         {
-			<ul class="nav">
-				 
-				<li id="sliderLi3" class="menuitem">
-					<a href="/Cards/Authenticate">
-						<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
-					</a>
-				</li>
-		 
-				<li id="sliderLi2" class="menuitem">
-					<a href="/CardLoginHistories/IndexNotExit">
-						<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>ورود و خروج پیاده</span>
-					</a>
-				</li>
-			
-			</ul>
-		}
-	}
+            <ul class="nav">
+
+                <li id="sliderLi3" class="menuitem">
+                    <a href="/Cards/Authenticate">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
+                    </a>
+                </li>
+
+                <li id="sliderLi2" class="menuitem">
+                    <a href="/CardLoginHistories/IndexNotExit">
+                        <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>ورود و خروج پیاده</span>
+                    </a>
+                </li>
+
+            </ul>
+        }
+    }
 
 
 

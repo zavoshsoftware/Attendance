@@ -34,6 +34,12 @@ namespace Attendance.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                if (Request.Cookies["OperatorId"] != null)
+                {
+                    var c = new HttpCookie("OperatorId");
+                    c.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(c);
+                }
                 HttpContext.GetOwinContext().Authentication.SignOut();
             }
             return Redirect("/");

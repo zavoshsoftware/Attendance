@@ -30,10 +30,10 @@ namespace Attendance.Web.Controllers
         }
         // GET: Users
         public ActionResult Index()
-        { 
+        {
             if (IsSuperAdmin())
-                return View(_userRepository.GetSorted(u=>u.CreationDate));
-            return View(_userRepository.GetSorted( a=> a.SecurityRole != SecurityRole.SuperAdmin,u => u.CreationDate));
+                return View(_userRepository.GetSorted(u => u.CreationDate));
+            return View(_userRepository.GetSorted(a => a.SecurityRole != SecurityRole.SuperAdmin, u => u.CreationDate));
 
         }
         public bool IsSuperAdmin()
@@ -64,6 +64,7 @@ namespace Attendance.Web.Controllers
                     {
                         new SelectListItem {Text = SecurityRole.Admin, Value = SecurityRole.Admin},
                         new SelectListItem {Text = SecurityRole.Admin2, Value = SecurityRole.Admin2},
+                        new SelectListItem {Text = SecurityRole.Admin3, Value = SecurityRole.Admin3},
                         new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User},
                         new SelectListItem {Text = SecurityRole.SuperAdmin, Value = SecurityRole.SuperAdmin},
                         new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring}
@@ -73,6 +74,7 @@ namespace Attendance.Web.Controllers
                     {
                         new SelectListItem {Text = SecurityRole.Admin, Value = SecurityRole.Admin},
                                  new SelectListItem {Text = SecurityRole.Admin2, Value = SecurityRole.Admin2},
+                                 new SelectListItem {Text = SecurityRole.Admin3, Value = SecurityRole.Admin3},
                         new SelectListItem {Text = SecurityRole.User, Value = SecurityRole.User},
                         new SelectListItem {Text = SecurityRole.Monitoring, Value = SecurityRole.Monitoring}
                     };
@@ -82,8 +84,8 @@ namespace Attendance.Web.Controllers
         }
 
         public ActionResult Create()
-        { 
-            ViewBag.SecurityRoleList = UserSecurityRoleEnums(); 
+        {
+            ViewBag.SecurityRoleList = UserSecurityRoleEnums();
             return View();
         }
 
@@ -127,7 +129,7 @@ namespace Attendance.Web.Controllers
         public ActionResult Edit(User user)
         {
             if (ModelState.IsValid)
-            { 
+            {
                 _userRepository.Update(user);
                 return RedirectToAction("Index");
             }
@@ -155,7 +157,7 @@ namespace Attendance.Web.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
-        { 
+        {
             _userRepository.Delete(id);
             return RedirectToAction("Index");
         }
@@ -173,17 +175,18 @@ namespace Attendance.Web.Controllers
         public ActionResult Export()
         {
             var dt = _userRepository.Get(c => c.SecurityRole != SecurityRole.SuperAdmin).ToList().Select(c =>
-                new {
+                new
+                {
                     Title = c.FullName,
                     PhoneNumber = c.CellNum,
                     Email = c.Email,
-                    Role = c.SecurityRole,  
+                    Role = c.SecurityRole,
                     IsActive = c.IsActive ? "فعال" : "غیرفعال",
                     CreateDate = c.CreationDate.ToShamsi('s'),
                     UpdateDate = c.CreationDate.ToShamsi('s'),
                     Description = c.Description
                 }).ToList().ToDataTable();
-            dt.TableName = "اکسل کاربران"; 
+            dt.TableName = "اکسل کاربران";
             using (XLWorkbook wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(dt);
