@@ -68,10 +68,12 @@ namespace Attendance.Web.Controllers
             ViewBag.date = DateTime.Now.ToShamsi('a');
             if (cardId.HasValue)
             {
+                ViewBag.card = db.Cards.Find(cardId.Value);
                 var cardLoginHistories = db.CardLoginHistories.Include(c => c.Driver).Include(c => c.Card)
             .Where(c => c.IsDeleted == false && c.ExitDate == null && c.CardId == cardId && !c.Card.IsHidden).OrderByDescending(c => c.CreationDate);
                 return View(cardLoginHistories.ToList());
             }
+            ViewBag.card = new Card();
             if (!string.IsNullOrEmpty(date))
             {
                 ViewBag.date = date;

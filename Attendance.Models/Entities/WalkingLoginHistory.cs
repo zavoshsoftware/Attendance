@@ -13,8 +13,10 @@ namespace Attendance.Models.Entities
     {
         [Display(Name="نوع")]
         public WalkingLoginHistoryType WalkingLoginHistoryType { get; set; }
-        public Guid? CardLoginHistoryId { get; set; }
-        public CardLoginHistory CardLoginHistory { get; set; }
+        public Guid CardId { get; set; }
+
+        [ForeignKey("CardId")]
+        public Card Card { get; set; }
 
         [Display(Name="راننده")]
         public bool IsDriver { get; set; }

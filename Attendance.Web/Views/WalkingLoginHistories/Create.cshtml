@@ -10,7 +10,7 @@
 @using (Html.BeginForm("Create", "WalkingLoginHistories",FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(x=>x.CardId)
     <div class="form-horizontal">        
         @Html.ValidationSummary(true)
 

@@ -44,6 +44,7 @@ namespace Attendance.Models.Entities
         public virtual ICollection<CardOwnerHistory> CardOwnerHistories { get; set; }
         public virtual ICollection<CardStatusHistory> CardStatusHistories { get; set; }
         public virtual ICollection<CardGroupItemCard> CardGroupItems { get; set; }
+        public virtual ICollection<WalkingLoginHistory> WalkingLoginHistories { get; set; }
         public virtual ICollection<Penalty> Penalties { get; set; }
     }
 }

@@ -16,34 +16,22 @@ namespace Attendance.Web.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: WalkingLoginHistories
-        public ActionResult Index(Guid? id,Guid? cardId)
+        public ActionResult Index(Guid? cardId)
         {
-            ViewBag.CardLoginHistoryId = id;
-            if (id.HasValue)
+            ViewBag.cardId = cardId;
+            if (cardId.HasValue)
             {
-                var cardLoginHistory = db.CardLoginHistories.Find(id);
-                if (cardLoginHistory != null)
-                    ViewBag.Title = "تاریخچه ورود و خروج کارت شماره " + cardLoginHistory.Card.DisplayCode + " در تاریخ ورود" +
-                                    cardLoginHistory.LoginDate.ToShamsi('s');
+                var card = db.Cards.Find(cardId);
+                if (card != null)
+                    ViewBag.Title = "تاریخچه ورود و خروج کارت شماره " + card.DisplayCode;
                 var walkingLoginHistories = db.WalkingLoginHistories.
-                   Where(w => w.IsDeleted == false && w.CardLoginHistoryId == id).OrderByDescending(w => w.CreationDate);
+                   Where(w => w.IsDeleted == false && w.CardId == cardId).OrderByDescending(w => w.CreationDate);
                 return View(walkingLoginHistories.ToList());
-            }
-            else if (cardId.HasValue)
-            {
-                var result = new List<WalkingLoginHistory>();
-                foreach (var item in db.Cards.AsNoTracking().Include(x=>x.CardLoginHistories)?.FirstOrDefault(x=>x.Id==cardId)?.CardLoginHistories??default)
-                { 
-                    IOrderedQueryable<WalkingLoginHistory> walkingLoginHistories = db.WalkingLoginHistories.Include(a=>a.CardLoginHistory).
-                       Where(w => w.IsDeleted == false && w.CardLoginHistoryId == item.Id).OrderByDescending(w => w.CreationDate);
-                    result.AddRange(walkingLoginHistories.ToList().Distinct());
-                }
-                return View(result.Distinct().ToList());
-            }
+            } 
             else
             {
                 ViewBag.Title = "تاریخچه ورود و خروج کارت  ";
-                var walkingLoginHistories = db.WalkingLoginHistories.Include(x=>x.CardLoginHistory).
+                var walkingLoginHistories = db.WalkingLoginHistories.Include(x=>x.Card).
                    Where(w => w.IsDeleted == false).OrderByDescending(w => w.CreationDate);
                 return View(walkingLoginHistories.ToList());
             }
@@ -52,8 +40,10 @@ namespace Attendance.Web.Controllers
 
         public ActionResult Create(Guid id)
         {
-            ViewBag.CardLoginHistoryId = id;
-            return View();
+            ViewBag.cardId = id;
+            return View(new WalkingLoginHistory() { 
+            CardId = id
+            });
         }
 
         // POST: WalkingLoginHistories/Create
@@ -61,21 +51,23 @@ namespace Attendance.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WalkingLoginHistory walkingLoginHistory, Guid id)
+        public ActionResult Create(WalkingLoginHistory walkingLoginHistory)
         {
             if (ModelState.IsValid)
             {
+                var card= db.Cards.Find(walkingLoginHistory.CardId);
                 walkingLoginHistory.IsDeleted = false;
                 walkingLoginHistory.CreationDate = DateTime.Now;
-                walkingLoginHistory.CardLoginHistoryId = id;
+                walkingLoginHistory.CardId = walkingLoginHistory.CardId;
                 walkingLoginHistory.Id = Guid.NewGuid();
+                walkingLoginHistory.Card = card;
 
                 db.WalkingLoginHistories.Add(walkingLoginHistory);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = walkingLoginHistory.CardLoginHistoryId });
+                return RedirectToAction("Index", new { cardId = walkingLoginHistory.CardId });
             }
 
-            ViewBag.CardLoginHistoryId = id;
+            ViewBag.cardId = walkingLoginHistory.CardId;
             return View(walkingLoginHistory);
         }
 
@@ -91,7 +83,7 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CardLoginHistoryId = walkingLoginHistory.CardLoginHistoryId;
+            ViewBag.cardId = walkingLoginHistory.CardId;
             return View(walkingLoginHistory);
         }
 
@@ -107,9 +99,9 @@ namespace Attendance.Web.Controllers
                 db.Entry(walkingLoginHistory).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Index", new { id = walkingLoginHistory.CardLoginHistoryId });
+                return RedirectToAction("Index", new { cardId = walkingLoginHistory.CardId });
             }
-            ViewBag.CardLoginHistoryId = walkingLoginHistory.CardLoginHistoryId;
+            ViewBag.cardId = walkingLoginHistory.CardId;
             return View(walkingLoginHistory);
         }
 
@@ -125,7 +117,7 @@ namespace Attendance.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CardLoginHistoryId = walkingLoginHistory.CardLoginHistoryId;
+            ViewBag.cardId = walkingLoginHistory.CardId;
             return View(walkingLoginHistory);
         }
 
@@ -139,7 +131,7 @@ namespace Attendance.Web.Controllers
             walkingLoginHistory.DeletionDate = DateTime.Now;
 
             db.SaveChanges();
-            return RedirectToAction("Index", new { id = walkingLoginHistory.CardLoginHistoryId });
+            return RedirectToAction("Index", new { cardId = walkingLoginHistory.CardId });
         }
 
         protected override void Dispose(bool disposing)
