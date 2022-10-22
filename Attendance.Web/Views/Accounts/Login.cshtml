@@ -45,31 +45,39 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <div class="main-card mb-3 card">
-                        <div class="card-body">
-													<div style="text-align: center; padding-bottom: 30px">
-														@*<img src="~/assets/imgs/vala/logo.png" />*@
-													</div>				<h5 style="direction:rtl" class="card-title">ورود به نرم افزار</h5>
-                            @using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "panel-body wrapper-lg", role = "form" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+	                    <div class="card-body">
+		                    <div style="text-align: center; padding-bottom: 30px">
+			                    @*<img src="~/assets/imgs/vala/logo.png" />*@
+		                    </div>				<h5 style="direction:rtl" class="card-title">ورود به نرم افزار</h5>
+		                    @using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "panel-body wrapper-lg", role = "form" }))
+		                    {
+			                    @Html.AntiForgeryToken()
+			                    @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
 
-                                <div class="position-relative form-group">
+			                    <div class="position-relative form-group">
 
-                                    @Html.LabelFor(model => model.Username, new { @for = "Username" })
-                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Username) })
+				                    @Html.LabelFor(model => model.Username, new { @for = "Username" })
+				                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Username) })
 
-                                </div>
-                                <div class="position-relative form-group">
-                                    @Html.LabelFor(model => model.Password, new { @for = "Password" })
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Password) })
+			                    </div>
+			                    <div class="position-relative form-group">
+				                    @Html.LabelFor(model => model.Password, new { @for = "Password" })
+				                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Password) })
 
 
-                                </div>
-                                <button style="background-color:#f5aa3b; color:black;" type="submit" class="mt-1 btn btn-primary">ورود</button>
+			                    </div>
+			                    <button style="background-color:#f5aa3b; color:black;" type="submit" class="mt-1 btn btn-primary">ورود</button>
 
-                            }
-                        </div>
+		                    }
+	                    </div>
+	                    <div style="text-align: center">
+		                    <p>
+			                    نسخه: 1.0
+		                    </p>
+		                    <p>
+		                    طراحی و توسعه توسط <a href="https://zavoshsoftwar.com">زاوش</a>
+		                    </p>
+	                    </div>
                     </div>
                 </div>
 
