@@ -90,6 +90,69 @@ namespace Attendance.Web.Controllers
             return View(car);
         }
 
+        public ActionResult CreatePartial()
+        {
+            ViewBag.Alphabet = new SelectList(new List<string>() {
+                "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ",
+                "ر", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ",
+                "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
+                "و", "ه", "ی"});
+
+            ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Code");
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult CreatePartial(Car car)
+        {
+            try
+            {
+                ViewBag.Alphabet = new SelectList(new List<string>() {
+                "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ",
+                "ر", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ",
+                "ع", "غ", "ف", "ق", "ک", "گ", "ل", "م", "ن",
+                "و", "ه", "ی"});
+                if (ModelState.IsValid)
+                {
+                    if (!db.Cars.Any(c => c.Number == car.Number.Trim()))
+                    {
+                        car.IsDeleted = false;
+                        car.CreationDate = DateTime.Now;
+                        car.Id = Guid.NewGuid();
+                        car.IsActive = true;
+                        db.Cars.Add(car);
+                        db.SaveChanges();
+                        TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                        return Json(new { status = true, data = car, message = "عملیات با موفقیت انجام شد" });
+                    }
+                    else
+                    {
+                        TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "خودرویی با این پلاک در سیستم موجود است" };
+                        return Json(new { status = false, data = car, message = "کاربری با این پلاک وجود دارد" });
+                    }
+                }
+                ViewBag.CarTypeId = new SelectList(db.CarTypes, "Id", "Title", car.CarTypeId);
+                return Json(new
+                {
+                    status = false,
+                    data = car,
+                    message = string.Join(". ", ModelState.Values
+                                           .SelectMany(x => x.Errors)
+                                           .Select(x => x.ErrorMessage))
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    status = false,
+                    data = car,
+                    message = ex.Message
+                });
+            }
+        }
+
+
         // GET: Cars/Edit/5
         public ActionResult Edit(Guid? id)
         {
