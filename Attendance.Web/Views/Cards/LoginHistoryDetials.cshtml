@@ -2,7 +2,8 @@
 @using Attendance.Core.Enums;
 @{
     ViewBag.Title = ViewBag.PageTitle;
-    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    //Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+    Layout = null;
 }
 
 <form action="/cards/LoginHistory" method="post">
@@ -21,6 +22,7 @@
 	</div>
     }
 
+    <input id="isExit" name="isExit" value="@Model.IsDeleted"/>
     <div class="row">
         <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
 

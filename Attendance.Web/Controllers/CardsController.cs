@@ -421,12 +421,12 @@ namespace Attendance.Web.Controllers
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
-         
+            login.IsDeleted = isExit;
             return View(login);
         }
 
         [HttpPost]
-        public ActionResult LoginHistory(CardLoginHistory cardLoginHistory,LoginHistoryTool loginHistoryTool)
+        public ActionResult LoginHistory(CardLoginHistory cardLoginHistory,LoginHistoryTool loginHistoryTool,bool isExit=false)
         {
             var loginHistory = db.CardLoginHistories.Find(cardLoginHistory.Id);
             loginHistory.Description = cardLoginHistory.Description;
@@ -443,7 +443,14 @@ namespace Attendance.Web.Controllers
             });
             db.SaveChanges();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            return RedirectToAction("LoginHistoryDetials", new { id = loginHistory.Id });
+            if (isExit)
+            {
+                return Redirect("/Cards/Authenticate");
+            }
+            else
+            {
+                return RedirectToAction("LoginHistoryDetials", new { id = loginHistory.Id });
+            }
         }
 
         public JsonResult GetDriverList(string q, int type = 0)

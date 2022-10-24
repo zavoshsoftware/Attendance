@@ -177,13 +177,63 @@
                     toastr["warning"](name + ' ' + message)
                     if (id != null) {
                         var url = '/cards/LoginHistoryDetials?id=' + id + '&isexit=true';
-                        var link = document.createElement('a');
-                        link.href = url;
-                        link.target = "_blank"
-                        link.id = String(id);
-                        document.body.appendChild(link);
-                        //link.click();
-                        document.getElementById(String(id)).click();
+                        //var link = document.createElement('a');
+                        //link.href = url;
+                        //link.target = "_blank"
+                        //link.id = String(id);
+                        //document.body.appendChild(link); 
+                        //document.getElementById(String(id)).click();
+
+                        $.get("/cards/LoginHistoryDetials?id=" + id + '&isexit=true', function (data) {
+                            //alert('ورود به سیستم')
+                            if (!data) {
+                                $.get("/cards/authenticateform?id=" + id + '&isexit=true', function (data) {
+
+                                    $('#discussion').prepend(
+                                        '<li /*style="display: inline-block;margin-bottom:30px"*/>'
+                                        + '<div class="card" /*style="width:40rem"*/>'
+                                        //+ '<img class="card-img-top"  src="' + imgProfile + '">'
+                                        + '<div id = "cardBody" class="card-body">'
+                                        //+'<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
+                                        //+ name + ' ' + message + '</p>'
+                                        + '<div class="panel panel-primary" >'
+                                        + '<div class="panel-heading">'
+                                        + '<div class= "panel-title pull-left" >خروج از سیستم</div >'
+                                        + '</div >'
+                                        + ' <div class="panel-body">'
+                                        + '' + data + ''
+                                        + '</div > '
+                                        + '</div > '
+                                        + '</div > '
+                                        + '</div>'
+                                        + '</li>');
+                                });
+                            }
+                            else {
+
+                                $('#discussion').prepend(
+                                    '<li /*style="display: inline-block;margin-bottom:30px"*/>'
+                                    + '<div class="card" /*style="width:40rem"*/>'
+                                    //+ '<img class="card-img-top"  src="' + imgProfile + '">'
+                                    + '<div id = "cardBody" class="card-body">'
+                                    //+'<p class= "card-text"  style = "text-align:justify;margin-top:10px" > '
+                                    //+ name + ' ' + message + '</p>'
+                                    + '<div class="panel panel-primary" >'
+                                    + '<div class="panel-heading">'
+                                    + '<div class= "panel-title pull-left" >خروج از سیستم</div >'
+                                    + '</div >'
+                                    + ' <div class="panel-body">'
+                                    + '' + data + ''
+                                    + '</div > '
+                                    + '</div > '
+                                    + '</div > '
+                                    + '</div>'
+                                    + '</li>');
+
+                            } 
+
+                        });
+
                     }
                     else {
                         imgProfile = imgCross;
