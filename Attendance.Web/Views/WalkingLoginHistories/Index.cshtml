@@ -12,7 +12,7 @@
                     .Name("Grid")
                     .Columns(columns =>
                     {
-                    columns.Bound(model => model.CardLoginHistory.Card.DisplayCode);
+                    columns.Bound(model => model.Card.DisplayCode);
                     columns.Bound(model => model.WalkingLoginHistoryTypeStr);
                     columns.Bound(model => model.IsDriver);
                     columns.Bound(model => model.IsDriverHelper);
@@ -27,9 +27,9 @@
                     })
         .ToolBar(toolbar =>
         {
-            if (ViewBag.CardLoginHistoryId != null)
+            if (ViewBag.cardId != null)
             {
-                toolbar.Custom().Action("Create", "WalkingLoginHistories").Text("افزودن");
+                toolbar.Custom().Action("Create", "WalkingLoginHistories",new { id = ViewBag.cardId}).Text("افزودن");
             }
         }
         )

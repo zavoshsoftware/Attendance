@@ -65,6 +65,51 @@ namespace Attendance.Web.Controllers
             return View(driver);
         }
 
+
+        public ActionResult CreatePartial()
+        {
+            return PartialView();
+        }
+
+        [HttpPost] 
+        public ActionResult CreatePartial(Driver driver, string BirthDateShamsi)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    driver.IsDeleted = false;
+                    driver.CreationDate = DateTime.Now;
+                    if (!string.IsNullOrEmpty(BirthDateShamsi))
+                    {
+                        driver.BirthDate = BirthDateShamsi.ToMiladi();
+                    }
+                    driver.Id = Guid.NewGuid();
+                    if (!db.Drivers.Any(d => d.NationalCode.Trim() == driver.NationalCode.Trim()))
+                    {
+                        db.Drivers.Add(driver);
+                        db.SaveChanges();
+                        TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                return Json(new { status = true , data = driver , message = TempData["Toastr"]});
+             
+                    }
+                    else
+                    {
+                        TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = $"کاربری با کدملی {driver.NationalCode} وجود دارد" };
+                    }
+                }
+
+                return Json(new { status = true , data = driver , message = string.Join(". ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage))
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = false, data = driver, message = ex.Message});
+            }
+        }
+
         // GET: Drivers/Create
         public ActionResult Create()
         {

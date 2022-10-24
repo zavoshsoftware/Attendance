@@ -1175,6 +1175,8 @@
     <Content Include="Views\LoginHistoryTools\Index.cshtml" />
     <Content Include="Views\Cards\Inquiry.cshtml" />
     <Content Include="Views\Cards\InquiryForm.cshtml" />
+    <Content Include="Views\Drivers\CreatePartial.cshtml" />
+    <Content Include="Views\Cars\CreatePartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

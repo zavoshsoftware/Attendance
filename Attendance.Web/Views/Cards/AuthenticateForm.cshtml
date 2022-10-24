@@ -94,11 +94,11 @@
                     <div class="panel-body">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })
-                                <select id="DriverNatCode" name="DriverNatCode" class="DriverSelect form-control k-select">
+                                <p> @Html.LabelFor(model => model.Driver.NationalCode, new { @class = "control-label" })</p>
+                                <select id="DriverNatCode" name="DriverNatCode" class="DriverSelect form-control k-select" style="width:85%">
                                     <option selected value="@Model.Driver.Id">@Model.Driver.NationalCode</option>
-                                </select>
-                                <span id="driverMessage"></span>
+                                </select><span class="p-2"><a class="btn btn-success"  data-toggle="modal" data-target="#driverModal">+</a></span>
+                                <p><span id="driverMessage"></span></p> 
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.DriverFirstName, new { @class = "control-label" })
@@ -122,11 +122,15 @@
                     <div class="panel-body">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label" })
+                                <p>  @Html.LabelFor(model => model.AssistanceNationalCode, new { @class = "control-label" })</p>
                                 @*@Html.EditorFor(model => model.AssistanceName)*@
-                                <select id="AssistanceNationalCode" name="AssistanceNationalCode" class="AsistSelect form-control k-select">
+                                <select id="AssistanceNationalCode" name="AssistanceNationalCode" class="AsistSelect form-control k-select" style="width:85%!important">
                                     <option selected value="@Model.AssistanceId">@Model.AssistanceNationalCode</option>
-                                </select> <span id="assistMessage"></span>
+                                </select> <span class="p-2"><a class="btn btn-success" data-toggle="modal" data-target="#driverModal">+</a></span>
+                                <p>
+
+                                    <span id="assistMessage"></span>
+                                </p>
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.AssistanceName, new { @class = "control-label" })
@@ -154,14 +158,14 @@
                         <div class="form-horizontal">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Pleck, new { @class = "control-label" })
-                                <select id="pleck" name="pleck" class="accountSelect form-control input-group  input-lg">
+                                <select id="pleck" name="pleck" class="accountSelect form-control input-group  input-lg" style="width:85%!important">
                                     <option selected value="@Model.carId">@Model.Pleck</option>
-                                </select> 
+                                </select> <span class="p-2"><a class="btn btn-success" data-toggle="modal" data-target="#carModal">+</a></span>
                             </div>
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Load, new { @class = "control-label" })
-                                <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)" 
+                                <input data-val="true" id="Load" name="Load" onkeyup="loadControl(this)"
                                        type="text" value="@Model.Load" class="k-textbox input-group  input-lg">
                                 <span id="realLoad"></span>
                             </div>
@@ -201,6 +205,50 @@
     </form>
 
 </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="driverModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modalClose" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">افزودن راننده</h4>
+            </div>
+            <div class="modal-body" id="modalBody">
+                @Html.Action("CreatePartial","Drivers")
+            </div> 
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="carModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modalClose" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">افزودن ماشین</h4>
+            </div>
+            <div class="modal-body" id="modalBody">
+                @Html.Action("CreatePartial","cars")
+            </div> 
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
 <script src="~/Scripts/select2.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -351,7 +399,7 @@
                         $('#btnSave').prop('disabled', true)
                         toastr["warning"](data.Message);
                         $('#assistMessage').html(data.Message)
-                    } else { 
+                    } else {
                         $('#btnSave').prop('disabled', false)
                         $('#assistMessage').html('')
                     }

@@ -13,11 +13,10 @@
     <div class="form-horizontal">        
     
          <div class="form-group">
-            @Html.LabelFor(model => model.CardLoginHistory.DriverName, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Card.DisplayCode, new { @class = "control-label col-md-2" })
         <div class="col-md-10 font-medium">
-            @Html.DisplayFor(model => model.CardLoginHistory.DriverName)
+            @Html.DisplayFor(model => model.Card.DisplayCode)
       </div></div>
-
          <div class="form-group">
             @Html.LabelFor(model => model.WalkingLoginHistoryType, new { @class = "control-label col-md-2" })
         <div class="col-md-10 font-medium">
@@ -45,15 +44,9 @@
          <div class="form-group">
             @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
         <div class="col-md-10 font-medium">
-            @Html.DisplayFor(model => model.CreationDate)
+           @Model.CreationDate.ToShamsi('s')
       </div></div>
-
-         <div class="form-group">
-            @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10 font-medium">
-            @Html.DisplayFor(model => model.LastModifiedDate)
-      </div></div>
-
+         
          <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
         <div class="col-md-10 font-medium">
@@ -68,7 +61,7 @@
        <div class="form-group" id="buttons">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="تایید حذف" class="btn btn-primary font-medium" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
+		 
             </div>
         </div>
     }
