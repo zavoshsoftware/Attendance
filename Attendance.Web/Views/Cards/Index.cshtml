@@ -36,6 +36,7 @@
                                     @if ((bool)ViewBag.IsDeleted)
                                     {
                                       @Html.ActionLink("فعال کن", "UseCard", new {id = @item.Id}, new {@class = "k-button"})
+                                      @Html.ActionLink("حذف", "deletecard", new {id = @item.Id}, new {@class = "k-button"})
                                     }
                           else
                           {

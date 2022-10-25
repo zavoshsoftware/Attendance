@@ -78,11 +78,9 @@ namespace Attendance.Web.Controllers.api
                 var logined = _cardLoginHistory.Get(c => c.CardId == card.Id && !c.ExitDate.HasValue).FirstOrDefault();
                 if (logined != null)
                 {
-                    var message = $"خروج با موفقیت ثبت شد";
-                    logined.ExitDate = DateTime.Now;
-                    _cardLoginHistory.Update(logined);
-
-                    hubContext.Clients.All.Exit(logined.Id, $"خروج با موفقیت ثبت شد", operatorId);
+                    var message = $"درخواست خروج";
+                    
+                    hubContext.Clients.All.Exit(logined.Id, message, operatorId);
 
 
                     return Ok(new CustomResponseViewModel()

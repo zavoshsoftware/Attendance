@@ -131,7 +131,7 @@ namespace Attendance.Web.Controllers
             walkingLoginHistory.DeletionDate = DateTime.Now;
 
             db.SaveChanges();
-            return RedirectToAction("Index", new { cardId = walkingLoginHistory.CardId });
+            return RedirectToAction("Index"/*, new { cardId = walkingLoginHistory.CardId }*/);
         }
 
         protected override void Dispose(bool disposing)
