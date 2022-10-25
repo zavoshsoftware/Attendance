@@ -13,6 +13,7 @@ using Attendance.Core.Data;
 using Attendance.Core.Enums;
 using Attendance.Models;
 using Attendance.Models.Entities;
+using Attendance.Web.Services.Base;
 using Attendance.Web.ViewModels;
 using ClosedXML.Excel;
 
@@ -20,8 +21,15 @@ namespace Attendance.Web.Controllers
 {
     public class CardsController : Controller
     {
+        private UnitOfWork unitOfWork;
+        private Repository<CardLoginHistory> _cardLoginHistory;
         private DatabaseContext db = new DatabaseContext();
 
+        public CardsController()
+        {
+            unitOfWork = new UnitOfWork();
+            _cardLoginHistory = unitOfWork.Repository<CardLoginHistory>();
+        }
         // GET: Cards
         public ActionResult Index(bool isDeleted=false)
         {
@@ -421,6 +429,8 @@ namespace Attendance.Web.Controllers
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
+            
+            //check that this request sent from exit page or not
             login.IsDeleted = isExit;
             return View(login);
         }
@@ -443,8 +453,13 @@ namespace Attendance.Web.Controllers
             });
             db.SaveChanges();
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
-            if (isExit)
+            
+            //i used is delete instead of isexit. 
+            if (cardLoginHistory.IsDeleted)
             {
+                loginHistory.ExitDate = DateTime.Now;
+                db.SaveChanges();
+
                 return Redirect("/Cards/Authenticate");
             }
             else
@@ -795,5 +810,41 @@ new
             return RedirectToAction("Index");
         }
 
+        public ActionResult DeleteCard(Guid id)
+        {
+            Card card = db.Cards
+                        .Include(x => x.Driver).Include(x => x.CardGroupItems)
+                        .Include(x => x.CardLoginHistories).Include(x => x.CardOwnerHistories)
+                        .Include(x => x.CardStatusHistories).Include(x => x.Penalties)
+                        .Include(x => x.WalkingLoginHistories).FirstOrDefault(x => x.Id == id);
+
+            if (card!=null)
+            {
+                try
+                {
+
+                    db.WalkingLoginHistories.RemoveRange(card.WalkingLoginHistories);
+                    db.Penalties.RemoveRange(card.Penalties);
+                    db.CardStatusHistories.RemoveRange(card.CardStatusHistories);
+                    db.CardOwnerHistories.RemoveRange(card.CardOwnerHistories);
+                    db.CardLoginHistories.RemoveRange(card.CardLoginHistories);
+                    db.CardGroupItemCards.RemoveRange(card.CardGroupItems);
+                    db.DriverStatusHistories.RemoveRange(card.Driver.DriverStatusHistories);
+                    db.DriverStatusHistories.RemoveRange(card.Driver.DriverStatusHistories);
+                    db.Drivers.Remove(card.Driver);
+                    db.Cards.Remove(card);
+                    db.SaveChanges();
+                    TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
+                    return RedirectToAction("Index",new { isdeleted = true });
+                }
+                catch (Exception ex)
+                {
+            TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = ex.Message };
+            return RedirectToAction("Index", new { isdeleted = true }); 
+                }
+            }
+            TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "کارت وجود ندارد" };
+            return RedirectToAction("Index");
+        }
     }
 }

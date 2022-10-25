@@ -43,5 +43,6 @@ namespace Attendance.Models
         public DbSet<Tools> Tools { get; set; }
         public DbSet<Units> Units { get; set; }
         public DbSet<LoginHistoryTool> LoginHistoryTools { get; set; }
+         
     }
 }

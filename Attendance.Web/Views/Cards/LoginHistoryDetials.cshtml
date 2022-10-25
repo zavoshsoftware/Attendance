@@ -22,7 +22,7 @@
 	</div>
     }
 
-    <input id="isExit" name="isExit" value="@Model.IsDeleted"/>
+  @Html.HiddenFor(x=>x.IsDeleted)
     <div class="row">
         <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
 

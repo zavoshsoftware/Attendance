@@ -20,6 +20,7 @@
 									</text>) ;
        columns.Bound(item => @item.Id).Title("تاریخ").Filterable(false).Groupable(false)
                             .Template(@<text>	@item.CreationDate.ToShamsi('s')</text>).Width(200);
+              columns.Bound(model => model.Car.Number);
               columns.Bound(model => model.Description);
               
 		})
