@@ -1,28 +1,30 @@
-﻿@model Attendance.Models.Entities.CardLoginHistory 
+﻿ 
+
+@model Attendance.Models.Entities.CardLoginHistory
 @using Attendance.Core.Enums;
 @{
     ViewBag.Title = ViewBag.PageTitle;
     //Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
-    Layout = null;
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
 
 <form action="/cards/LoginHistory" method="post">
     @Html.HiddenFor(c => c.Id)
     @if ((bool)ViewBag.IsExit)
     {
-	<div class="card text-center">
-	 
-
-		<img src="~/Files/exit.png" style="width:100px"  class="card-img-top"/>  <div id="cardBody" class="card-body text-center">
-
-			خروج انجام شد
+        <div class="card text-center">
 
 
-		</div>
-	</div>
+            <img src="~/Files/exit.png" style="width:100px" class="card-img-top" />  <div id="cardBody" class="card-body text-center">
+
+                خروج انجام شد
+
+
+            </div>
+        </div>
     }
 
-  @Html.HiddenFor(x=>x.IsDeleted)
+    @Html.HiddenFor(x => x.IsDeleted)
     <div class="row">
         <div class="k-header k-grid-toolbar k-grid-top"><a class="font-medium k-button k-button-icontext " href="/Cards/PrintLoginHistoryDetails?id=@Model.Id" target="_blank">چاپ</a></div>
 
@@ -215,33 +217,5 @@
         <br />
     </div>
 </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
