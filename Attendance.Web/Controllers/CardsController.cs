@@ -429,10 +429,17 @@ namespace Attendance.Web.Controllers
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
-            
+
             //check that this request sent from exit page or not
             login.IsDeleted = isExit;
-            return View(login);
+            if (isExit)
+            {  
+                return View(login);
+            }
+            else
+            { 
+                return View("LoginHistoryDetialsPage",login);
+            }
         }
 
         [HttpPost]
@@ -441,17 +448,24 @@ namespace Attendance.Web.Controllers
             var loginHistory = db.CardLoginHistories.Find(cardLoginHistory.Id);
             loginHistory.Description = cardLoginHistory.Description;
             loginHistory.Devices = cardLoginHistory.Devices;
-            db.LoginHistoryTools.Add(new LoginHistoryTool() {
-            Amount = loginHistoryTool.Amount,
-            ToolId = loginHistoryTool.ToolId,
-            UnitId = loginHistoryTool.UnitId,
-            CardLoginHistoryId = loginHistoryTool.CardLoginHistoryId,
-            CreationDate = DateTime.Now,
-            IsActive = true,
-            Id = Guid.NewGuid(),
-            IsDeleted=false 
-            });
-            db.SaveChanges();
+
+            if (loginHistoryTool.ToolId.HasValue && loginHistoryTool.UnitId.HasValue && loginHistoryTool.Amount.HasValue)
+            {
+                db.LoginHistoryTools.Add(new LoginHistoryTool()
+                {
+                    Amount = loginHistoryTool.Amount,
+                    ToolId = loginHistoryTool.ToolId,
+                    UnitId = loginHistoryTool.UnitId,
+                    CardLoginHistoryId = loginHistoryTool.CardLoginHistoryId,
+                    CreationDate = DateTime.Now,
+                    IsActive = true,
+                    Id = Guid.NewGuid(),
+                    IsDeleted = false
+                });
+            }
+                db.SaveChanges();
+
+
             TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
             
             //i used is delete instead of isexit. 

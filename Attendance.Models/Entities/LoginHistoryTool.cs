@@ -15,13 +15,13 @@ namespace Attendance.Models.Entities
         public Guid CardLoginHistoryId { get; set; }
          
         [Display(Name = "وسایل")] 
-        public Guid ToolId { get; set; }
+        public Guid? ToolId { get; set; }
          
         [Display(Name = "واحد")] 
-        public Guid UnitId { get; set; }
+        public Guid? UnitId { get; set; }
 
         [Display(Name = "مقدار")]
-        public double Amount { get; set; }
+        public double? Amount { get; set; }
 
         [ForeignKey("CardLoginHistoryId")]
         public CardLoginHistory CardLoginHistory { get; set; }

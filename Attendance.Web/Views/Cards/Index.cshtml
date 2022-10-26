@@ -13,9 +13,7 @@
 
 @if (Model != null && Model.Any())
 {
-<div class="card">
-
-
+<div class="card"> 
     @(Html.Kendo().Grid(Model)
      .Name("Grid")
      .Columns(columns =>

@@ -43,7 +43,7 @@ namespace Attendance.Web.Controllers
             ViewBag.CardLoginHistoryId = new SelectList(db.CardLoginHistories.Where(x=>x.Id==id).ToList().Select(x=>new { Id = x.Id , Title = $"کارت:{x.Card.DisplayCode} - {x.LoginDate.ToShamsi('s')}"}), "Id", "Title",id);
             ViewBag.ToolId = new SelectList(db.Tools, "Id", "Title");
             ViewBag.UnitId = new SelectList(db.Units, "Id", "Title");
-            ViewBag.LastLogins = db.LoginHistoryTools.Where(x => x.CardLoginHistoryId == id).Select(x=>new LoginToolViewModel (){ Tool = x.Tools.Title,Unit=x.Units.Title,Amount=x.Amount}).ToList();
+            ViewBag.LastLogins = db.LoginHistoryTools.Where(x => x.CardLoginHistoryId == id).Select(x=>new LoginToolViewModel (){ Tool = x.Tools.Title,Unit=x.Units.Title,Amount=x.Amount??0}).ToList();
             return PartialView();
         }
 
