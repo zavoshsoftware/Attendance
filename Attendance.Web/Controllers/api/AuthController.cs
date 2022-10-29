@@ -39,7 +39,7 @@ namespace Attendance.Web.Controllers.api
                 operatorId = Request.Headers.GetValues("Key").First();
             }
             //یافتن کارت براساس کد و وجود راننده
-            var card = _card.Get(x => x.Code == id && !x.Driver.IsDeleted, "Driver,CardLoginHistories").FirstOrDefault();
+            var card = _card.Get(x => x.Code == id && !x.Driver.IsDeleted&& !x.Driver.ShiftDelete, "Driver,CardLoginHistories").FirstOrDefault();
 
             List<ToastrViewModel> toastrList = new List<ToastrViewModel>();
 

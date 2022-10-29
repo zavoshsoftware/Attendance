@@ -28,38 +28,71 @@ namespace Attendance.Web.Services.Base
 
         public IEnumerable<T> Get()
         {
-            return this.Entities.Where(e => !e.IsDeleted);
+            return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete);
         }
         
         public IEnumerable<T> Get(Expression<Func<T,bool>> expression)
         {
-            return this.Entities.Where(e => !e.IsDeleted).Where(expression);
+            return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete).Where(expression);
         }
 
-        public IEnumerable<T> Get(Expression<Func<T,bool>> expression,string include)
+        public IEnumerable<T> Get (Expression<Func<T,bool>> expression,string include)
         {
             IQueryable<T> query=this.Entities;
+    
             foreach (var item in include.Split(','))
             {
                 query.Include(item);
             }
-            return query.Where(e => !e.IsDeleted).Where(expression);
+            return query.Where(e => !e.IsDeleted && !e.ShiftDelete).Where(expression);
         }
         
+
+        /// <summary>
+        /// این متد برای دریافت رکوردهایی با اعمال شرط و دریافت وابستگی های یک رکورد استفاده میشود.
+        /// توجه: این متد تنها برای دریافت داده های نمایشی برای کاربر کاربرد دارد و داده های حذف شده را نمایش نمی دهد
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        public IEnumerable<T> Get( Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query=this.Entities;
+
+                foreach (var include in includes)
+                {
+                    query.Include(include);
+                } 
+            return query.Where(e => !e.IsDeleted && !e.ShiftDelete).Where(expression);
+        }
+        
+        public IEnumerable<T> GetAll( Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query=this.Entities;
+
+                foreach (var include in includes)
+                {
+                    query.Include(include);
+                } 
+            return query .Where(expression);
+        }
+        
+       
+
         public IEnumerable<T> GetSorted<TKey>(Expression<Func<T, bool>> expression,Expression<Func<T,TKey>> sort,bool desc=true)
         {
-            if(desc) return this.Entities.Where(e => !e.IsDeleted).Where(expression).OrderByDescending(sort);
-            else return this.Entities.Where(e => !e.IsDeleted).Where(expression).OrderBy(sort);
+            if(desc) return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete).Where(expression).OrderByDescending(sort);
+            else return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete).Where(expression).OrderBy(sort);
         }
         public IEnumerable<T> GetSorted<TKey>(Expression<Func<T, TKey>> sort, bool desc=true)
         {
-            if(desc) return this.Entities.Where(e => !e.IsDeleted).OrderByDescending(sort);
-            else return this.Entities.Where(e => !e.IsDeleted).OrderBy(sort);
+            if(desc) return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete).OrderByDescending(sort);
+            else return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete).OrderBy(sort);
         }
         
         public IEnumerable<T> Get(Expression<Func<T,bool>> expression,int pageSize,int pageIndex)
         {
-            return this.Entities.Where(e => !e.IsDeleted).Where(expression).Take(pageSize*pageIndex).Skip(pageSize);
+            return this.Entities.Where(e => !e.IsDeleted && !e.ShiftDelete).Where(expression).Take(pageSize*pageIndex).Skip(pageSize);
         }
 
         public void Insert(T entity)

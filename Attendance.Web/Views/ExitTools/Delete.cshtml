@@ -1,4 +1,4 @@
-﻿@model Attendance.Models.Entities.ExitTools
+﻿@model Attendance.Models.Entities.Tools
 
 @{
     ViewBag.Title = "حذف " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
@@ -31,6 +31,12 @@
       </div></div>
 
          <div class="form-group">
+            @Html.LabelFor(model => model.ShiftDelete, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.ShiftDelete)
+      </div></div>
+
+         <div class="form-group">
             @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DisplayFor(model => model.CreationDate)
@@ -56,7 +62,6 @@
        <div class="form-group" id="buttons">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="تایید حذف" class="btn btn-primary" />
-				@Html.ActionLink("بازگشت به فهرست", "Index")
             </div>
         </div>
     }

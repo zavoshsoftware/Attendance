@@ -23,19 +23,23 @@ namespace Attendance.Web.Controllers
     {
         private UnitOfWork unitOfWork;
         private Repository<CardLoginHistory> _cardLoginHistory;
+        private Repository<Card> _card;
+        private Repository<Driver> _driver;
         private DatabaseContext db = new DatabaseContext();
 
         public CardsController()
         {
             unitOfWork = new UnitOfWork();
             _cardLoginHistory = unitOfWork.Repository<CardLoginHistory>();
+            _card = unitOfWork.Repository<Card>();
+            _driver = unitOfWork.Repository<Driver>();
         }
         // GET: Cards
         public ActionResult Index(bool isDeleted=false)
         {
             ViewBag.IsDeleted = isDeleted;
             List<Card> cards;
-            var result = db.Cards.Include(c => c.Driver).Where(c => c.IsDeleted == isDeleted && !c.Driver.IsDeleted).OrderByDescending(c => c.CreationDate);
+            var result = _card.GetAll(c => c.IsDeleted == isDeleted && !c.Driver.IsDeleted && !c.ShiftDelete, y => y.Driver).OrderByDescending(c => c.CreationDate);
             if (IsSuperAdmin())
                 cards = result.ToList();
             else
@@ -67,8 +71,8 @@ namespace Attendance.Web.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Card card = db.Cards.Find(id);
+            } 
+            Card card = _card.GetById(id);
             if (card == null)
             {
                 return HttpNotFound();
@@ -78,8 +82,8 @@ namespace Attendance.Web.Controllers
 
         // GET: Cards/Create
         public ActionResult Create()
-        {
-            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName");
+        {  
+            ViewBag.DriverId = new SelectList(_driver.Get(), "Id", "FullName");
             return View();
         }
 
@@ -94,8 +98,8 @@ namespace Attendance.Web.Controllers
             {
                 card.IsDeleted = false;
                 card.CreationDate = DateTime.Now;
-
-                var driver = db.Drivers.Find(card.DriverId);
+                 
+                var driver = _driver.GetById(card.DriverId);
                 if (driver != null)
                 {
                     var day = (int)card.Day;
@@ -104,7 +108,7 @@ namespace Attendance.Web.Controllers
 
                 card.Id = Guid.NewGuid();
                 card.IsActive = true;
-                if (!db.Cards.Any(c => c.Driver.Id == driver.Id && !c.IsDeleted))
+                if (!db.Cards.Any(c => c.Driver.Id == driver.Id && !c.IsDeleted && !c.ShiftDelete))
                 {
                     db.Cards.Add(card);
                     db.SaveChanges();
@@ -130,7 +134,7 @@ namespace Attendance.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName", card.DriverId);
+            ViewBag.DriverId = new SelectList(_card.Get(), "Id", "FullName", card.DriverId);
             TempData["Toastr"] = new ToastrViewModel()
             {
                 Class = "warning",
@@ -152,8 +156,8 @@ namespace Attendance.Web.Controllers
             if (card == null)
             {
                 return HttpNotFound();
-            }
-            ViewBag.DriverId = new SelectList(db.Drivers.Where(d => !d.IsDeleted), "Id", "FullName", card);
+            } 
+            ViewBag.DriverId = new SelectList(_driver.Get(), "Id", "FullName", card);
             return View(card);
         }
 
@@ -425,7 +429,11 @@ namespace Attendance.Web.Controllers
         public ActionResult LoginHistoryDetials(Guid id,bool isExit=false)
         {
             ViewBag.IsExit = isExit;
-            CardLoginHistory login = db.CardLoginHistories.Where(x => !x.IsDeleted).Include(x => x.Car).Include(x => x.Driver).Include(x => x.Card)
+            CardLoginHistory login = db.CardLoginHistories
+                .Where(x => !x.IsDeleted)
+                .Include(x => x.Car)
+                .Include(x => x.Driver)
+                .Include(x => x.Card)
                 .FirstOrDefault(x => x.Id == id);
             ViewBag.Weight = (int)db.CarTypes.AsNoTracking()?.FirstOrDefault(x => x.Id == login.Car.CarTypeId)?.Weight;
             ViewBag.PageTitle = $"تاریخچه ورود {login.Driver.FirstName} {login.Driver.LastName}";
@@ -825,34 +833,25 @@ new
         }
 
         public ActionResult DeleteCard(Guid id)
-        {
+        { 
             Card card = db.Cards
                         .Include(x => x.Driver).Include(x => x.CardGroupItems)
                         .Include(x => x.CardLoginHistories).Include(x => x.CardOwnerHistories)
                         .Include(x => x.CardStatusHistories).Include(x => x.Penalties)
                         .Include(x => x.WalkingLoginHistories).FirstOrDefault(x => x.Id == id);
-
+           
             if (card!=null)
             {
                 try
                 {
-
-                    db.WalkingLoginHistories.RemoveRange(card.WalkingLoginHistories);
-                    db.Penalties.RemoveRange(card.Penalties);
-                    db.CardStatusHistories.RemoveRange(card.CardStatusHistories);
-                    db.CardOwnerHistories.RemoveRange(card.CardOwnerHistories);
-                    db.CardLoginHistories.RemoveRange(card.CardLoginHistories);
-                    db.CardGroupItemCards.RemoveRange(card.CardGroupItems);
-                    db.DriverStatusHistories.RemoveRange(card.Driver.DriverStatusHistories);
-                    db.DriverStatusHistories.RemoveRange(card.Driver.DriverStatusHistories);
-                    db.Drivers.Remove(card.Driver);
-                    db.Cards.Remove(card);
+                    card.ShiftDelete = true;
+                    db.Entry(card).State = EntityState.Modified;
                     db.SaveChanges();
                     TempData["Toastr"] = new ToastrViewModel() { Class = "success", Text = "عملیات با موفقیت انجام شد" };
                     return RedirectToAction("Index",new { isdeleted = true });
                 }
                 catch (Exception ex)
-                {
+                { 
             TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = ex.Message };
             return RedirectToAction("Index", new { isdeleted = true }); 
                 }
