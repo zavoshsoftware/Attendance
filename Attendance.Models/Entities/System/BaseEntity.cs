@@ -24,6 +24,10 @@ namespace Attendance.Models.Entities
         [Display(Name = "فعال")]
         [DefaultValue(true)]
         public bool IsActive { get; set; }
+        
+        [Display(Name = "حذف برای همیشه")]
+        [DefaultValue(false)]
+        public bool ShiftDelete { get; set; }
 
         [Display(Name = "تاریخ ایجاد")]
         public System.DateTime CreationDate { get; set; }

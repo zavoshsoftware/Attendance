@@ -1164,7 +1164,6 @@
     <Content Include="Views\Units\Edit.cshtml" />
     <Content Include="Views\Units\Index.cshtml" />
     <Content Include="Views\ExitTools\Create.cshtml" />
-    <Content Include="Views\ExitTools\Delete.cshtml" />
     <Content Include="Views\ExitTools\Details.cshtml" />
     <Content Include="Views\ExitTools\Edit.cshtml" />
     <Content Include="Views\ExitTools\Index.cshtml" />
@@ -1178,6 +1177,7 @@
     <Content Include="Views\Drivers\CreatePartial.cshtml" />
     <Content Include="Views\Cars\CreatePartial.cshtml" />
     <Content Include="Views\Cards\LoginHistoryDetialsPage.cshtml" />
+    <Content Include="Views\ExitTools\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
