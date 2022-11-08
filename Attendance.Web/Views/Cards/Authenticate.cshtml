@@ -42,8 +42,8 @@
             var resPartial = ""
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (id, name, loginId, message, displayCode,opId)
-            {
-                if (getCookie("OperatorId").trim() === opId.trim()) {
+            { 
+                if (getCookie("OperatorId") === opId) {
                 console.log(getCookie("OperatorId"),opId)
 
               

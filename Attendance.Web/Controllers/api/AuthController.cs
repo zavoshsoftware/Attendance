@@ -37,6 +37,7 @@ namespace Attendance.Web.Controllers.api
             if (Request.Headers.Contains("Key"))
             {
                 operatorId = Request.Headers.GetValues("Key").First();
+                operatorId = operatorId.ToLower();
             }
             //یافتن کارت براساس کد و وجود راننده
             var card = _card.Get(x => x.Code == id && !x.Driver.IsDeleted&& !x.Driver.ShiftDelete, "Driver,CardLoginHistories").FirstOrDefault();
@@ -48,7 +49,8 @@ namespace Attendance.Web.Controllers.api
             if (card != null)
             {
                 //Inquiry 
-                hubContext.Clients.All.Inquiry(card.Id, card.Driver.FirstName + " " + card.Driver.LastName, null, $"با کد {card.DisplayCode} اجازه ورود دارد", card.Code, operatorId);
+                hubContext.Clients.All.Inquiry(card.Id, card.Driver.FirstName + " " + card.Driver.LastName,
+                    null, $"با کد {card.DisplayCode} اجازه ورود دارد", card.Code, operatorId);
 
 
                 if (!card.IsActive)
