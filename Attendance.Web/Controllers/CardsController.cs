@@ -272,7 +272,9 @@ namespace Attendance.Web.Controllers
             ViewBag.plecks = db.Cars.Where(c => !c.IsDeleted).Select(c => new Select2Model { id = c.Id.ToString(), text = c.Number }).ToList();
             //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
             var card = db.Cards.Include(x => x.Driver).Include(x=>x.CardLoginHistories).FirstOrDefault(x => x.Id == id);
-            CardLoginHistory login = card.CardLoginHistories.OrderByDescending(x=>x.CreationDate).FirstOrDefault();
+
+            // last driver that had login with current card : آخرین راننده که با این کارت وارد شده است
+            CardLoginHistory login = db.CardLoginHistories.Where(x => x.CardId == card.Id).OrderByDescending(x => x.CreationDate).FirstOrDefault();
             try
             {
                 if (login != null)
