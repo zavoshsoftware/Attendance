@@ -93,7 +93,7 @@ namespace Attendance.Web.Controllers
                        new AuthenticationProperties { IsPersistent = true }, ident);
 
                     HttpCookie operatorCookies = new HttpCookie("OperatorId");
-                    operatorCookies.Value = oUser.Id.ToString();
+                    operatorCookies.Value = oUser.Id.ToString().ToLower();
                     operatorCookies.Expires = DateTime.Now.AddDays(1);
                     Response.SetCookie(operatorCookies); 
 

@@ -272,7 +272,9 @@ namespace Attendance.Web.Controllers
             ViewBag.plecks = db.Cars.Where(c => !c.IsDeleted).Select(c => new Select2Model { id = c.Id.ToString(), text = c.Number }).ToList();
             //var login = db.CardLoginHistories.FirstOrDefault(c => c.Id == id);
             var card = db.Cards.Include(x => x.Driver).Include(x=>x.CardLoginHistories).FirstOrDefault(x => x.Id == id);
-            CardLoginHistory login = card.CardLoginHistories.OrderByDescending(x=>x.CreationDate).FirstOrDefault();
+
+            // last driver that had login with current card : آخرین راننده که با این کارت وارد شده است
+            CardLoginHistory login = db.CardLoginHistories.Include(x=>x.Driver).Include(x=>x.Card).Where(x => x.CardId == card.Id).OrderByDescending(x => x.CreationDate).FirstOrDefault();
             try
             {
                 if (login != null)
@@ -286,9 +288,11 @@ namespace Attendance.Web.Controllers
                         Car = login?.Car,
                         Card = card,
                         cardId = card?.Id ?? null,
-                        DriverFirstName = card.Driver.FirstName,
-                        DriverLastName = card.Driver.LastName,
-                        DriverNatCode = card.Driver.NationalCode,
+                        //DriverFirstName = card.Driver.FirstName,
+                        DriverFirstName = login.Driver.FirstName,
+                        //DriverLastName = card.Driver.LastName,
+                        DriverLastName = login.Driver.LastName,
+                        DriverNatCode = login.Driver.NationalCode,
                         AssistanceId = db.Drivers.AsNoTracking().FirstOrDefault(x => x.NationalCode == login.AssistanceNationalCode)?.Id ?? null,
                         AssistanceName = login?.AssistanceName ?? "",
                         AssistanceLastName = login?.AssistanceLastName ?? "",
