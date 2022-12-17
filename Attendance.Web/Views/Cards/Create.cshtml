@@ -1,4 +1,5 @@
-﻿@model Attendance.Models.Entities.Card
+﻿@using Attendance.Core.Enums
+@model Attendance.Models.Entities.Card
 
 @{
     ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
@@ -53,7 +54,7 @@
             {
                 var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
                 string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
-                if (role == "SuperAdmin")
+                if (role == "SuperAdmin"||role==SecurityRole.Admin4)
                 {
                     <div class="form-group">
                         <div class="col-md-2">

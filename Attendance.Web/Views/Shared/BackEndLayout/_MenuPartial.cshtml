@@ -2,11 +2,11 @@
 <nav class="nav-primary hidden-xs">
 
     @if (User.Identity.IsAuthenticated)
-    {
-        var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
-        string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
-        if (role == "SuperAdmin" || role == "Admin")
-        {
+		{
+			var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+			string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+			if (role == "SuperAdmin" || role == "Admin" || role == SecurityRole.Admin4)
+			{
             <ul class="nav">
                 <li id="sliderLi" class="menuitem">
                     <a href="" onclick="window.history.go(-1); return false;">
@@ -87,7 +87,7 @@
                         <i class="fa fa-bars icon"><b class="bg-info"></b></i><span>کنترل ورود و خروج</span>
                     </a>
                 </li>
-                @if (role == SecurityRole.SuperAdmin || role == SecurityRole.Admin)
+                @if (role == SecurityRole.SuperAdmin || role == SecurityRole.Admin ||role==SecurityRole.Admin4)
                 {
                     <li id="sliderLi2" class="menuitem">
                         <a href="/CardLoginHistories">
