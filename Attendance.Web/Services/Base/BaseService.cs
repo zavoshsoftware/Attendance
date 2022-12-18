@@ -179,6 +179,38 @@ namespace Attendance.Web.Services.Base
         {
             Delete(GetById(id));
         }
+
+        public void ShiftDelete(T entity)
+        {
+            try
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("entity");
+                }
+                entity.DeletionDate = DateTime.Now;
+                entity.IsDeleted = true;
+                entity.ShiftDelete = true;
+                this.context.Entry(entity).State = EntityState.Modified;
+                this.context.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        errorMessage += Environment.NewLine + string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+            }
+        }
+        public void ShiftDelete(object id)
+        {
+            ShiftDelete(GetById(id));
+        }
+
         public virtual IQueryable<T> Table
         {
             get

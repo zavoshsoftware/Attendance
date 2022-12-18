@@ -53,4 +53,20 @@ using System.Web;
                 return Setting<string>("BaseUrl");
             }
         }
+        public static string SecurityCode
+    {
+            get
+            {
+                using (DatabaseContext db = new DatabaseContext())
+                {
+                    var _value = db.Configs.FirstOrDefault(c => c.Key == "SecurityCode");
+                    if (_value !=null)
+                    {
+                    return _value.Value;
+                    }      
+                }
+                //api base url
+                return Setting<string>("SecurityCode");
+            }
+        }
     } 

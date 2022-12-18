@@ -222,5 +222,11 @@ namespace Attendance.Web.Controllers.api
                 }
                 );
         }
+
+
+        [Route("~/api/SecurityCode/{id}/auth")]
+        [HttpGet]
+        public IHttpActionResult SecurityCode(string id) => Ok(new CustomResponseViewModel() { Extra = id.Equals(Configurations.SecurityCode), Ok = true });
+
     }
 }
