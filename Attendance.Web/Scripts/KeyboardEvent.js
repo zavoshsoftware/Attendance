@@ -14,7 +14,7 @@ function card_keyup_event(e) {
                 let obj = JSON.parse(this.responseText);
                 if (obj.Extra) {
                     var modal = document.getElementById("atnModal");
-                    document.querySelector('#atnModal .atn-modal-header h2').innerText = "سایر کارت ها";
+                    document.querySelector('#atnModal .atn-modal-header h2').innerText = "کارت ها";
 
 
                     xhr.addEventListener("readystatechange", function () {
@@ -55,7 +55,7 @@ function card_keyup_event(e) {
                 let obj = JSON.parse(this.responseText);
                 if (obj.Extra) {
                     var modal = document.getElementById("atnModal");
-                    document.querySelector('#atnModal .atn-modal-header h2').innerText = "تاریخچه سایر کارت ها";
+                    document.querySelector('#atnModal .atn-modal-header h2').innerText = "تاریخچه کارت ها";
 
 
                     xhr.addEventListener("readystatechange", function () {
