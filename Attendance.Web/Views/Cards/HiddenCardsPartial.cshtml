@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Attendance.Models.Entities.Card>
+ 
+@*@(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                                columns.Bound(model => model.Driver.FirstName);
+        columns.Bound(model => model.Code);
+        columns.Bound(model => model.Day);
+        columns.Bound(model => model.IsHidden);
+        columns.Bound(model => model.DisplayCode);
+        columns.Bound(model => model.IsActive);
+        columns.Bound(model => model.ShiftDelete);
+        columns.Bound(model => model.CreationDate);
+                    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+                            .Template(@<text>
+                                    @Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+                                    @Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+                                    </text>).Width(200);
+        })
+        .ToolBar(toolbar =>
+                    {
+                        toolbar.Custom().Action("DeleteAll","Cards").Text("حذف همه");
+                    }
+        )
+        .DataSource(dataSource => dataSource
+                                    .Server()
+
+                                    .Model(model => model.Id(item => item.Id))
+                    )
+    )*@
+<div class="container">
+    @if (Model.Count() > 0)
+    {
+        <p>آیا از حذف همه (@Model.Distinct().Count() مورد) مطمئن هستید؟</p>
+        <p><button type="button" class="btn btn-default m-2" onclick="deleteHiddenCards()">بله</button></p>
+
+    }
+    else
+    {
+        <p>موردی برای نمایش وجود ندارد</p> 
+
+    }
+</div>
+

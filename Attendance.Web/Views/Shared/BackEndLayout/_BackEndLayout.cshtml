@@ -115,6 +115,26 @@
         <source src="~/Files/ding.mp3" id="dingSrc" type="audio/mpeg" />
     </audio>
 
+    <!-- The Modal -->
+    <div id="atnModal" class="atn-modal">
+
+        <!-- Modal content -->
+        <div class="atn-modal-content">
+            <div class="atn-modal-header">
+                <span class="atn-modal-close atn-crs-ptr" onclick="document.getElementById('atnModal').style.display = 'none'">&times;</span>
+                <h2>@*Modal Header*@</h2>
+                <h2></h2>
+            </div>
+            <div class="atn-modal-body">
+
+            </div>
+            <div class="atn-modal-footer">
+                @*<h3>Modal Footer</h3>*@
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+
     @*<script src="~/Scripts/jquery-3.4.1.js" type="text/javascript">window.rootUrl = '@Url.Content("~/")';</script>*@
     <script src="~/Scripts/toastr.js"></script>
     @if (TempData["Toastr"] != null)
@@ -185,7 +205,7 @@
 
             $(":input").on("keyup change", function (e) {
                 $(e.target).val(toEnglishNumber(e.target.value))
-            }) 
+            })
         });
 
         function toEnglishNumber(strNum) {
@@ -207,7 +227,58 @@
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
-    </script> 
+    </script>
+
+    <script>
+
+        function deleteHiddenCards() {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    let obj = JSON.parse(this.responseText);
+                    if (obj.Ok) {
+                        toastr["success"](obj.Extra)
+                    }
+                    else {
+                        toastr["warning"](obj.Extra)
+                    }
+                    closeAtnModal();
+                }
+            });
+
+            xhr.open("GET", "/cards/HiddenCardRemoveAll");
+
+            xhr.send();
+
+        }
+
+        function deleteHiddenHistories() {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    let obj = JSON.parse(this.responseText);
+                    if (obj.Ok) {
+                        toastr["success"](obj.Extra)
+                    }
+                    else {
+                        toastr["warning"](obj.Extra)
+                    }
+                    closeAtnModal();
+                }
+            });
+
+            xhr.open("GET", "/cards/HiddenCardHistoryRemoveAll");
+
+            xhr.send();
+
+        }
+    </script>
+    <script src="~/Scripts/KeyboardEvent.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

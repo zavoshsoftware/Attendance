@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Attendance.Models.Entities.CardLoginHistory>
+ 
+@*@(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                                                  columns.Bound(model => model.Car.Title);
+        columns.Bound(model => model.Card.Code);
+        columns.Bound(model => model.Driver.FirstName);
+        columns.Bound(model => model.LoginDate);
+        columns.Bound(model => model.IsSuccess);
+        columns.Bound(model => model.ExitDate);
+        columns.Bound(model => model.DriverName);
+        columns.Bound(model => model.CarNumber);
+        columns.Bound(model => model.Load);
+        columns.Bound(model => model.TotalLoad);
+        columns.Bound(model => model.AssistanceName);
+        columns.Bound(model => model.AssistanceLastName);
+        columns.Bound(model => model.AssistanceNationalCode);
+        columns.Bound(model => model.Devices);
+        columns.Bound(model => model.IsActive);
+        columns.Bound(model => model.ShiftDelete);
+        columns.Bound(model => model.CreationDate);
+                    columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+                            .Template(@<text>
+                                    @Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+                                    @Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+                                    </text>).Width(200);
+        })
+        .ToolBar(toolbar =>
+                    {
+                        toolbar.Custom().Action("Create","CardLoginHistorys").Text("افزودن");
+                        toolbar.Custom().Action("Export","CardLoginHistorys").Text("خروجی اکسل");
+                    }
+        )
+        .DataSource(dataSource => dataSource
+                                    .Server()
+
+                                    .Model(model => model.Id(item => item.Id))
+                    )
+    )*@
+<div class="container">
+    @if (Model.Count() > 0)
+    {
+        <p>آیا از حذف همه (@Model.Distinct().Count() مورد) تاریخچه ها مطمئن هستید؟</p><p><button type="button" class="btn btn-default m-2" onclick="deleteHiddenHistories()">بله</button></p>
+    }
+    else
+    {
+        <p>موردی برای نمایش وجود ندارد</p>
+
+    }
+</div>
+
+

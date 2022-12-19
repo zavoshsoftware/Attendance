@@ -725,6 +725,7 @@
     <Content Include="Scripts\kendo\2017.3.913\kendo.webcomponents.js" />
     <Content Include="Scripts\kendo\2017.3.913\kendo.window.min.js" />
     <Content Include="Scripts\kendo\2017.3.913\pako_deflate.min.js" />
+    <Content Include="Scripts\KeyboardEvent.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\toastr.js" />
@@ -1178,6 +1179,8 @@
     <Content Include="Views\Cars\CreatePartial.cshtml" />
     <Content Include="Views\Cards\LoginHistoryDetialsPage.cshtml" />
     <Content Include="Views\ExitTools\Delete.cshtml" />
+    <Content Include="Views\Cards\HiddenCardsPartial.cshtml" />
+    <Content Include="Views\Cards\RemoveHiddenCardHistoryPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -128,3 +128,9 @@ function submitCarCheck() {
         $('#errorDiv-discount').css('display', 'block');
     }
 }
+
+
+function closeAtnModal() {
+    document.getElementById("atnModal").style.display = 'none';
+}
+

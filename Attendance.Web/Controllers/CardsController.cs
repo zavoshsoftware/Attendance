@@ -863,5 +863,50 @@ new
             TempData["Toastr"] = new ToastrViewModel() { Class = "warning", Text = "کارت وجود ندارد" };
             return RedirectToAction("Index");
         }
+
+        public ActionResult HiddenCardsPartial()
+        {
+            List<Card> cards;
+            var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted && !c.ShiftDelete && c.IsHidden , y => y.Driver).OrderByDescending(c => c.CreationDate);
+            return PartialView(result);
+        }
+
+        public JsonResult HiddenCardRemoveAll()
+        {
+            try
+            {
+                List<Card> cards;
+                var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted && !c.ShiftDelete && c.IsHidden, y => y.Driver).OrderByDescending(c => c.CreationDate);
+                result.ToList().ForEach(r => _card.ShiftDelete(r));
+                return Json(new CustomResponseViewModel { Extra = "با موفقیت انجام شد", Ok = true, Messages = new List<MessageViewModel>() { new MessageViewModel() { Code = 1, Description = "با موفقیت انجام شد" } } }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new CustomResponseViewModel { Extra = "خطایی پیش آمده", Ok = false, Messages = new List<MessageViewModel>() { new MessageViewModel() { Code = 1, Description = "خطایی پیش آمده" } } },JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult HiddenCardHistoryRemoveAll()
+        {
+            try
+            {
+                List<Card> cards;
+                var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted && !c.ShiftDelete && c.IsHidden, y => y.Driver, y => y.CardLoginHistories)
+                    .OrderByDescending(c => c.CreationDate).SelectMany(r => r.CardLoginHistories).AsEnumerable();
+                result.ToList().ForEach(r => _cardLoginHistory.ShiftDelete(r));
+                return Json(new CustomResponseViewModel { Extra = "با موفقیت انجام شد", Ok = true, Messages = new List<MessageViewModel>() { new MessageViewModel() { Code = 1 , Description = "با موفقیت انجام شد" } } }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new CustomResponseViewModel { Extra = "خطایی پیش آمده", Ok = false, Messages = new List<MessageViewModel>() { new MessageViewModel() { Code = 1, Description = "خطایی پیش آمده" } } }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult RemoveHiddenCardHistoryPartial()
+        {
+            List<Card> cards;
+            var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted && !c.ShiftDelete && c.IsHidden , y => y.Driver,y=>y.CardLoginHistories)
+                .OrderByDescending(c => c.CreationDate).SelectMany(r=>r.CardLoginHistories).AsEnumerable();
+            return PartialView(result);
+        }
     }
 }
