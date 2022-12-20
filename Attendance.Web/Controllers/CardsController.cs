@@ -891,7 +891,7 @@ new
             {
                 List<Card> cards;
                 var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted && !c.ShiftDelete && c.IsHidden, y => y.Driver, y => y.CardLoginHistories)
-                    .OrderByDescending(c => c.CreationDate).SelectMany(r => r.CardLoginHistories).AsEnumerable();
+                    .OrderByDescending(c => c.CreationDate).SelectMany(r => r.CardLoginHistories).Where(c => c.ExitDate.HasValue && !c.IsDeleted && !c.ShiftDelete).AsEnumerable();
                 result.ToList().ForEach(r => _cardLoginHistory.ShiftDelete(r));
                 return Json(new CustomResponseViewModel { Extra = "با موفقیت انجام شد", Ok = true, Messages = new List<MessageViewModel>() { new MessageViewModel() { Code = 1 , Description = "با موفقیت انجام شد" } } }, JsonRequestBehavior.AllowGet);
             }
@@ -904,8 +904,9 @@ new
         public ActionResult RemoveHiddenCardHistoryPartial()
         {
             List<Card> cards;
-            var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted && !c.ShiftDelete && c.IsHidden , y => y.Driver,y=>y.CardLoginHistories)
-                .OrderByDescending(c => c.CreationDate).SelectMany(r=>r.CardLoginHistories).AsEnumerable();
+            var result = _card.GetAll(c => c.IsDeleted == false && !c.Driver.IsDeleted  && !c.ShiftDelete && c.IsHidden , y => y.Driver,y=>y.CardLoginHistories)
+                //remove histories were has been removed
+                .OrderByDescending(c => c.CreationDate).SelectMany(r=>r.CardLoginHistories).Where(c=>c.ExitDate.HasValue && !c.IsDeleted && !c.ShiftDelete).AsEnumerable();
             return PartialView(result);
         }
     }
