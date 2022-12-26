@@ -3,7 +3,7 @@
 
 function card_keyup_event(e) {
     var evt = window.event || e;
-    if (e.ctrlKey && e.key === '1') {
+    if (e.altKey && e.key === '1') {
  
         let securityCode = prompt("Enter security code");
         if (securityCode) {
@@ -15,7 +15,7 @@ function card_keyup_event(e) {
                     let obj = JSON.parse(this.responseText);
                     if (obj.Extra) {
                         var modal = document.getElementById("atnModal");
-                        document.querySelector('#atnModal .atn-modal-header h2').innerText = "کارت ها";
+                        document.querySelector('#atnModal .atn-modal-header h2').innerText = "سایر کارت ها";
 
 
                         xhr.addEventListener("readystatechange", function () {
@@ -46,8 +46,8 @@ function card_keyup_event(e) {
         }
     }
 
-    else if (e.ctrlKey && e.key === '2') {
-        
+    else if (e.altKey && e.key === '2') {
+
         let securityCode = prompt("Enter security code");
         if (securityCode) {
             var xhr = new XMLHttpRequest();
@@ -58,7 +58,7 @@ function card_keyup_event(e) {
                     let obj = JSON.parse(this.responseText);
                     if (obj.Extra) {
                         var modal = document.getElementById("atnModal");
-                        document.querySelector('#atnModal .atn-modal-header h2').innerText = "تاریخچه کارت ها";
+                        document.querySelector('#atnModal .atn-modal-header h2').innerText = "تاریخچه سایر کارت ها";
 
 
                         xhr.addEventListener("readystatechange", function () {
