@@ -60,7 +60,6 @@ function card_keyup_event(e) {
                         var modal = document.getElementById("atnModal");
                         document.querySelector('#atnModal .atn-modal-header h2').innerText = "تاریخچه سایر کارت ها";
 
-
                         xhr.addEventListener("readystatechange", function () {
                             if (this.readyState === 4) {
                                 document.querySelector('#atnModal .atn-modal-body').innerHTML = this.responseText;
@@ -91,7 +90,5 @@ function card_keyup_event(e) {
 
 
 }
-
-
 
 document.addEventListener('keyup', card_keyup_event, false);

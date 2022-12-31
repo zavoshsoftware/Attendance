@@ -34,11 +34,8 @@ namespace Attendance.Web.Controllers.api
         {
             string operatorId = "";
             var today = System.DateTime.Now.ToString("dddd");
-            if (Request.Headers.Contains("Key"))
-            {
-                operatorId = Request.Headers.GetValues("Key").First();
-                operatorId = operatorId.ToLower();
-            }
+            if (Request.Headers.Contains("Key")) operatorId = Request.Headers.GetValues("Key").First().ToLower(); 
+             
             //یافتن کارت براساس کد و وجود راننده
             var card = _card.Get(x => x.Code == id && !x.Driver.IsDeleted&& !x.Driver.ShiftDelete, "Driver,CardLoginHistories").FirstOrDefault();
 
